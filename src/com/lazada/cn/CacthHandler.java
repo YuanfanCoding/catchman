@@ -38,7 +38,10 @@ public class CacthHandler {
 	public static void main(String[] args) {
 		
 		try {
-			new CacthHandler("women shoes",1,3,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
+			long startTime=System.currentTimeMillis();   
+			new CacthHandler("women shoes",1,5,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
+			long endTime=System.currentTimeMillis();
+			System.out.println("程序运行时间： "+(endTime-startTime)/1000+"s");
 		} catch (WriteException | IOException e) {
 			
 			// TODO Auto-generated catch block
@@ -87,6 +90,12 @@ public class CacthHandler {
 		for(int i=0;i<endpage-startpage+1;i++){
 			System.out.println("开始抓取第"+(i+1)+"页的内容。");
 			getFirstLevel(String.valueOf(startpage+i),sheet);
+			 try {
+				Thread.sleep(6000);//延迟6秒发送请求
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		outputStream.close();
 	}
@@ -94,7 +103,7 @@ public class CacthHandler {
 		String urlstring=website+URLEncoder.encode(keyword, "utf-8") +"&page="+pagenum;
 		URL url = new URL(urlstring);
 		HttpURLConnection connection =null;
-		try {
+	//	try {
 		connection = (HttpURLConnection) url.openConnection();
 		connection
 				.addRequestProperty(
@@ -102,13 +111,13 @@ public class CacthHandler {
 						"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");
 		connection.setConnectTimeout(60000);
 		connection.connect();
-		}catch(java.net.ConnectException cn) {
-			connection.disconnect();
-			cn.printStackTrace();
-			System.out.println("第一层出现连接超时！");
-			System.out.println("开始重连");
-			getFirstLevel(pagenum,sheet);
-		}
+	//	}catch(java.net.ConnectException cn) {
+		//	connection.disconnect();
+//			cn.printStackTrace();
+//			System.out.println("第一层出现连接超时！");
+//			System.out.println("开始重连");
+//			getFirstLevel(pagenum,sheet);
+//		}
 		InputStream is = connection.getInputStream();
 		InputStreamReader isr = new InputStreamReader(is, "utf-8");
 		BufferedReader reader = new BufferedReader(isr);
@@ -129,7 +138,6 @@ public class CacthHandler {
 			    	System.out.println("第"+pagenum+"页  "+"第"+(i+1)+"个详情:  "+ietelement.getUrl());
 			    	getSencondLevel(ietelement.getUrl(),sheet);
 			    }
-			//	outputStream.write(line.getBytes());
 				break;
 			}
 			
@@ -153,21 +161,22 @@ public class CacthHandler {
         URL url = new URL(urlstring);
         HttpURLConnection connection =null;
         
-	    try {
+	//    try {
         connection = (HttpURLConnection) url.openConnection();
 		connection
 				.addRequestProperty(
 						"User-Agent",
 						"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");
-		connection.setConnectTimeout(60000);
+		connection.setConnectTimeout(60*1000);
+		
 		connection.connect();
-	    }catch(java.net.ConnectException cn) {
-	    connection.disconnect();
-		cn.printStackTrace();
-		System.out.println("第二层出现连接超时！");
-		System.out.println("开始重连");
-		getSencondLevel(urlstring,sheet);
-	    }
+//	    }catch(java.net.ConnectException cn) {
+//	    connection.disconnect();
+//		cn.printStackTrace();
+//		System.out.println("第二层出现连接超时！");
+//		System.out.println("开始重连");
+//		getSencondLevel(urlstring,sheet);
+//	    }
 	   
 		InputStream is = connection.getInputStream();
 		InputStreamReader isr = new InputStreamReader(is, "utf-8");
@@ -205,9 +214,9 @@ public class CacthHandler {
 				}
 				else if(iscontain){
 					title+=line+" ";
-					info.setName(line.substring(line.indexOf("<title>")+7, line.indexOf("| Lazada Malaysia")));
+					info.setName(title.substring(title.indexOf("<title>")+7, title.indexOf("| Lazada Malaysia")));
 					istitle=false;
-					title="";
+					title=""; 
 					info.setGetName(true);
 					continue;
 				}
@@ -315,7 +324,7 @@ public class CacthHandler {
 				}
 				else if(iscontain){
 					packagecontent+=line+" ";
-					info.setPackage_content(line.substring(packagecontent.indexOf("<span>")+6, packagecontent.indexOf("</span>")));
+					info.setPackage_content(packagecontent.substring(packagecontent.indexOf("<span>")+6, packagecontent.indexOf("</span>")));
 					ispackagecontent=false;
 					packagecontent="";
 					info.setGetPackage_content(true);
@@ -369,8 +378,6 @@ public class CacthHandler {
 		is.close();
 		isr.close();
 		reader.close();
-		
-		
 	}
 
 }
