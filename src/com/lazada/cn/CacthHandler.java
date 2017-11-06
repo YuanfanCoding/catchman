@@ -40,6 +40,7 @@ public class CacthHandler {
 		try {
 			new CacthHandler("women shoes",1,3,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
 		} catch (WriteException | IOException e) {
+			
 			// TODO Auto-generated catch block
 			System.out.println("出现IO异常");
 			e.printStackTrace();
@@ -92,14 +93,22 @@ public class CacthHandler {
 	private void getFirstLevel(String pagenum,WritableSheet sheet) throws IOException, RowsExceededException, WriteException{
 		String urlstring=website+URLEncoder.encode(keyword, "utf-8") +"&page="+pagenum;
 		URL url = new URL(urlstring);
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		HttpURLConnection connection =null;
+		try {
+		connection = (HttpURLConnection) url.openConnection();
 		connection
 				.addRequestProperty(
 						"User-Agent",
 						"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");
 		connection.setConnectTimeout(60000);
 		connection.connect();
-
+		}catch(java.net.ConnectException cn) {
+			connection.disconnect();
+			cn.printStackTrace();
+			System.out.println("第一层出现连接超时！");
+			System.out.println("开始重连");
+			getFirstLevel(pagenum,sheet);
+		}
 		InputStream is = connection.getInputStream();
 		InputStreamReader isr = new InputStreamReader(is, "utf-8");
 		BufferedReader reader = new BufferedReader(isr);
@@ -142,14 +151,24 @@ public class CacthHandler {
 		String packagecontent="";
 		
         URL url = new URL(urlstring);
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection =null;
+        
+	    try {
+        connection = (HttpURLConnection) url.openConnection();
 		connection
 				.addRequestProperty(
 						"User-Agent",
 						"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");
 		connection.setConnectTimeout(60000);
 		connection.connect();
-
+	    }catch(java.net.ConnectException cn) {
+	    connection.disconnect();
+		cn.printStackTrace();
+		System.out.println("第二层出现连接超时！");
+		System.out.println("开始重连");
+		getSencondLevel(urlstring,sheet);
+	    }
+	   
 		InputStream is = connection.getInputStream();
 		InputStreamReader isr = new InputStreamReader(is, "utf-8");
 		BufferedReader reader = new BufferedReader(isr);
