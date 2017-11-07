@@ -25,6 +25,12 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
+/**
+ * 
+ * @author yuanfan
+ * 通过基础的HttpURLConnection发请求拿数据，进行字符串匹配 ，比较麻烦
+ *
+ */
 public class CacthHandler {
 
 	
