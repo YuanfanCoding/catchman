@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -22,6 +24,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
 import com.lazada.json.model.ItemListElement;
@@ -34,8 +38,13 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
+/**
+ * 
+ * @author yuanfan
+ * 提升到平均每个商品抓取速度为3秒
+ */
 public class ConnectImpl {
-
+    
 	public final static String website="http://www.lazada.com.my/catalog/?q="; 
 	private String keyword;
 	private int startpage;
@@ -91,7 +100,7 @@ public class ConnectImpl {
 	     sheet.addCell(new Label(14, this.exlRow, "图片6"));
 	     sheet.addCell(new Label(15, this.exlRow, "图片7"));
 	     sheet.addCell(new Label(16, this.exlRow++, "图片8"));
-	     workbook.write();
+	   
 	}
 	public void startCatching() throws IOException , RowsExceededException, WriteException{
 	
@@ -146,12 +155,46 @@ public class ConnectImpl {
 				if(doc!=null) {
 				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));//标题
 				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim());//好评
-				info.setMainimage(doc.getElementsByClass("productImage").get(0).attr("data-big").toString());//图片
-				info.setShort_description(doc.getElementsByClass("prd-attributesList").select("span").first().text().toString());//卖点
+				
+				String elimagestring="";
+				Elements elimage=doc.getElementsByClass("productImage");
+				info.setMainimage(elimage.get(0).attr("data-big").toString());//图片
+				for(int i=1;i<elimage.size()-1;i++) {
+					Class clazz = info.getClass();
+					Method m;
+					try {
+						m = clazz.getMethod("setImage"+(i+1),String.class);
+						m.invoke(info, elimage.get(i).attr("data-big").toString());
+					} catch (NoSuchMethodException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+				
+				Elements elsd=doc.getElementsByClass("prd-attributesList").select("span");
+				String elsdstring="";
+				for(Element els:elsd) {
+					elsdstring+=els.text().toString()+"\n";
+				}
+				info.setShort_description(elsdstring);//卖点
+				
 				info.setSpecial_price(doc.select("span#product_price").text().toString());//特价
 				info.setPrice(doc.select("span#price_box").text().toString());//实价
-				info.setDescription(doc.select("div#offer-template-0").text().toString());//描述        
-				info.setPackage_content(doc.select("li.inbox__item").text().toString());//包装
+				info.setDescription(doc.select("div.product-description__block").get(0).text().toString());//描述        
+				info.setPackage_content(doc.select("li.inbox__item").text().toString().replaceAll("<ul>", "").replaceAll("</ul>", "").replaceAll("<li>", "").replaceAll("</li>", "").replaceAll("<p>", "").replaceAll("</p>", ""));//包装
 				info.setSellersku(doc.select("td#pdtsku").text().toString());//sku
 				info.setOneItemStart(true);
 				}
@@ -165,18 +208,18 @@ public class ConnectImpl {
 				sheet.addCell(new Label(2, this.exlRow, info.getShort_description()));
 				sheet.addCell(new Label(3, this.exlRow, info.getPrice()));
 				sheet.addCell(new Label(4, this.exlRow, info.getSpecial_price()));
-				sheet.addCell(new Label(5, this.exlRow, info.getPrice()));
-				sheet.addCell(new Label(6, this.exlRow, info.getSellersku()));
-				sheet.addCell(new Label(7, this.exlRow, info.getPackage_content()));
-				sheet.addCell(new Label(8, this.exlRow, info.getLink()));
-				sheet.addCell(new Label(9, this.exlRow, info.getComment()));
-				sheet.addCell(new Label(10, this.exlRow, info.getMainimage()));
-				sheet.addCell(new Label(11, this.exlRow, ""));
-				sheet.addCell(new Label(12, this.exlRow, ""));
-				sheet.addCell(new Label(13, this.exlRow, ""));
-				sheet.addCell(new Label(14, this.exlRow, ""));
-				sheet.addCell(new Label(15, this.exlRow, ""));
-				sheet.addCell(new Label(16, this.exlRow++, ""));
+				sheet.addCell(new Label(5, this.exlRow, info.getSellersku()));
+				sheet.addCell(new Label(6, this.exlRow, info.getPackage_content()));
+				sheet.addCell(new Label(7, this.exlRow, info.getLink()));
+				sheet.addCell(new Label(8, this.exlRow, info.getComment()));
+				sheet.addCell(new Label(9, this.exlRow, info.getMainimage()));
+				sheet.addCell(new Label(10, this.exlRow, info.getImage2()));
+				sheet.addCell(new Label(11, this.exlRow, info.getImage3()));
+				sheet.addCell(new Label(12, this.exlRow, info.getImage4()));
+				sheet.addCell(new Label(13, this.exlRow, info.getImage5()));
+				sheet.addCell(new Label(14, this.exlRow, info.getImage6()));
+				sheet.addCell(new Label(15, this.exlRow, info.getImage7()));
+				sheet.addCell(new Label(16, this.exlRow++, info.getImage8()));
 				info.backToInit();
 			
 			}

@@ -40,7 +40,6 @@ public class BaseInfo {
 	public String comment = "";
 	
 	
-	
 	public boolean isOneItemStart() {
 		return oneItemStart;
 	}

@@ -21,8 +21,8 @@ public class TestHttpCilent {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		
 		try {
-          //  HttpGet httpget = new HttpGet("https://www.lazada.com.my/converse-553419c-chuck-taylor-all-star-dainty-peached-oxwomenpolarbluebiscuit-21447652.html");
-            HttpGet httpget = new HttpGet("https://www.lazada.com.my/petpet/?spm=a2o4k.prod.0.0.27c36a81A1xgwt&ref=popular-search3=petpet");
+            HttpGet httpget = new HttpGet("https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoespink-63716568.html");
+          //  HttpGet httpget = new HttpGet("https://www.lazada.com.my/petpet/?spm=a2o4k.prod.0.0.27c36a81A1xgwt&ref=popular-search3=petpet");
             
 //           设置超时 
 //            3.X是这样的
@@ -75,10 +75,11 @@ public class TestHttpCilent {
 //                    System.out.println(doc.getElementsByClass("prd-attributesList").select("span").first().text().toString());
 //                    System.out.println(doc.select("span#product_price").text().toString());
 //                    System.out.println(doc.select("span#price_box").text().toString());
-//                    System.out.println(doc.select("div#offer-template-0").text().toString());                  
+                      System.out.println(doc.select("div.product-description__block").get(0).text().toString());                  
 //                    System.out.println(doc.select("li.inbox__item").text().toString());
 //                    System.out.println(doc.select("td#pdtsku").text().toString());
-                      System.out.println(doc.select("script[type=application/ld+json]").get(0).data().toString());
+                     // System.out.println(doc.select("script[type=application/ld+json]").get(0).data().toString());
+                      
                 }   
             } finally {
                 response.close();
