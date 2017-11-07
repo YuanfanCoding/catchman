@@ -19,8 +19,27 @@ public class TestHttpCilent {
 		// TODO Auto-generated method stub
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
+		
 		try {
-            HttpGet httpget = new HttpGet("https://www.lazada.com.my/converse-553419c-chuck-taylor-all-star-dainty-peached-oxwomenpolarbluebiscuit-21447652.html");
+          //  HttpGet httpget = new HttpGet("https://www.lazada.com.my/converse-553419c-chuck-taylor-all-star-dainty-peached-oxwomenpolarbluebiscuit-21447652.html");
+            HttpGet httpget = new HttpGet("https://www.lazada.com.my/petpet/?spm=a2o4k.prod.0.0.27c36a81A1xgwt&ref=popular-search3=petpet");
+            
+//           设置超时 
+//            3.X是这样的
+//
+//            HttpClient client=new DefaultHttpClient();
+//            client.setConnectionTimeout(30000); 
+//            client.setTimeout(30000);
+//            4.X是这样的
+//            HttpClient httpClient=new DefaultHttpClient();
+//            httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT,2000);//连接时间
+//            httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT,2000);//数据传输时间
+//            4.3是这样的
+//            CloseableHttpClient httpClient = HttpClients.createDefault();
+//            HttpGet httpGet=new HttpGet("http://www.baidu.com");//HTTP Get请求(POST雷同)
+//            RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(2000).setConnectTimeout(2000).build();//设置请求和传输超时时间
+//            httpGet.setConfig(requestConfig);
+//            httpClient.execute(httpGet);//执行请求
 //            httpGet.setHeader("Accept", "Accept text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");  
 //            
 //            httpGet.setHeader("Accept-Charset", "GB2312,utf-8;q=0.7,*;q=0.7");  
@@ -36,7 +55,7 @@ public class TestHttpCilent {
 //            httpGet.setHeader("Host", "www.cnblogs.com");  
 //      
 //            httpGet.setHeader("refer", "http://www.baidu.com/s?tn=monline_5_dg&bs=httpclient4+MultiThreadedHttpConnectionManager");  
-      
+      //http://blog.csdn.net/a9529lty/article/details/7008537
             httpget.setHeader("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");  
             
             CloseableHttpResponse response = httpclient.execute(httpget);
@@ -50,13 +69,16 @@ public class TestHttpCilent {
                 	web= EntityUtils.toString(entity,"UTF-8");
                 //	System.out.println(web);
                     Document doc= Jsoup.parse(web);
-                    System.out.println(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));
-                    System.out.println(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim());
-                    System.out.println(doc.getElementsByClass("productImage").get(0).attr("data-big").toString());
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
+//                    System.out.println(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));
+//                    System.out.println(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim());
+//                    System.out.println(doc.getElementsByClass("productImage").get(0).attr("data-big").toString());
+//                    System.out.println(doc.getElementsByClass("prd-attributesList").select("span").first().text().toString());
+//                    System.out.println(doc.select("span#product_price").text().toString());
+//                    System.out.println(doc.select("span#price_box").text().toString());
+//                    System.out.println(doc.select("div#offer-template-0").text().toString());                  
+//                    System.out.println(doc.select("li.inbox__item").text().toString());
+//                    System.out.println(doc.select("td#pdtsku").text().toString());
+                      System.out.println(doc.select("script[type=application/ld+json]").get(0).data().toString());
                 }   
             } finally {
                 response.close();
