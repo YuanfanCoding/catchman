@@ -2,8 +2,6 @@ package com.lazada.cn;
 
 public class FinalInfo extends BaseInfo{
 
-	
-	
 	public void backToInit() {
 		
 		this.oneItemStart = false;
