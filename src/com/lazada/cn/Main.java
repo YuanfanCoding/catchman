@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -67,14 +68,15 @@ public class Main {
 	 */
 	private void initialize() {
 		frmLazada = new JFrame();
-		frmLazada.setIconImage(Toolkit.getDefaultToolkit().getImage("F:\\eclipse_workspace\\GUITest\\image\\lazada.jpg"));
+//		frmLazada.setIconImage(Toolkit.getDefaultToolkit().createImage(getClass().getResource("\\image\\lazada.jpg")));
+		frmLazada.setIconImage(new ImageIcon("image\\lazada.jpg").getImage());
 		frmLazada.setTitle("LAZADA\u6536\u96C6\u5668");
 		frmLazada.setBounds(100, 100, 643, 458);
 		frmLazada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLazada.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(SystemColor.menu);
+		panel.setBackground(new Color(100, 149, 237));
 		panel.setBounds(154, 0, 327, 255);
 		frmLazada.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -170,26 +172,43 @@ public class Main {
 		panel.add(separator_4);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBounds(0, 0, 154, 410);
 		frmLazada.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("\u56FE\u7247\u4E00");
-		lblNewLabel_1.setBounds(0, 0, 144, 191);
+		lblNewLabel_1.setBounds(0, 58, 154, 124);
+		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u5DE61\u6539.jpg"));
 		panel_1.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("\u56FE\u7247\u4E8C");
-		lblNewLabel_2.setBounds(0, 211, 154, 189);
+		lblNewLabel_2.setBounds(0, 166, 154, 244);
+		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u5DE6\u4E8C\u6539.jpg"));
 		panel_1.add(lblNewLabel_2);
 		
+		JLabel lblNewLabel_4 = new JLabel("\u5DE6\u4E00\u5E7F\u544A");
+		lblNewLabel_4.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u53F3\u56DB\u6539.jpg"));
+		lblNewLabel_4.setBounds(0, 10, 154, 38);
+		panel_1.add(lblNewLabel_4);
+		
 		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(224, 255, 255));
 		panel_2.setBounds(482, 0, 145, 410);
 		frmLazada.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
-		JLabel lblNewLabel_3 = new JLabel("\u56FE\u7247\u4E09");
-		lblNewLabel_3.setBounds(0, 0, 135, 400);
+		JLabel lblNewLabel_3 = new JLabel("\u53F3\u4E00\u5E7F\u544A");
+		lblNewLabel_3.setBounds(0, 0, 145, 96);
 		panel_2.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_5 = new JLabel("\u53F3\u4E8C\u5E7F\u544A");
+		lblNewLabel_5.setBounds(0, 96, 145, 213);
+		panel_2.add(lblNewLabel_5);
+		
+		JLabel lblNewLabel_6 = new JLabel("\u53F3\u4E09\u5E7F\u544A");
+		lblNewLabel_6.setBounds(0, 319, 145, 91);
+		panel_2.add(lblNewLabel_6);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.textHighlightText);
