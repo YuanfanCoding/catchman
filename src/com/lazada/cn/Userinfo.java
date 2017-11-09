@@ -1,5 +1,6 @@
 package com.lazada.cn;
 
+import java.util.ArrayList;
 
 public class Userinfo {
 
@@ -9,7 +10,9 @@ public class Userinfo {
 	private String money;
 	private String paytime;
 	private String limittime;
-	
+	private String pcnum;
+	private ArrayList<String> pclist;
+	private String catchnum;
 	
 	public Userinfo(String id, String name, String password, String money,
 			String paytime, String limittime) {
@@ -20,7 +23,23 @@ public class Userinfo {
 		this.money = money;
 		this.paytime = paytime;
 		this.limittime = limittime;
+		
 	}
+	
+	public Userinfo(String id, String name, String password, String money, String paytime, String limittime,
+			String pcnum, ArrayList<String> pclist, String catchnum) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.money = money;
+		this.paytime = paytime;
+		this.limittime = limittime;
+		this.pcnum = pcnum;
+		this.pclist = pclist;
+		this.catchnum = catchnum;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -56,6 +75,26 @@ public class Userinfo {
 	}
 	public void setLimittime(String limittime) {
 		this.limittime = limittime;
+	}
+	public String getPcnum() {
+		return pcnum;
+	}
+	public void setPcnum(String pcnum) {
+		this.pcnum = pcnum;
+	}
+	public String getCatchnum() {
+		return catchnum;
+	}
+	public void setCatchnum(String catchnum) {
+		this.catchnum = catchnum;
+	}
+
+	public ArrayList<String> getPclist() {
+		return pclist;
+	}
+
+	public void setPclist(ArrayList<String> pclist) {
+		this.pclist = pclist;
 	}
 	
 }

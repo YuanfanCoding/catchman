@@ -30,7 +30,7 @@ private String randomText;
   JDialog d;
 public static void main(String args[]){
    try {
-     UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+   //  UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
      } catch (Throwable e) {
       e.printStackTrace();
     }
@@ -114,10 +114,11 @@ public static void main(String args[]){
 		String name=usernameTextField.getText();
 		char[] c=passwordField.getPassword();
 		String password=new String(c);
-		if(IOhandler.isValid(name, password))
+		boolean isvalid=IOhandler.isValid(name, password);
+		isvalid=true;
+		if(isvalid)
 		{
 	    this.dispose();
-		//new SimpleUi().initUI();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

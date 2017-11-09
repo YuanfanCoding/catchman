@@ -6,6 +6,7 @@ import java.awt.FileDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.SystemColor;
 
 import javax.swing.UIManager;
@@ -27,8 +29,12 @@ import javax.swing.JSeparator;
 
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import jxl.write.WriteException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Main {
 
@@ -38,6 +44,9 @@ public class Main {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
+	private ConnectImpl textArea1;
+	private JDialog d;
+	public  static final  String ADVERTISEMENT="http://ylfcoding.cn";
 	private final JSeparator separator_2 = new JSeparator();
 
 	/**
@@ -74,9 +83,10 @@ public class Main {
 		frmLazada.setBounds(100, 100, 643, 458);
 		frmLazada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLazada.getContentPane().setLayout(null);
+		frmLazada.setLocation(LoginTest.centreContainer(frmLazada.getSize()));
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(100, 149, 237));
+		panel.setBackground(new Color(240, 248, 255));
 		panel.setBounds(154, 0, 327, 255);
 		frmLazada.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -111,13 +121,19 @@ public class Main {
 		JButton button = new JButton("\u5F00\u59CB\u6536\u96C6");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				    if(textField_3.getText().equals("")||textField_4.getText().equals("")) {
+				    	JOptionPane.showMessageDialog(d,"没有输入保存路径或者文件名！","请重新输入",JOptionPane.WARNING_MESSAGE);
+				    }
+				    else {
 					try {
-						new CacthHandler("women shoes",1,100,textField_3.getText()+textField_4.getText()).startCatching();
+						textArea1.setPro("women shoes",1,100,textField_3.getText()+textField_4.getText()+".xls");
+						textArea1.startCatching();
+					//	new ConnectImpl("women shoes",1,100,textField_3.getText()+textField_4.getText()+".xls").startCatching();
 					} catch (WriteException | IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+				   }
 
 			}
 		});
@@ -146,7 +162,7 @@ public class Main {
 		        }else{  
 		        	textField_3.setText(jchoose.getSelectedFile().getPath());  
 		        }
-		        textField_4.setText(textField.getText()+"_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".xls");
+		        textField_4.setText(textField.getText()+"_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 			}
 		});
 		btnNewButton.setBounds(270, 150, 46, 23);
@@ -178,35 +194,63 @@ public class Main {
 		panel_1.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("\u56FE\u7247\u4E00");
-		lblNewLabel_1.setBounds(0, 58, 154, 124);
+		lblNewLabel_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {  
+		            URI uri = new URI(ADVERTISEMENT);  
+		            Desktop.getDesktop().browse(uri);  
+		        } catch (URISyntaxException aa) {  
+		            aa.printStackTrace();  
+		        } catch (IOException ee) {  
+		            ee.printStackTrace();  
+		        }  
+			}
+		});
+		lblNewLabel_1.setBounds(0, 41, 154, 124);
 		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u5DE61\u6539.jpg"));
 		panel_1.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("\u56FE\u7247\u4E8C");
-		lblNewLabel_2.setBounds(0, 166, 154, 244);
+		lblNewLabel_2.setBounds(0, 164, 154, 208);
 		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u5DE6\u4E8C\u6539.jpg"));
 		panel_1.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_4 = new JLabel("\u5DE6\u4E00\u5E7F\u544A");
+		lblNewLabel_4.setBounds(0, 379, 154, 31);
 		lblNewLabel_4.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u53F3\u56DB\u6539.jpg"));
-		lblNewLabel_4.setBounds(0, 10, 154, 38);
 		panel_1.add(lblNewLabel_4);
 		
+		JLabel lblNewLabel_7 = new JLabel(" Q Q\uFF1A123456789\r\n");
+		lblNewLabel_7.setForeground(new Color(30, 144, 255));
+		lblNewLabel_7.setBackground(new Color(0, 250, 154));
+		lblNewLabel_7.setBounds(10, 0, 134, 23);
+		panel_1.add(lblNewLabel_7);
+		
+		JLabel label_3 = new JLabel("\u5FAE\u4FE1\uFF1A123456789");
+		label_3.setForeground(new Color(154, 205, 50));
+		label_3.setBackground(new Color(50, 205, 50));
+		label_3.setBounds(10, 22, 109, 15);
+		panel_1.add(label_3);
+		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(224, 255, 255));
+		panel_2.setBackground(new Color(255, 255, 255));
 		panel_2.setBounds(482, 0, 145, 410);
 		frmLazada.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
 		JLabel lblNewLabel_3 = new JLabel("\u53F3\u4E00\u5E7F\u544A");
-		lblNewLabel_3.setBounds(0, 0, 145, 96);
+		lblNewLabel_3.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u53F3\u8FB9\u4E0A.jpg"));
+		lblNewLabel_3.setBounds(0, 0, 145, 91);
 		panel_2.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_5 = new JLabel("\u53F3\u4E8C\u5E7F\u544A");
+		lblNewLabel_5.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u53F3\u4E2D.jpg"));
 		lblNewLabel_5.setBounds(0, 96, 145, 213);
 		panel_2.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("\u53F3\u4E09\u5E7F\u544A");
+		lblNewLabel_6.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u53F3\u8FB9\u4E0B.jpg"));
 		lblNewLabel_6.setBounds(0, 319, 145, 91);
 		panel_2.add(lblNewLabel_6);
 		
@@ -216,7 +260,7 @@ public class Main {
 		frmLazada.getContentPane().add(panel_3);
 		panel_3.setLayout(null);
 		
-		JTextArea textArea1 = new JTextArea();
+		textArea1= new ConnectImpl();
 		textArea1.setBackground(SystemColor.text);
 		textArea1.setBounds(0, 0, 327, 145);
 		panel_3.add(textArea1);

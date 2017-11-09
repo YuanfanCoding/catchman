@@ -15,8 +15,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
 
+import javax.swing.JTextArea;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -43,7 +46,7 @@ import jxl.write.biff.RowsExceededException;
  * @author yuanfan
  * 提升到平均每个商品抓取速度为3秒
  */
-public class ConnectImpl {
+public class ConnectImpl extends JTextArea{
     
 	public final static String website="http://www.lazada.com.my/catalog/?q="; 
 	private String keyword;
@@ -55,7 +58,7 @@ public class ConnectImpl {
 		
 		try {
 			long startTime=System.currentTimeMillis();   
-			new ConnectImpl("women shoes",1,3,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
+			new ConnectImpl("women shoes",1,100,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
 			long endTime=System.currentTimeMillis();
 			System.out.println("程序运行时间： "+(endTime-startTime)/1000+"s");
 		} catch (WriteException | IOException e) {
@@ -76,6 +79,18 @@ public class ConnectImpl {
 		
 	}
     
+	public void setPro(String keyword, int startpage, int endpage, String savepath) {
+		 this.keyword=keyword;
+		    this.startpage=startpage;
+			if(endpage>100) endpage=100;
+			this.endpage=endpage;
+			this.savepath=savepath;
+	}
+	
+	public ConnectImpl() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/*
 	 * @ workbook 传入工作簿
 	 * 初始化sheet的第一行
@@ -105,24 +120,22 @@ public class ConnectImpl {
 	public void startCatching() throws IOException , RowsExceededException, WriteException{
 	
 		WritableWorkbook workbook = null;
-	    workbook = Workbook.createWorkbook(new File(
-			     savepath));
+		workbook = Workbook.createWorkbook(new File(savepath));
 		initWorkbook(workbook);
-		for(int i=0;i<endpage-startpage+1;i++){
-			System.out.println("开始抓取第"+(i+1)+"页的内容。");
-			getFirstLevel(String.valueOf(startpage+i),workbook.getSheet(0));
-			 try {
-				Thread.sleep(6000);//延迟6秒发送请求
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		try {
+			for (int i = 0; i < endpage - startpage + 1; i++) {
+				this.append("开始抓取第" + (i + 1) + "页的内容。");
+				getFirstLevel(String.valueOf(startpage + i), workbook.getSheet(0));
+				Thread.sleep(6000);// 延迟6秒发送请求
 			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			workbook.write();
+			workbook.close();
 		}
-		
-	     workbook.write();
-	     workbook.close();
 	}
-	
 	private void getFirstLevel(String pagenum,WritableSheet sheet) throws IOException, RowsExceededException, WriteException{
 		String urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&page=" + pagenum;
 		Document doc = null;
@@ -135,12 +148,12 @@ public class ConnectImpl {
 			List<ItemListElement> ietlist = info.getItemListElement();
 			for (int i = 0; i < ietlist.size(); i++) {
 				ItemListElement ietelement = ietlist.get(i);
-				System.out.println("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl());
+				this.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl());
 				getSencondLevel(ietelement.getUrl(), sheet);
 			}
 		  }
 			else {
-				System.out.println("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  ");
+				this.append("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  ");
 			}
 		}
 	}
@@ -199,7 +212,7 @@ public class ConnectImpl {
 				info.setOneItemStart(true);
 				}
 				else {
-					System.out.println("链接：" +urlstring + "获取失败，开始重新获取:--------------  ");
+					this.append("链接：" +urlstring + "获取失败，开始重新获取:--------------  ");
 				}
 			}
 			if (info.isOneItemStart()) {
@@ -232,7 +245,10 @@ public class ConnectImpl {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		Document doc = null;
 		try {
+			 
 			HttpGet httpget = new HttpGet(url);
+			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(6*1000).build();
+			httpget.setConfig(requestConfig);
 			httpget.setHeader("User-Agent",
 					"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");
 
@@ -255,7 +271,10 @@ public class ConnectImpl {
 				response.close();
 				httpclient.close();
 			}
-		} catch (ClientProtocolException e) {
+		} catch (org.apache.http.NoHttpResponseException e) {
+			e.printStackTrace();
+		} 
+		  catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch(java.net.UnknownHostException u) {
 			u.printStackTrace();
