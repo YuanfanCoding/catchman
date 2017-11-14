@@ -63,8 +63,14 @@ import jxl.write.biff.RowsExceededException;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JList;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
-public class Main {
+public class Main implements MouseListener{
 
 	JFrame frmLazada;
 	private JTextField textField;
@@ -72,17 +78,17 @@ public class Main {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
-	private JTextArea textArea1;
+	private ConnectImpl textArea1;
 	private JDialog d;
 	public  static final  String ADVERTISEMENT="http://ylfcoding.cn";
 	private final JSeparator separator_2 = new JSeparator();
 
-	public final static String website="http://www.lazada.com.my/catalog/?q="; 
-	private String keyword;
-	private int startpage;
-	private int endpage;
-	private String savepath;
-	private int exlRow;
+//	public final static String website="http://www.lazada.com.my/catalog/?q="; 
+//	private String keyword;
+//	private int startpage;
+//	private int endpage;
+//	private String savepath;
+//	private int exlRow;
 	 
 	/**
 	 * Launch the application.
@@ -115,11 +121,11 @@ public class Main {
 //		frmLazada.setIconImage(Toolkit.getDefaultToolkit().createImage(getClass().getResource("\\image\\lazada.jpg")));
 		frmLazada.setIconImage(new ImageIcon("image\\lazada.jpg").getImage());
 		frmLazada.setTitle("LAZADA\u6536\u96C6\u5668");
-		frmLazada.setBounds(100, 100, 643, 458);
+		frmLazada.setBounds(100, 100, 643, 437);
 		frmLazada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLazada.getContentPane().setLayout(null);
 		frmLazada.setLocation(LoginTest.centreContainer(frmLazada.getSize()));
-		
+		frmLazada.setResizable(false);
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 248, 255));
 		panel.setBounds(154, 0, 327, 255);
@@ -127,11 +133,12 @@ public class Main {
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("\u5173\u952E\u8BCD\uFF1A");
-		lblNewLabel.setBounds(33, 20, 54, 15);
+		lblNewLabel.setBounds(10, 20, 54, 15);
 		panel.add(lblNewLabel);
 		
 		textField = new JTextField();
-		textField.setBounds(83, 17, 177, 21);
+		textField.setText("womens shoes");
+		textField.setBounds(57, 17, 148, 21);
 		panel.add(textField);
 		textField.setColumns(10);
 		
@@ -159,11 +166,17 @@ public class Main {
 				    if(textField_3.getText().equals("")||textField_4.getText().equals("")) {
 				    	JOptionPane.showMessageDialog(d,"没有输入保存路径或者文件名！","请重新输入",JOptionPane.WARNING_MESSAGE);
 				    }
-				    else {
-					
-						setPro("women shoes",1,2,textField_3.getText()+textField_4.getText()+".xls");
+				    if(textField_1.getText().equals("")||textField_2.getText().equals("")) {
+				    	JOptionPane.showMessageDialog(d,"没有输入起始页和终止页！","请重新输入",JOptionPane.WARNING_MESSAGE);
+				    }
+				    if(textField.getText().equals("")) {
+				    	JOptionPane.showMessageDialog(d,"没有输入关键词！","请重新输入",JOptionPane.WARNING_MESSAGE);
+				    }
+				    if(textField_1.getText().matches("[0-9]+")&&textField_2.getText().matches("[0-9]+")) {
+				    	textArea1.setPro(textField.getText(),Integer.parseInt(textField_1.getText()),Integer.parseInt(textField_2.getText()),textField_3.getText()+"\\" +textField_4.getText()+".xls");
 						try {
-							startCatching();
+							textArea1.startCatching();
+							JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
 						} catch (RowsExceededException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -174,15 +187,12 @@ public class Main {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						textArea1.append("3333333");
-					//	new ConnectImpl("women shoes",1,100,textField_3.getText()+textField_4.getText()+".xls").startCatching();
-			//		} catch (WriteException | IOException e1) {
-						// TODO Auto-generated catch block
-				//		e1.printStackTrace();
-			//		}
-				   }
-
-			}
+						
+				     }
+				    else JOptionPane.showMessageDialog(d,"起始页和终止页需要数字！","请重新输入",JOptionPane.WARNING_MESSAGE);
+				    
+				    }
+			
 		});
 		button.setBackground(Color.WHITE);
 		button.setForeground(Color.BLACK);
@@ -205,11 +215,12 @@ public class Main {
 				JFileChooser jchoose = new JFileChooser();
 				jchoose.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				jchoose.showOpenDialog(new JDialog());
-		        if(jchoose.getCurrentDirectory().toString()== null){            
+		        if(jchoose.getCurrentDirectory()== null||jchoose.getCurrentDirectory().toString().length()==0||jchoose.getSelectedFile()==null){            
 		        }else{  
 		        	textField_3.setText(jchoose.getSelectedFile().getPath());  
+		        	if(textField_4.getText()==null||textField_4.getText().length()==0) textField_4.setText(textField.getText()+"_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 		        }
-		        textField_4.setText(textField.getText()+"_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+		        
 			}
 		});
 		btnNewButton.setBounds(270, 150, 46, 23);
@@ -234,72 +245,66 @@ public class Main {
 		separator_4.setBounds(327, 405, 0, -403);
 		panel.add(separator_4);
 		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"lazada", "\u5F85\u5F00\u53D1.."}));
+		comboBox.setBounds(227, 17, 89, 21);
+		panel.add(comboBox);
+		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(255, 255, 255));
+		panel_1.setBackground(new Color(224, 255, 255));
 		panel_1.setBounds(0, 0, 154, 410);
 		frmLazada.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("\u56FE\u7247\u4E00");
-		lblNewLabel_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {  
-		            URI uri = new URI(ADVERTISEMENT);  
-		            Desktop.getDesktop().browse(uri);  
-		        } catch (URISyntaxException aa) {  
-		            aa.printStackTrace();  
-		        } catch (IOException ee) {  
-		            ee.printStackTrace();  
-		        }  
-			}
-		});
-		lblNewLabel_1.setBounds(0, 41, 154, 124);
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u5DE61\u6539.jpg"));
-		panel_1.add(lblNewLabel_1);
+		JLabel lblNewLabel_l1 = new JLabel("New label");
+		lblNewLabel_l1.addMouseListener(this);
+		lblNewLabel_l1.setBounds(0, 67, 144, 122);
+		lblNewLabel_l1.setIcon(new ImageIcon("image\\left1.jpg"));
+		panel_1.add(lblNewLabel_l1);
+
+		JLabel lblNewLabel_l2 = new JLabel("New label");
+		lblNewLabel_l2.addMouseListener(this);
+		lblNewLabel_l2.setBounds(0, 198, 154, 194);
+		lblNewLabel_l2.setIcon(new ImageIcon("image\\left2.jpg"));
+		panel_1.add(lblNewLabel_l2);
 		
-		JLabel lblNewLabel_2 = new JLabel("\u56FE\u7247\u4E8C");
-		lblNewLabel_2.setBounds(0, 164, 154, 208);
-		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u5DE6\u4E8C\u6539.jpg"));
-		panel_1.add(lblNewLabel_2);
-		
-		JLabel lblNewLabel_4 = new JLabel("\u5DE6\u4E00\u5E7F\u544A");
-		lblNewLabel_4.setBounds(0, 379, 154, 31);
-		lblNewLabel_4.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u53F3\u56DB\u6539.jpg"));
-		panel_1.add(lblNewLabel_4);
-		
-		JLabel lblNewLabel_7 = new JLabel(" Q Q\uFF1A123456789\r\n");
-		lblNewLabel_7.setForeground(new Color(30, 144, 255));
-		lblNewLabel_7.setBackground(new Color(0, 250, 154));
-		lblNewLabel_7.setBounds(10, 0, 134, 23);
-		panel_1.add(lblNewLabel_7);
-		
-		JLabel label_3 = new JLabel("\u5FAE\u4FE1\uFF1A123456789");
-		label_3.setForeground(new Color(154, 205, 50));
-		label_3.setBackground(new Color(50, 205, 50));
-		label_3.setBounds(10, 22, 109, 15);
-		panel_1.add(label_3);
+		JTextArea txtrqqdsQq = new JTextArea();
+		txtrqqdsQq.setBackground(new Color(224, 255, 255));
+		txtrqqdsQq.setEditable(false);
+		txtrqqdsQq.setToolTipText("");
+		txtrqqdsQq.setText("   \u5BA2\u670DQQ\uFF1A318074670\r\n   \u5FAE  \u4FE1\uFF1Ads318074670\r\n   Q Q  \u7FA4\uFF1A609970186");
+		txtrqqdsQq.setBounds(0, 0, 154, 68);
+		panel_1.add(txtrqqdsQq);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(255, 255, 255));
+		panel_2.setBackground(new Color(224, 255, 255));
 		panel_2.setBounds(482, 0, 145, 410);
 		frmLazada.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
-		JLabel lblNewLabel_3 = new JLabel("\u53F3\u4E00\u5E7F\u544A");
-		lblNewLabel_3.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u53F3\u8FB9\u4E0A.jpg"));
-		lblNewLabel_3.setBounds(0, 0, 145, 91);
-		panel_2.add(lblNewLabel_3);
+		JLabel lblNewLabel_r1 = new JLabel("\u53F3\u4E00\u5E7F\u544A");
+		lblNewLabel_r1.addMouseListener(this);
+		lblNewLabel_r1.setBounds(0, 0, 145, 212);
+		lblNewLabel_r1.setIcon(new ImageIcon("image\\right1.jpg"));
+		panel_2.add(lblNewLabel_r1);
 		
-		JLabel lblNewLabel_5 = new JLabel("\u53F3\u4E8C\u5E7F\u544A");
-		lblNewLabel_5.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u53F3\u4E2D.jpg"));
-		lblNewLabel_5.setBounds(0, 96, 145, 213);
-		panel_2.add(lblNewLabel_5);
+		JLabel lblNewLabel_r2 = new JLabel("New label");
+		lblNewLabel_r2.addMouseListener(this);
+		lblNewLabel_r2.setBounds(0, 216, 145, 62);
+		lblNewLabel_r2.setIcon(new ImageIcon("image\\right2.jpg"));
+		panel_2.add(lblNewLabel_r2);
 		
-		JLabel lblNewLabel_6 = new JLabel("\u53F3\u4E09\u5E7F\u544A");
-		lblNewLabel_6.setIcon(new ImageIcon("C:\\Users\\Administrator\\Desktop\\guanggao\\\u53F3\u8FB9\u4E0B.jpg"));
-		lblNewLabel_6.setBounds(0, 319, 145, 91);
-		panel_2.add(lblNewLabel_6);
+		JLabel lblNewLabel_r3 = new JLabel("New label");
+		lblNewLabel_r3.addMouseListener(this);
+		lblNewLabel_r3.setBounds(0, 286, 145, 72);
+		lblNewLabel_r3.setIcon(new ImageIcon("image\\right3.jpg"));
+		panel_2.add(lblNewLabel_r3);
+		
+		JLabel lblNewLabel_r4 = new JLabel("New label");
+		lblNewLabel_r4.addMouseListener(this);
+		lblNewLabel_r4.setBounds(0, 366, 145, 34);
+		lblNewLabel_r4.setIcon(new ImageIcon("image\\right4.jpg"));
+		panel_2.add(lblNewLabel_r4);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.textHighlightText);
@@ -307,220 +312,54 @@ public class Main {
 		frmLazada.getContentPane().add(panel_3);
 		panel_3.setLayout(null);
 		
-		textArea1= new JTextArea();
+		
+		textArea1= new ConnectImpl();
+		textArea1.setBounds(0, 0, 327, 151);
+		//panel_3.add(textArea1);
 		textArea1.setBackground(SystemColor.text);
-		textArea1.setBounds(0, 0, 327, 145);
-		panel_3.add(textArea1);
-		textArea1.append("4444444");
-	}
-	
-	
-	public void setPro(String keyword, int startpage, int endpage, String savepath) {
-		 this.keyword=keyword;
-		    this.startpage=startpage;
-			if(endpage>100) endpage=100;
-			this.endpage=endpage;
-			this.savepath=savepath;
-	}
-	
-	private void test() {
-		textArea1.append("test");
-	}
-	
-	/*
-	 * @ workbook 传入工作簿
-	 * 初始化sheet的第一行
-	 */
-	private void initWorkbook(WritableWorkbook workbook) throws IOException, RowsExceededException, WriteException {
-		 this.exlRow = 0;
-	     WritableSheet sheet = workbook.createSheet("web_data", 0);
-	     sheet.addCell(new Label(0, this.exlRow, "标题"));
-	     sheet.addCell(new Label(1, this.exlRow, "详情描述"));
-	     sheet.addCell(new Label(2, this.exlRow, "卖点"));
-	     sheet.addCell(new Label(3, this.exlRow, "卖价"));
-	     sheet.addCell(new Label(4, this.exlRow, "特价"));
-	     sheet.addCell(new Label(5, this.exlRow, "SKU"));
-	     sheet.addCell(new Label(6, this.exlRow, "包装包括"));
-	     sheet.addCell(new Label(7, this.exlRow, "产品本身链接"));
-	     sheet.addCell(new Label(8, this.exlRow, "好评"));
-	     sheet.addCell(new Label(9, this.exlRow, "图片1"));
-	     sheet.addCell(new Label(10, this.exlRow, "图片2"));
-	     sheet.addCell(new Label(11, this.exlRow, "图片3"));
-	     sheet.addCell(new Label(12, this.exlRow, "图片4"));
-	     sheet.addCell(new Label(13, this.exlRow, "图片5"));
-	     sheet.addCell(new Label(14, this.exlRow, "图片6"));
-	     sheet.addCell(new Label(15, this.exlRow, "图片7"));
-	     sheet.addCell(new Label(16, this.exlRow++, "图片8"));
-	   
-	}
-	private void startCatching() throws IOException , RowsExceededException, WriteException{
-		WritableWorkbook workbook = null;
-		workbook = Workbook.createWorkbook(new File(savepath));
-		initWorkbook(workbook);
-		try {
-			for (int i = 0; i < endpage - startpage + 1; i++) {
-				textArea1.append("开始抓取第" + (i + 1) + "页的内容。\n");
-				textArea1.paintImmediately(textArea1.getBounds()); 
-				getFirstLevel(String.valueOf(startpage + i), workbook.getSheet(0));
-				Thread.sleep(6000);// 延迟6秒发送请求
-			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			workbook.write();
-			workbook.close();
-		}
-	}
-	private void getFirstLevel(String pagenum,WritableSheet sheet) throws IOException, RowsExceededException, WriteException{
-		String urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&page=" + pagenum;
-		Document doc = null;
-		while (doc == null) {
-			doc = getDoc(urlstring);
-			if(doc!=null) {
-			Gson gson = new Gson();
-			JsonRootBean info = gson.fromJson(doc.select("script[type=application/ld+json]").get(0).data().toString(),
-					JsonRootBean.class);// 对于javabean直接给出class实例
-			List<ItemListElement> ietlist = info.getItemListElement();
-			for (int i = 0; i < ietlist.size(); i++) {
-				ItemListElement ietelement = ietlist.get(i);
-				textArea1.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl());
-				textArea1.paintImmediately(textArea1.getBounds()); 
-				getSencondLevel(ietelement.getUrl(), sheet);
-			}
-		  }
-			else {
-				textArea1.append("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  ");
-				textArea1.paintImmediately(textArea1.getBounds()); 
-			}
-		}
-	}
-	
-	private void getSencondLevel(String urlstring,WritableSheet sheet) throws IOException,RowsExceededException, WriteException{
-
-		    FinalInfo info=new FinalInfo();
-		    info.setLink(urlstring);
-		    Document doc = null;
-			while (doc == null) {
-				doc = getDoc(urlstring);
-				if(doc!=null) {
-				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));//标题
-				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim());//好评
+		
+		JScrollPane scrollPane = new JScrollPane(textArea1);
+		scrollPane.setBounds(0, 0, 327, 151);
+		panel_3.add(scrollPane);
+		
 				
-				String elimagestring="";
-				Elements elimage=doc.getElementsByClass("productImage");
-				info.setMainimage(elimage.get(0).attr("data-big").toString());//图片
-				for(int i=1;i<elimage.size()-1;i++) {
-					Class clazz = info.getClass();
-					Method m;
-					try {
-						m = clazz.getMethod("setImage"+(i+1),String.class);
-						m.invoke(info, elimage.get(i).attr("data-big").toString());
-					} catch (NoSuchMethodException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (SecurityException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-				}
-				
-				Elements elsd=doc.getElementsByClass("prd-attributesList").select("span");
-				String elsdstring="";
-				for(Element els:elsd) {
-					elsdstring+=els.text().toString()+"\n";
-				}
-				info.setShort_description(elsdstring);//卖点
-				
-				info.setSpecial_price(doc.select("span#product_price").text().toString());//特价
-				info.setPrice(doc.select("span#price_box").text().toString());//实价
-				info.setDescription(doc.select("div.product-description__block").get(0).text().toString());//描述        
-				info.setPackage_content(doc.select("li.inbox__item").text().toString().replaceAll("<ul>", "").replaceAll("</ul>", "").replaceAll("<li>", "").replaceAll("</li>", "").replaceAll("<p>", "").replaceAll("</p>", ""));//包装
-				info.setSellersku(doc.select("td#pdtsku").text().toString());//sku
-				info.setOneItemStart(true);
-				}
-				else {
-					textArea1.append("链接：" +urlstring + "获取失败，开始重新获取:--------------  ");
-					textArea1.paintImmediately(textArea1.getBounds()); 
-				}
-			}
-			if (info.isOneItemStart()) {
-				sheet.addCell(new Label(0, this.exlRow, info.getName()));
-				sheet.addCell(new Label(1, this.exlRow, info.getDescription()));
-				sheet.addCell(new Label(2, this.exlRow, info.getShort_description()));
-				sheet.addCell(new Label(3, this.exlRow, info.getPrice()));
-				sheet.addCell(new Label(4, this.exlRow, info.getSpecial_price()));
-				sheet.addCell(new Label(5, this.exlRow, info.getSellersku()));
-				sheet.addCell(new Label(6, this.exlRow, info.getPackage_content()));
-				sheet.addCell(new Label(7, this.exlRow, info.getLink()));
-				sheet.addCell(new Label(8, this.exlRow, info.getComment()));
-				sheet.addCell(new Label(9, this.exlRow, info.getMainimage()));
-				sheet.addCell(new Label(10, this.exlRow, info.getImage2()));
-				sheet.addCell(new Label(11, this.exlRow, info.getImage3()));
-				sheet.addCell(new Label(12, this.exlRow, info.getImage4()));
-				sheet.addCell(new Label(13, this.exlRow, info.getImage5()));
-				sheet.addCell(new Label(14, this.exlRow, info.getImage6()));
-				sheet.addCell(new Label(15, this.exlRow, info.getImage7()));
-				sheet.addCell(new Label(16, this.exlRow++, info.getImage8()));
-				info.backToInit();
-			
-			}
-			
-		}
-	
+	}
 
-	private Document getDoc(String url) {
+	 
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		try {  
+            URI uri = new URI(ADVERTISEMENT);  
+            Desktop.getDesktop().browse(uri);  
+        } catch (URISyntaxException aa) {  
+            aa.printStackTrace();  
+        } catch (IOException ee) {  
+            ee.printStackTrace();  
+        }  
+	}
 
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		Document doc = null;
-		try {
-			 
-			HttpGet httpget = new HttpGet(url);
-			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(6*1000).build();
-			httpget.setConfig(requestConfig);
-			httpget.setHeader("User-Agent",
-					"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 
-			CloseableHttpResponse response = httpclient.execute(httpget);
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 
-			String web = "";
-			try {
-				// 获取响应实体
-				HttpEntity entity = response.getEntity();
-				// 打印响应状态
-				if (entity != null) {
-					web = EntityUtils.toString(entity, "UTF-8");
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 
-					doc = Jsoup.parse(web);
-
-					return doc;
-
-				}
-			} finally {
-				response.close();
-				httpclient.close();
-			}
-		} catch (org.apache.http.NoHttpResponseException e) {
-			e.printStackTrace();
-		} 
-		  catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch(java.net.UnknownHostException u) {
-			u.printStackTrace();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return doc;
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

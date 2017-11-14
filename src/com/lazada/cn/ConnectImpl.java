@@ -84,13 +84,13 @@ public class ConnectImpl extends JTextArea{
 		    this.startpage=startpage;
 			if(endpage>100) endpage=100;
 			this.endpage=endpage;
-			this.savepath=savepath;
+			this.savepath=savepath; 
 	}
 	
 	public ConnectImpl() {
 		// TODO Auto-generated constructor stub
 	}
-
+ 
 	/*
 	 * @ workbook 传入工作簿
 	 * 初始化sheet的第一行
@@ -118,13 +118,13 @@ public class ConnectImpl extends JTextArea{
 	   
 	}
 	public void startCatching() throws IOException , RowsExceededException, WriteException{
-	
 		WritableWorkbook workbook = null;
 		workbook = Workbook.createWorkbook(new File(savepath));
 		initWorkbook(workbook);
 		try {
 			for (int i = 0; i < endpage - startpage + 1; i++) {
-				this.append("开始抓取第" + (i + 1) + "页的内容。");
+				this.append("开始抓取第" + (i + startpage) + "页的内容。\n");
+				this.paintImmediately(this.getBounds());
 				getFirstLevel(String.valueOf(startpage + i), workbook.getSheet(0));
 				Thread.sleep(6000);// 延迟6秒发送请求
 			}
@@ -148,12 +148,14 @@ public class ConnectImpl extends JTextArea{
 			List<ItemListElement> ietlist = info.getItemListElement();
 			for (int i = 0; i < ietlist.size(); i++) {
 				ItemListElement ietelement = ietlist.get(i);
-				this.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl());
+				this.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
+				this.paintImmediately(this.getBounds());
 				getSencondLevel(ietelement.getUrl(), sheet);
 			}
 		  }
 			else {
-				this.append("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  ");
+				this.append("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  \n");
+				this.paintImmediately(this.getBounds());
 			}
 		}
 	}
@@ -212,7 +214,8 @@ public class ConnectImpl extends JTextArea{
 				info.setOneItemStart(true);
 				}
 				else {
-					this.append("链接：" +urlstring + "获取失败，开始重新获取:--------------  ");
+					this.append("链接：" +urlstring + "获取失败，开始重新获取:--------------  \n");
+					this.paintImmediately(this.getBounds());
 				}
 			}
 			if (info.isOneItemStart()) {
