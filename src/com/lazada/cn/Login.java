@@ -1,101 +1,159 @@
 package com.lazada.cn;
 
-import javax.swing.*;
-
-import java.awt.*; //µ¼Èë±ØÒªµÄ°ü
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
-public class Login extends JFrame implements ActionListener{
-	JButton jb1, jb2;
-	JTextField jtf;
-	JPasswordField jpwd;
-	JLabel jl1, jl2,labeln,labels;
-	JPanel jp1, jp2, jp3,panemid;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+
+public class Login extends JFrame implements ActionListener {
+	private static final long serialVersionUID = -4655235896173916415L;
+	private JPanel contentPane;
+	private JTextField usernameTextField;
+	private JPasswordField passwordField;
+	private JTextField validateTextField;
+	private String randomText;
 	JDialog d;
-	public Login() {
-		
-		 labeln=new JLabel("123");//±±²¿  
-		 panemid=new JPanel();//ÖĞ²¿
-		 panemid.setLayout(new GridLayout(3,2));  
-		 labels=new JLabel("456");//ÄÏ²¿  
-		// ´´½¨×é¼ş
-		jb1 = new JButton("µÇÂ¼");
-		jb2 = new JButton("È¡Ïû");
 
-		jtf = new JTextField(10);
-		jpwd = new JPasswordField(10);
-
-		jl1 = new JLabel("ÓÃ»§Ãû£º");
-		jl2 = new JLabel("ÃÜ    Âë£º");
-
-		jb1.addActionListener(this);
-		jb2.addActionListener(this);
-		
-		// ÉèÖÃ²¼¾Ö¹ÜÀíÆ÷
-		//this.setLayout(new GridLayout(3, 1,5,5));
-		// Ìí¼Ó×é¼ş
-		panemid.add(jl1);
-		panemid.add(jtf);
-
-		panemid.add(jl2);
-		panemid.add(jpwd);
-
-		panemid.add(jb1);
-		panemid.add(jb2);
-		
-		this.add(labeln,BorderLayout.NORTH);  
-        this.add(labels,BorderLayout.SOUTH);  
-        this.add(panemid,BorderLayout.CENTER); //Ä¬ÈÏÊÇÖĞ¼ä 
-		// ÉèÖÃ´°ÌåÊôĞÔ
-		this.setTitle("µÇÂ¼½çÃæ");
-		this.setSize(500, 300);
-		this.setLocation(400, 200);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
-
-	}
-
-	public static void main(String[] args) throws Exception {
-		new Login();
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		String cmd=e.getActionCommand();
-		if(cmd.equals("µÇÂ¼"))
-		{
-		String name=jtf.getText();
-		char[] c=jpwd.getPassword();
-		String password=new String(c);
-		if(IOhandler.isValid(name, password))
-		{
-	    this.dispose();
-		//new SimpleUi().initUI();
+	public static void main(String args[]) {
+		try {
+			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main window = new Main();
-					window.frmLazada.setVisible(true);
+					Login frame = new Login();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		return;
-		}
-		else
-		{
-		JOptionPane.showMessageDialog(d,"ÓÃ»§Ãû»òÃÜÂë´íÎó","ÇëÖØĞÂÊäÈë",JOptionPane.WARNING_MESSAGE);
-		jtf.setText("");
-		jpwd.setText("");
-		}
-		}
-		if(cmd.equals("È¡Ïû"))
-		System.exit(0);
-		}
-	
 	}
 
+	public Login() {
+		setTitle("ç³»ç»Ÿç™»å½•");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		contentPane = new JPanel();
+		setContentPane(contentPane);
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
+		JPanel usernamePanel = new JPanel();
+		contentPane.add(usernamePanel);
+		JLabel usernameLable = new JLabel("\u7528\u6237\u540D\uFF1A");
+		usernameLable.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		usernamePanel.add(usernameLable);
+		usernameTextField = new JTextField();
+		usernameTextField.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		usernamePanel.add(usernameTextField);
+		usernameTextField.setColumns(10);
+		JPanel passwordPanel = new JPanel();
+		contentPane.add(passwordPanel);
+		JLabel passwordLabel = new JLabel("\u5BC6 \u7801\uFF1A");
+		passwordLabel.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		passwordPanel.add(passwordLabel);
+		passwordField = new JPasswordField();
+		passwordField.setColumns(10);
+		passwordField.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		passwordPanel.add(passwordField);
+		JPanel validatePanel = new JPanel();
+		contentPane.add(validatePanel);
+		JLabel validateLabel = new JLabel("\u9A8C\u8BC1\u7801\uFF1A");
+		validateLabel.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		validatePanel.add(validateLabel);
+		validateTextField = new JTextField();
+		validateTextField.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		validatePanel.add(validateTextField);
+		validateTextField.setColumns(5);
+		randomText = getRandomString(4);
+		CAPTCHALabel label = new CAPTCHALabel(randomText);// éšæœºéªŒè¯ç 
+		label.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		validatePanel.add(label);
+		JPanel buttonPanel = new JPanel();
+		contentPane.add(buttonPanel);
+		JButton submitButton = new JButton("ç™»å½•");
+		submitButton.addActionListener(this);
+		submitButton.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		buttonPanel.add(submitButton);
+		JButton cancelButton = new JButton("é€€å‡º");
+		cancelButton.addActionListener(this);
+		cancelButton.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		buttonPanel.add(cancelButton);
+		pack();// è‡ªåŠ¨è°ƒæ•´çª—ä½“å¤§å°
+		setLocation(centreContainer(getSize()));// è®©çª—ä½“å±…ä¸­æ˜¾ç¤º
+		this.setSize(500, 300);
+	}
 
+	public static Point centreContainer(Dimension size) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();// è·å¾—å±å¹•å¤§å°
+		int x = (screenSize.width - size.width) / 2;// è®¡ç®—å·¦ä¸Šè§’çš„xåæ ‡
+		int y = (screenSize.height - size.height) / 2;// è®¡ç®—å·¦ä¸Šè§’çš„yåæ ‡
+		return new Point(x, y);// è¿”å›å·¦ä¸Šè§’åæ ‡
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		String cmd = e.getActionCommand();
+		if (cmd.equals("ç™»å½•")) {
+			if (!randomText.equals(validateTextField.getText()))
+				JOptionPane.showMessageDialog(d, "éªŒè¯ç é”™è¯¯ï¼", "è¯·é‡æ–°è¾“å…¥",
+						JOptionPane.WARNING_MESSAGE);
+			else {
+				String name = usernameTextField.getText();
+				char[] c = passwordField.getPassword();
+				String password = new String(c);
+//				boolean isvalid = IOhandler.isValid(name, password);
+				//isvalid = true;
+				boolean isvalid = name.equals("123") && password.equals("123");
+				if (isvalid) {
+					this.dispose();
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								Main window = new Main();
+								window.frmLazada.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+					return;
+				} else {
+					JOptionPane.showMessageDialog(d, "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯", "è¯·é‡æ–°è¾“å…¥",
+							JOptionPane.WARNING_MESSAGE);
+					usernameTextField.setText("");
+					passwordField.setText("");
+				}
+			}
+		}
+		if (cmd.equals("é€€å‡º"))
+			System.exit(0);
+	}
+
+	public static String getRandomString(int length) { // lengthè¡¨ç¤ºç”Ÿæˆå­—ç¬¦ä¸²çš„é•¿åº¦
+		String base = "abcdefghijklmnopqrstuvwxyz0123456789";
+		Random random = new Random();
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < length; i++) {
+			int number = random.nextInt(base.length());
+			sb.append(base.charAt(number));
+		}
+		return sb.toString();
+	}
+
+}
