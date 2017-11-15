@@ -119,7 +119,7 @@ public class Main implements MouseListener{
 	private void initialize() {
 		frmLazada = new JFrame();
 //		frmLazada.setIconImage(Toolkit.getDefaultToolkit().createImage(getClass().getResource("\\image\\lazada.jpg")));
-		frmLazada.setIconImage(new ImageIcon("image\\lazada.jpg").getImage());
+		frmLazada.setIconImage(new ImageIcon(Main.class.getResource("/image/lazada.jpg")).getImage());
 		frmLazada.setTitle("LAZADA\u6536\u96C6\u5668");
 		frmLazada.setBounds(100, 100, 643, 437);
 		frmLazada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -259,13 +259,13 @@ public class Main implements MouseListener{
 		JLabel lblNewLabel_l1 = new JLabel("New label");
 		lblNewLabel_l1.addMouseListener(this);
 		lblNewLabel_l1.setBounds(0, 67, 144, 122);
-		lblNewLabel_l1.setIcon(new ImageIcon("image\\left1.jpg"));
+		lblNewLabel_l1.setIcon(new ImageIcon(Main.class.getResource("/image/left1.jpg")));
 		panel_1.add(lblNewLabel_l1);
 
 		JLabel lblNewLabel_l2 = new JLabel("New label");
 		lblNewLabel_l2.addMouseListener(this);
 		lblNewLabel_l2.setBounds(0, 198, 154, 194);
-		lblNewLabel_l2.setIcon(new ImageIcon("image\\left2.jpg"));
+		lblNewLabel_l2.setIcon(new ImageIcon(Main.class.getResource("/image/left2.jpg")));
 		panel_1.add(lblNewLabel_l2);
 		
 		JTextArea txtrqqdsQq = new JTextArea();
@@ -285,25 +285,25 @@ public class Main implements MouseListener{
 		JLabel lblNewLabel_r1 = new JLabel("\u53F3\u4E00\u5E7F\u544A");
 		lblNewLabel_r1.addMouseListener(this);
 		lblNewLabel_r1.setBounds(0, 0, 145, 212);
-		lblNewLabel_r1.setIcon(new ImageIcon("image\\right1.jpg"));
+		lblNewLabel_r1.setIcon(new ImageIcon(Main.class.getResource("/image/right1.jpg")));
 		panel_2.add(lblNewLabel_r1);
 		
 		JLabel lblNewLabel_r2 = new JLabel("New label");
 		lblNewLabel_r2.addMouseListener(this);
 		lblNewLabel_r2.setBounds(0, 216, 145, 62);
-		lblNewLabel_r2.setIcon(new ImageIcon("image\\right2.jpg"));
+		lblNewLabel_r2.setIcon(new ImageIcon(Main.class.getResource("/image/right2.jpg")));
 		panel_2.add(lblNewLabel_r2);
 		
 		JLabel lblNewLabel_r3 = new JLabel("New label");
 		lblNewLabel_r3.addMouseListener(this);
 		lblNewLabel_r3.setBounds(0, 286, 145, 72);
-		lblNewLabel_r3.setIcon(new ImageIcon("image\\right3.jpg"));
+		lblNewLabel_r3.setIcon(new ImageIcon(Main.class.getResource("/image/right3.jpg")));
 		panel_2.add(lblNewLabel_r3);
 		
 		JLabel lblNewLabel_r4 = new JLabel("New label");
 		lblNewLabel_r4.addMouseListener(this);
 		lblNewLabel_r4.setBounds(0, 366, 145, 34);
-		lblNewLabel_r4.setIcon(new ImageIcon("image\\right4.jpg"));
+		lblNewLabel_r4.setIcon(new ImageIcon(Main.class.getResource("/image/right4.jpg")));
 		panel_2.add(lblNewLabel_r4);
 		
 		JPanel panel_3 = new JPanel();
