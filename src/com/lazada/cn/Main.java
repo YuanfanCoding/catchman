@@ -124,7 +124,7 @@ public class Main implements MouseListener{
 		frmLazada.setBounds(100, 100, 643, 437);
 		frmLazada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLazada.getContentPane().setLayout(null);
-		frmLazada.setLocation(LoginTest.centreContainer(frmLazada.getSize()));
+		frmLazada.setLocation(Login.centreContainer(frmLazada.getSize()));
 		frmLazada.setResizable(false);
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 248, 255));
