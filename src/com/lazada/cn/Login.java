@@ -1,5 +1,6 @@
 package com.lazada.cn;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -94,6 +95,11 @@ public class Login extends JFrame implements ActionListener {
 		cancelButton.addActionListener(this);
 		cancelButton.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		buttonPanel.add(cancelButton);
+		JButton subscButton = new JButton("没有账号？");
+		subscButton.addActionListener(this);
+		subscButton.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+		//subscButton.setForeground(Color.RED);
+		buttonPanel.add(subscButton);
 		pack();// 自动调整窗体大小
 		setLocation(centreContainer(getSize()));// 让窗体居中显示
 		this.setSize(500, 300);
@@ -117,8 +123,6 @@ public class Login extends JFrame implements ActionListener {
 				String name = usernameTextField.getText();
 				char[] c = passwordField.getPassword();
 				String password = new String(c);
-//				boolean isvalid = IOhandler.isValid(name, password);
-				//isvalid = true;
 				boolean isvalid = name.equals("123") && password.equals("123");
 				if (isvalid) {
 					this.dispose();
@@ -143,6 +147,11 @@ public class Login extends JFrame implements ActionListener {
 		}
 		if (cmd.equals("退出"))
 			System.exit(0);
+		
+		if (cmd.equals("没有账号？")){
+			JOptionPane.showMessageDialog(d, "请添加QQ:318074670 或者 微信:ds318074670免费获取账号！", "账号获取",
+					JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
 	public static String getRandomString(int length) { // length表示生成字符串的长度
