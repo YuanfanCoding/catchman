@@ -2,28 +2,35 @@
 -outjars catch0.21.jar
 
 -libraryjars 'C:\Program Files\Java\jre7\lib\rt.jar'
+-libraryjars 'F:\eclipse_workspace\CatchLazada\lib\avalon-framework-4.2.0.jar'
+-libraryjars 'F:\eclipse_workspace\CatchLazada\lib\commons-codec-1.9.jar'
+-libraryjars 'F:\eclipse_workspace\CatchLazada\lib\commons-logging-1.2.jar'
+-libraryjars 'F:\eclipse_workspace\CatchLazada\lib\gson-2.7.jar'
+-libraryjars 'F:\eclipse_workspace\CatchLazada\lib\httpclient-4.5.3.jar'
+-libraryjars 'F:\eclipse_workspace\CatchLazada\lib\httpcore-4.4.6.jar'
+-libraryjars 'F:\eclipse_workspace\CatchLazada\lib\jsoup-1.10.2.jar'
+-libraryjars 'F:\eclipse_workspace\CatchLazada\lib\jxl.jar'
 -libraryjars 'F:\eclipse_workspace\CatchLazada\lib\org.apache.log4j_1.2.13.jar'
 -libraryjars 'F:\eclipse_workspace\CatchLazada\lib\servlet-api.jar'
--libraryjars 'F:\eclipse_workspace\CatchLazada\lib\avalon-framework-4.2.0.jar'
 
--dontwarn com.google.gson.**
--keep class com.google.gson.** { *;}
-
--dontwarn common.**
--keep class common.** { *;}
-
--dontwarn jxl.**
--keep class jxl.** { *;}
+-target 1.7
+-keepattributes Signature,*Annotation*
 
 
--dontwarn mozila.**
--keep class mozila.** { *;}
+-keep public class com.google.gson.** {
+    public private protected <fields>;
+    public private protected <methods>;
+}
 
+-keep public class com.lazada.json.model.** {
+    private <fields>;
+    private <methods>;
+}
 
--dontwarn org.**
--keep class org.** { *;}
-
-
+-keep class com.lazada.cn.BaseInfo {
+    <fields>;
+    <methods>;
+}
 
 # Keep - Applications. Keep all application classes, along with their 'main'
 # methods.

@@ -80,15 +80,10 @@ public class Main implements MouseListener{
 	private JTextField textField_4;
 	private ConnectImpl textArea1;
 	private JDialog d;
+	private JButton button;
 	public  static final  String ADVERTISEMENT="http://ylfcoding.cn";
 	private final JSeparator separator_2 = new JSeparator();
 
-//	public final static String website="http://www.lazada.com.my/catalog/?q="; 
-//	private String keyword;
-//	private int startpage;
-//	private int endpage;
-//	private String savepath;
-//	private int exlRow;
 	 
 	/**
 	 * Launch the application.
@@ -98,7 +93,7 @@ public class Main implements MouseListener{
 			public void run() {
 				try {
 					Main window = new Main();
-					window.frmLazada.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -160,7 +155,7 @@ public class Main implements MouseListener{
 		panel.add(textField_2);
 		textField_2.setColumns(10);
 		
-		JButton button = new JButton("\u5F00\u59CB\u6536\u96C6");
+		button = new JButton("\u5F00\u59CB\u6536\u96C6");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				    if(textField_3.getText().equals("")||textField_4.getText().equals("")) {
@@ -321,8 +316,7 @@ public class Main implements MouseListener{
 		JScrollPane scrollPane = new JScrollPane(textArea1);
 		scrollPane.setBounds(0, 0, 327, 151);
 		panel_3.add(scrollPane);
-		
-				
+		frmLazada.setVisible(true);
 	}
 
 	 

@@ -58,10 +58,10 @@ public class ConnectImpl extends JTextArea{
 		
 		try {
 			long startTime=System.currentTimeMillis();   
-			new ConnectImpl("women shoes",1,100,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
+			new ConnectImpl("women shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
 			long endTime=System.currentTimeMillis();
 			System.out.println("程序运行时间： "+(endTime-startTime)/1000+"s");
-		} catch (WriteException | IOException e) {
+		} catch (WriteException | IOException e ) {
 			
 			// TODO Auto-generated catch block
 			System.out.println("出现IO异常");
@@ -130,6 +130,8 @@ public class ConnectImpl extends JTextArea{
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
+			this.append(e.getMessage());
+			this.paintImmediately(this.getBounds());
 			e.printStackTrace();
 		} finally {
 			workbook.write();
@@ -142,8 +144,10 @@ public class ConnectImpl extends JTextArea{
 		while (doc == null) {
 			doc = getDoc(urlstring);
 			if(doc!=null) {
+		  try {
 			Gson gson = new Gson();
-			JsonRootBean info = gson.fromJson(doc.select("script[type=application/ld+json]").get(0).data().toString(),
+			String line=doc.select("script[type=application/ld+json]").get(0).data().toString();
+			JsonRootBean info = gson.fromJson(line.replaceAll("@type", "type").replaceAll("@context", "context"),
 					JsonRootBean.class);// 对于javabean直接给出class实例
 			List<ItemListElement> ietlist = info.getItemListElement();
 			for (int i = 0; i < ietlist.size(); i++) {
@@ -151,8 +155,12 @@ public class ConnectImpl extends JTextArea{
 				this.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
 				this.paintImmediately(this.getBounds());
 				getSencondLevel(ietelement.getUrl(), sheet);
-			}
-		  }
+		     	}
+				}catch(Exception e) {
+					this.append(e.getMessage());
+					this.paintImmediately(this.getBounds());
+				}
+		      }
 			else {
 				this.append("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  \n");
 				this.paintImmediately(this.getBounds());
@@ -177,25 +185,14 @@ public class ConnectImpl extends JTextArea{
 				for(int i=1;i<elimage.size()-1;i++) {
 					Class clazz = info.getClass();
 					Method m;
-					try {
-						m = clazz.getMethod("setImage"+(i+1),String.class);
-						m.invoke(info, elimage.get(i).attr("data-big").toString());
-					} catch (NoSuchMethodException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (SecurityException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+						try {
+							m = clazz.getMethod("setImage"+(i+1),String.class);
+							m.invoke(info, elimage.get(i).attr("data-big").toString());
+						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+							this.append("gsl\n");
+							this.paintImmediately(this.getBounds());
+							e.printStackTrace();
+						}
 					
 				}
 				
@@ -248,7 +245,6 @@ public class ConnectImpl extends JTextArea{
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		Document doc = null;
 		try {
-			 
 			HttpGet httpget = new HttpGet(url);
 			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(6*1000).build();
 			httpget.setConfig(requestConfig);
@@ -264,9 +260,7 @@ public class ConnectImpl extends JTextArea{
 				// 打印响应状态
 				if (entity != null) {
 					web = EntityUtils.toString(entity, "UTF-8");
-
 					doc = Jsoup.parse(web);
-
 					return doc;
 
 				}
