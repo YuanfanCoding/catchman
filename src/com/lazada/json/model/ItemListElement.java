@@ -1,21 +1,18 @@
-/**
-  * Copyright 2017 bejson.com 
-  */
 package com.lazada.json.model;
 
+import com.google.gson.annotations.SerializedName;
 
-/**
-* Auto-generated: 2017-11-03 15:52:27
-*
-* @author bejson.com (i@bejson.com)
-* @website http://www.bejson.com/java2pojo/
-*/
 public class ItemListElement {
 
+	@SerializedName("type")
    private String type;
+	@SerializedName("image")
    private String image;
+	@SerializedName("name")
    private String name;
+	@SerializedName("offers")
    private Offers offers;
+	@SerializedName("url")
    private String url;
    public void setType(String type) {
         this.type = type;

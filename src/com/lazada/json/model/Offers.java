@@ -1,19 +1,17 @@
-/**
-  * Copyright 2017 bejson.com 
-  */
+
 package com.lazada.json.model;
 
-/**
-* Auto-generated: 2017-11-03 15:52:27
-*
-* @author bejson.com (i@bejson.com)
-* @website http://www.bejson.com/java2pojo/
-*/
+import com.google.gson.annotations.SerializedName;
+
 public class Offers {
 
+	@SerializedName("type")
    private String type;
+	@SerializedName("availability")
    private String availability;
+	@SerializedName("price")
    private String price;
+	@SerializedName("priceCurrency")
    private String priceCurrency;
    public void setType(String type) {
         this.type = type;

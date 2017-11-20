@@ -1,19 +1,16 @@
-/**
-  * Copyright 2017 bejson.com 
-  */
+
 package com.lazada.json.model;
 import java.util.List;
 
-/**
- * Auto-generated: 2017-11-03 15:37:13
- *
- * @author bejson.com (i@bejson.com)
- * @website http://www.bejson.com/java2pojo/
- */
+import com.google.gson.annotations.SerializedName;
+
 	public class JsonRootBean {
 
+		@SerializedName("context")
 	    private String context;
+		@SerializedName("type")
 	    private String type;
+		@SerializedName("itemListElement")
 	    private List<ItemListElement> itemListElement;
 	    public void setContext(String context) {
 	         this.context = context;

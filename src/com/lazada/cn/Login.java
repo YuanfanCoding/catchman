@@ -122,17 +122,7 @@ public class Login extends JFrame implements ActionListener {
 				boolean isvalid = name.equals("123") && password.equals("123");
 				if (isvalid) {
 					this.dispose();
-					EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							try {
-								Main window = new Main();
-								window.frmLazada.setVisible(true);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					});
-					return;
+						Main window = new Main();
 				} else {
 					JOptionPane.showMessageDialog(d, "用户名或密码错误", "请重新输入",
 							JOptionPane.WARNING_MESSAGE);
