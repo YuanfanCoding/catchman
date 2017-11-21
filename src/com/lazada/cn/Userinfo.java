@@ -13,9 +13,10 @@ public class Userinfo {
 	private String pcnum;
 	private ArrayList<String> pclist;
 	private String catchnum;
+	private String other;
 	
 	public Userinfo(String id, String name, String password, String money,
-			String paytime, String limittime) {
+			String paytime, String limittime,String pcnum,String catchnum,String other) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -23,11 +24,13 @@ public class Userinfo {
 		this.money = money;
 		this.paytime = paytime;
 		this.limittime = limittime;
-		
+		this.pcnum = pcnum;
+		this.catchnum = catchnum;
+		this.other=other;
 	}
 	
 	public Userinfo(String id, String name, String password, String money, String paytime, String limittime,
-			String pcnum, ArrayList<String> pclist, String catchnum) {
+			String pcnum, ArrayList<String> pclist, String catchnum,String other) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -38,6 +41,7 @@ public class Userinfo {
 		this.pcnum = pcnum;
 		this.pclist = pclist;
 		this.catchnum = catchnum;
+		this.other=other;
 	}
 
 	public String getId() {
@@ -96,5 +100,15 @@ public class Userinfo {
 	public void setPclist(ArrayList<String> pclist) {
 		this.pclist = pclist;
 	}
+
+	public String getOther() {
+		return other;
+	}
+
+	public void setOther(String other) {
+		this.other = other;
+	}
+	
+	
 	
 }
