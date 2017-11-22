@@ -17,7 +17,6 @@ import javax.print.attribute.standard.MediaSize.Other;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
-
 import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
@@ -25,6 +24,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.UUID;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JTextArea;
 
 public class AddFrame {
@@ -40,7 +40,7 @@ public class AddFrame {
 	private JComboBox catchnum;
 	private JDialog d;
 	
-	private final static String PATH="/userinfo";
+	private final static String PATH=System.getProperty("user.dir")+"/userinfo";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
       new AddFrame().add();
@@ -130,6 +130,7 @@ public class AddFrame {
 						 Gson gson=new Gson();
 						 WriteHandler(gson.toJson(ui));
 						 JOptionPane.showMessageDialog(d,"Ìí¼Ó³É¹¦£¡","nice£¡",JOptionPane.WARNING_MESSAGE);
+						 name.setText("");
 					 }
 				
 			}
@@ -154,7 +155,7 @@ public class AddFrame {
 	private void WriteHandler(String info) {
 		try{
 			FileWriter writer = new FileWriter(PATH, true);
-	        writer.write(info);
+	        writer.append(info+"\r\n");
 	        writer.close();
 	    } catch (IOException e) {
 	        e.printStackTrace();
