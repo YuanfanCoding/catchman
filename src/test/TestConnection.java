@@ -13,8 +13,8 @@ import java.net.URL;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.lazada.json.model.ItemListElement;
-import com.lazada.json.model.JsonRootBean;
+import com.lazada.model.json.ItemListElement;
+import com.lazada.model.json.JsonRootBean;
 
 
 public class TestConnection {
