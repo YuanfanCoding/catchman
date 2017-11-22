@@ -1,7 +1,5 @@
-<<<<<<< HEAD
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=branch 'master' of git@github.com\:YuanfanCoding/catchman.git
 eclipse.preferences.version=1
-encoding//src/com/lazada/cn/Login.java=UTF-8
-=======
-eclipse.preferences.version=1
-encoding//src/com/lazada/cn/Login.java=UTF-8
->>>>>>> branch 'master' of git@github.com:YuanfanCoding/catchman.git
+encoding//src/com/lazada/ui/Login.java=UTF-8

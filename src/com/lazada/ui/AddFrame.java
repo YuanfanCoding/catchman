@@ -1,4 +1,4 @@
-package com.lazada.cn;
+package com.lazada.ui;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,7 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import org.apache.http.ParseException;
+
 import com.google.gson.Gson;
+import com.lazada.handler.HttpHandler;
+import com.lazada.model.user.Userinfo;
 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -40,7 +44,6 @@ public class AddFrame {
 	private JComboBox catchnum;
 	private JDialog d;
 	
-	private final static String PATH="/userinfo";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
       new AddFrame().add();
@@ -61,7 +64,7 @@ public class AddFrame {
 		
 		name = new JTextField();
 		name.setBounds(81, 17, 155, 21);
-		name.setText("      \u586B\u5199QQ\u53F7\u7801");
+		name.setText("QQ\u53F7\u7801");
 		panel.add(name);
 		name.setColumns(10);
 		
@@ -88,6 +91,7 @@ public class AddFrame {
 		panel.add(label_1);
 		
 		paytime = new JTextField();
+		paytime.setText("2017/11/22");
 		paytime.setBounds(81, 105, 155, 21);
 		panel.add(paytime);
 		paytime.setColumns(10);
@@ -97,6 +101,7 @@ public class AddFrame {
 		panel.add(label_2);
 		
 		limittime = new JTextField();
+		limittime.setText("2018/11/22");
 		limittime.setBounds(81, 141, 155, 21);
 		panel.add(limittime);
 		limittime.setColumns(10);
@@ -116,7 +121,7 @@ public class AddFrame {
 		
 		catchnum = new JComboBox();
 		catchnum.setBounds(263, 182, 66, 21);
-		catchnum.setModel(new DefaultComboBoxModel(new String[] {"\u65E0\u9650\u5236", "2\u4E07\u4E2A"}));
+		catchnum.setModel(new DefaultComboBoxModel(new String[] {"\u65E0\u9650\u5236", "20000"}));
 		panel.add(catchnum);
 		
 		JButton button = new JButton("\u786E\u5B9A");
@@ -127,9 +132,15 @@ public class AddFrame {
 					 JOptionPane.showMessageDialog(d,"请输入以上所有信息！","请重新输入",JOptionPane.WARNING_MESSAGE);
 					 else {
 						 Userinfo ui=new Userinfo(UUID.randomUUID().toString(),name.getText(),password.getText(),money.getText(),paytime.getText(),limittime.getText(),pcnum.getText(),catchnum.getSelectedItem().toString(),other.getText());
-						 Gson gson=new Gson();
-						 WriteHandler(gson.toJson(ui));
-						 JOptionPane.showMessageDialog(d,"添加成功！","nice！",JOptionPane.WARNING_MESSAGE);
+						 try {
+							if(HttpHandler.addUser(ui)) JOptionPane.showMessageDialog(d,"添加成功！","nice！",JOptionPane.WARNING_MESSAGE);
+							else JOptionPane.showMessageDialog(d,"添加失败，请重新添加！","sorry！",JOptionPane.WARNING_MESSAGE);
+						} catch (ParseException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						 name.setText("");
+						 password.setText("");
 					 }
 				
 			}
@@ -142,6 +153,7 @@ public class AddFrame {
 		panel.add(label_5);
 		
 		other = new JTextArea();
+		other.setText("\u9996\u6B21\u8D2D\u4E70");
 		other.setBounds(295, 41, 124, 98);
 		panel.add(other);
 		jf.setBounds(100, 100, 445, 311);
@@ -149,15 +161,5 @@ public class AddFrame {
 		//jf.getContentPane().setLayout(null);
 		//jf.setLocation(Login.centreContainer(jf.getSize()));
 		jf.setVisible(true);
-	}
-	
-	private void WriteHandler(String info) {
-		try{
-			FileWriter writer = new FileWriter(PATH, true);
-	        writer.write(info);
-	        writer.close();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
 	}
 }

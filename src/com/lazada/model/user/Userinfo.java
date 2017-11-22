@@ -1,4 +1,4 @@
-package com.lazada.cn;
+package com.lazada.model.user;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,11 @@ public class Userinfo {
 	private String pcnum;
 	private ArrayList<String> pclist;
 	private String catchnum;
+	private String areadynum;
 	private String other;
+	
+	public Userinfo() {
+    }
 	
 	public Userinfo(String id, String name, String password, String money,
 			String paytime, String limittime,String pcnum,String catchnum,String other) {
@@ -27,6 +31,7 @@ public class Userinfo {
 		this.pcnum = pcnum;
 		this.catchnum = catchnum;
 		this.other=other;
+		this.areadynum="0";
 	}
 	
 	public Userinfo(String id, String name, String password, String money, String paytime, String limittime,
@@ -107,6 +112,14 @@ public class Userinfo {
 
 	public void setOther(String other) {
 		this.other = other;
+	}
+
+	public String getAreadynum() {
+		return areadynum;
+	}
+
+	public void setAreadynum(String areadynum) {
+		this.areadynum = areadynum;
 	}
 	
 	
