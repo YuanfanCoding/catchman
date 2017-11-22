@@ -34,6 +34,7 @@ import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
 import com.lazada.handler.ConnectImpl;
+import com.lazada.handler.HttpHandler;
 import com.lazada.model.Constant;
 import com.lazada.model.json.ItemListElement;
 import com.lazada.model.json.JsonRootBean;
@@ -66,6 +67,9 @@ import jxl.write.biff.RowsExceededException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -167,6 +171,12 @@ public class Main implements MouseListener{
 						try {
 							textArea1.startCatching();
 							JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
+							if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
+								JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
+								HttpHandler.updateUser(0);
+								//frmLazada.dispose();
+								System.exit(0);
+							}
 						} catch (RowsExceededException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -312,12 +322,20 @@ public class Main implements MouseListener{
 		scrollPane.setBounds(0, 0, 327, 151);
 		panel_3.add(scrollPane);
 		frmLazada.setVisible(true);
+		frmLazada.addWindowListener(new WindowAdapter() {  //关闭之前要提交已经收集的数量以及mac-1
+			public void windowClosing(WindowEvent e) {  
+			super.windowClosing(e);  
+             HttpHandler.updateUser(0);
+             
+		     }  
+			  
+			});
 	}
 
 	 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		
 		try {  
             URI uri = new URI(Constant.ADVERTISEMENT);  
             Desktop.getDesktop().browse(uri);  

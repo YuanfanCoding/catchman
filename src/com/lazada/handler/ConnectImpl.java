@@ -31,6 +31,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
+import com.lazada.model.Constant;
 import com.lazada.model.json.ItemListElement;
 import com.lazada.model.json.JsonRootBean;
 import com.lazada.model.product.FinalInfo;
@@ -101,21 +102,22 @@ public class ConnectImpl extends JTextArea{
 	     WritableSheet sheet = workbook.createSheet("web_data", 0);
 	     sheet.addCell(new Label(0, this.exlRow, "标题"));
 	     sheet.addCell(new Label(1, this.exlRow, "详情描述"));
-	     sheet.addCell(new Label(2, this.exlRow, "卖点"));
-	     sheet.addCell(new Label(3, this.exlRow, "卖价"));
-	     sheet.addCell(new Label(4, this.exlRow, "特价"));
-	     sheet.addCell(new Label(5, this.exlRow, "SKU"));
-	     sheet.addCell(new Label(6, this.exlRow, "包装包括"));
-	     sheet.addCell(new Label(7, this.exlRow, "产品本身链接"));
-	     sheet.addCell(new Label(8, this.exlRow, "好评"));
-	     sheet.addCell(new Label(9, this.exlRow, "图片1"));
-	     sheet.addCell(new Label(10, this.exlRow, "图片2"));
-	     sheet.addCell(new Label(11, this.exlRow, "图片3"));
-	     sheet.addCell(new Label(12, this.exlRow, "图片4"));
-	     sheet.addCell(new Label(13, this.exlRow, "图片5"));
-	     sheet.addCell(new Label(14, this.exlRow, "图片6"));
-	     sheet.addCell(new Label(15, this.exlRow, "图片7"));
-	     sheet.addCell(new Label(16, this.exlRow++, "图片8"));
+	     sheet.addCell(new Label(2, this.exlRow, "描述代码"));
+	     sheet.addCell(new Label(3, this.exlRow, "卖点"));
+	     sheet.addCell(new Label(4, this.exlRow, "卖价"));
+	     sheet.addCell(new Label(5, this.exlRow, "特价"));
+	     sheet.addCell(new Label(6, this.exlRow, "SKU"));
+	     sheet.addCell(new Label(7, this.exlRow, "包装包括"));
+	     sheet.addCell(new Label(8, this.exlRow, "产品本身链接"));
+	     sheet.addCell(new Label(9, this.exlRow, "好评"));
+	     sheet.addCell(new Label(10, this.exlRow, "图片1"));
+	     sheet.addCell(new Label(11, this.exlRow, "图片2"));
+	     sheet.addCell(new Label(12, this.exlRow, "图片3"));
+	     sheet.addCell(new Label(13, this.exlRow, "图片4"));
+	     sheet.addCell(new Label(14, this.exlRow, "图片5"));
+	     sheet.addCell(new Label(15, this.exlRow, "图片6"));
+	     sheet.addCell(new Label(16, this.exlRow, "图片7"));
+	     sheet.addCell(new Label(17, this.exlRow++, "图片8"));
 	   
 	}
 	public void startCatching() throws IOException , RowsExceededException, WriteException{
@@ -151,6 +153,7 @@ public class ConnectImpl extends JTextArea{
 			JsonRootBean info = gson.fromJson(line.replaceAll("@type", "type").replaceAll("@context", "context"),
 					JsonRootBean.class);// 对于javabean直接给出class实例
 			List<ItemListElement> ietlist = info.getItemListElement();
+			Constant.areadycatchnum += ietlist.size();
 			for (int i = 0; i < ietlist.size(); i++) {
 				ItemListElement ietelement = ietlist.get(i);
 				this.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
@@ -190,8 +193,7 @@ public class ConnectImpl extends JTextArea{
 							m = clazz.getMethod("setImage"+(i+1),String.class);
 							m.invoke(info, elimage.get(i).attr("data-big").toString());
 						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-							this.append("gsl\n");
-							this.paintImmediately(this.getBounds());
+							
 							e.printStackTrace();
 						}
 					
@@ -206,7 +208,8 @@ public class ConnectImpl extends JTextArea{
 				
 				info.setSpecial_price(doc.select("span#product_price").text().toString());//特价
 				info.setPrice(doc.select("span#price_box").text().toString());//实价
-				info.setDescription(doc.select("div.product-description__block").get(0).text().toString());//描述        
+				info.setDescription(doc.select("div.product-description__block").get(0).text().toString());//描述     
+				info.setDescriptioncode(doc.select("div.product-description__block").get(0).getElementsByTag("p").html());//描述代码
 				info.setPackage_content(doc.select("li.inbox__item").text().toString().replaceAll("<ul>", "").replaceAll("</ul>", "").replaceAll("<li>", "").replaceAll("</li>", "").replaceAll("<p>", "").replaceAll("</p>", ""));//包装
 				info.setSellersku(doc.select("td#pdtsku").text().toString());//sku
 				info.setOneItemStart(true);
@@ -219,21 +222,22 @@ public class ConnectImpl extends JTextArea{
 			if (info.isOneItemStart()) {
 				sheet.addCell(new Label(0, this.exlRow, info.getName()));
 				sheet.addCell(new Label(1, this.exlRow, info.getDescription()));
-				sheet.addCell(new Label(2, this.exlRow, info.getShort_description()));
-				sheet.addCell(new Label(3, this.exlRow, info.getPrice()));
-				sheet.addCell(new Label(4, this.exlRow, info.getSpecial_price()));
-				sheet.addCell(new Label(5, this.exlRow, info.getSellersku()));
-				sheet.addCell(new Label(6, this.exlRow, info.getPackage_content()));
-				sheet.addCell(new Label(7, this.exlRow, info.getLink()));
-				sheet.addCell(new Label(8, this.exlRow, info.getComment()));
-				sheet.addCell(new Label(9, this.exlRow, info.getMainimage()));
-				sheet.addCell(new Label(10, this.exlRow, info.getImage2()));
-				sheet.addCell(new Label(11, this.exlRow, info.getImage3()));
-				sheet.addCell(new Label(12, this.exlRow, info.getImage4()));
-				sheet.addCell(new Label(13, this.exlRow, info.getImage5()));
-				sheet.addCell(new Label(14, this.exlRow, info.getImage6()));
-				sheet.addCell(new Label(15, this.exlRow, info.getImage7()));
-				sheet.addCell(new Label(16, this.exlRow++, info.getImage8()));
+				sheet.addCell(new Label(2, this.exlRow, info.getDescriptioncode()));
+				sheet.addCell(new Label(3, this.exlRow, info.getShort_description()));
+				sheet.addCell(new Label(4, this.exlRow, info.getPrice()));
+				sheet.addCell(new Label(5, this.exlRow, info.getSpecial_price()));
+				sheet.addCell(new Label(6, this.exlRow, info.getSellersku()));
+				sheet.addCell(new Label(7, this.exlRow, info.getPackage_content()));
+				sheet.addCell(new Label(8, this.exlRow, info.getLink()));
+				sheet.addCell(new Label(9, this.exlRow, info.getComment()));
+				sheet.addCell(new Label(10, this.exlRow, info.getMainimage()));
+				sheet.addCell(new Label(11, this.exlRow, info.getImage2()));
+				sheet.addCell(new Label(12, this.exlRow, info.getImage3()));
+				sheet.addCell(new Label(13, this.exlRow, info.getImage4()));
+				sheet.addCell(new Label(14, this.exlRow, info.getImage5()));
+				sheet.addCell(new Label(15, this.exlRow, info.getImage6()));
+				sheet.addCell(new Label(16, this.exlRow, info.getImage7()));
+				sheet.addCell(new Label(17, this.exlRow++, info.getImage8()));
 				info.backToInit();
 			
 			}

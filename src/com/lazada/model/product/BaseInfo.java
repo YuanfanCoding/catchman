@@ -5,6 +5,7 @@ public class BaseInfo {
 	public boolean oneItemStart = false;
 	public boolean getName = false;
 	public boolean getDescription = false;
+	public boolean getDescriptionCode = false;
 	public boolean getShort_description= false;
 	public boolean getPrice = false;
 	public boolean getSpecial_price = false;
@@ -23,6 +24,7 @@ public class BaseInfo {
 	
 	public String name = "";
 	public String description= "";
+	public String descriptioncode= "";
 	public String short_description = "";
 	public String price = "";
 	public String special_price = "";
@@ -249,6 +251,18 @@ public class BaseInfo {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public boolean isGetDescriptionCode() {
+		return getDescriptionCode;
+	}
+	public void setGetDescriptionCode(boolean getDescriptionCode) {
+		this.getDescriptionCode = getDescriptionCode;
+	}
+	public String getDescriptioncode() {
+		return descriptioncode;
+	}
+	public void setDescriptioncode(String descriptioncode) {
+		this.descriptioncode = descriptioncode;
 	}
 	
 	

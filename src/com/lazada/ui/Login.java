@@ -153,7 +153,7 @@ public class Login extends JFrame implements ActionListener {
 				String password = new String(c);
 				Userinfo ui=null;
 				try {
-					ui = HttpHandler.getUser(name, password);
+					ui = HttpHandler.getUser(name, password,Constant.MACADDDRESS);
 				} catch (ParseException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -162,6 +162,8 @@ public class Login extends JFrame implements ActionListener {
 					//先验证过期时间，再验证mac数量，最后验证抓取数量
 					String message=doCheckUser(ui);
 					if(message.equals("")) {
+					   Constant.areadycatchnum=Integer.parseInt(ui.getAreadynum());
+					   Constant.totalnum=ui.getCatchnum();
 					   this.dispose();
 				       Main window = new Main();
 					}
@@ -191,9 +193,8 @@ public class Login extends JFrame implements ActionListener {
 
 	private String doCheckUser(Userinfo ui) {
 		try {
-		
 		if(new SimpleDateFormat("yyyy/MM/dd").parse(ui.getLimittime()).before(new Date())) return "你的使用期限已到，请联系客服续费！谢谢！";
-		if(ui.getPclist()!=null && Integer.parseInt(ui.getPcnum())<=ui.getPclist().size()) return "您的使用电脑台数超过了！请退出其他已经登陆的电脑！";
+		if(ui.getPcnum().equals("0")) return "您的使用电脑台数超过了！请退出其他已经登陆的电脑！";
 		if(!ui.getCatchnum().equals("无限制") && Integer.parseInt(ui.getCatchnum())<=Integer.parseInt(ui.getAreadynum())) return "抓取数量已超出之前购买的额度！请联系客服续费！";
 		}catch (Exception e) {
 			e.printStackTrace();
