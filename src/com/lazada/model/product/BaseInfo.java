@@ -7,6 +7,7 @@ public class BaseInfo {
 	public boolean getDescription = false;
 	public boolean getDescriptionCode = false;
 	public boolean getShort_description= false;
+	public boolean getShort_descriptioncode= false;
 	public boolean getPrice = false;
 	public boolean getSpecial_price = false;
 	public boolean getSellerSku = false;
@@ -26,6 +27,7 @@ public class BaseInfo {
 	public String description= "";
 	public String descriptioncode= "";
 	public String short_description = "";
+	public String short_descriptioncode = "";
 	public String price = "";
 	public String special_price = "";
 	public String sellersku = "";
@@ -264,10 +266,20 @@ public class BaseInfo {
 	public void setDescriptioncode(String descriptioncode) {
 		this.descriptioncode = descriptioncode;
 	}
-	
-	
+	public boolean isGetShort_descriptioncode() {
+		return getShort_descriptioncode;
+	}
+	public void setGetShort_descriptioncode(boolean getShort_descriptioncode) {
+		this.getShort_descriptioncode = getShort_descriptioncode;
+	}
+	public String getShort_descriptioncode() {
+		return short_descriptioncode;
+	}
+	public void setShort_descriptioncode(String short_descriptioncode) {
+		this.short_descriptioncode = short_descriptioncode;
+	}
+}	
 	
 
 	
      
-}

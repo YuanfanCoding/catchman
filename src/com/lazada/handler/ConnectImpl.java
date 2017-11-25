@@ -104,20 +104,21 @@ public class ConnectImpl extends JTextArea{
 	     sheet.addCell(new Label(1, this.exlRow, "详情描述"));
 	     sheet.addCell(new Label(2, this.exlRow, "描述代码"));
 	     sheet.addCell(new Label(3, this.exlRow, "卖点"));
-	     sheet.addCell(new Label(4, this.exlRow, "卖价"));
-	     sheet.addCell(new Label(5, this.exlRow, "特价"));
-	     sheet.addCell(new Label(6, this.exlRow, "SKU"));
-	     sheet.addCell(new Label(7, this.exlRow, "包装包括"));
-	     sheet.addCell(new Label(8, this.exlRow, "产品本身链接"));
-	     sheet.addCell(new Label(9, this.exlRow, "好评"));
-	     sheet.addCell(new Label(10, this.exlRow, "图片1"));
-	     sheet.addCell(new Label(11, this.exlRow, "图片2"));
-	     sheet.addCell(new Label(12, this.exlRow, "图片3"));
-	     sheet.addCell(new Label(13, this.exlRow, "图片4"));
-	     sheet.addCell(new Label(14, this.exlRow, "图片5"));
-	     sheet.addCell(new Label(15, this.exlRow, "图片6"));
-	     sheet.addCell(new Label(16, this.exlRow, "图片7"));
-	     sheet.addCell(new Label(17, this.exlRow++, "图片8"));
+	     sheet.addCell(new Label(4, this.exlRow, "卖点代码"));
+	     sheet.addCell(new Label(5, this.exlRow, "卖价"));
+	     sheet.addCell(new Label(6, this.exlRow, "特价"));
+	     sheet.addCell(new Label(7, this.exlRow, "SKU"));
+	     sheet.addCell(new Label(8, this.exlRow, "包装包括"));
+	     sheet.addCell(new Label(9, this.exlRow, "产品本身链接"));
+	     sheet.addCell(new Label(10, this.exlRow, "好评"));
+	     sheet.addCell(new Label(11, this.exlRow, "图片1"));
+	     sheet.addCell(new Label(12, this.exlRow, "图片2"));
+	     sheet.addCell(new Label(13, this.exlRow, "图片3"));
+	     sheet.addCell(new Label(14, this.exlRow, "图片4"));
+	     sheet.addCell(new Label(15, this.exlRow, "图片5"));
+	     sheet.addCell(new Label(16, this.exlRow, "图片6"));
+	     sheet.addCell(new Label(17, this.exlRow, "图片7"));
+	     sheet.addCell(new Label(18, this.exlRow++, "图片8"));
 	   
 	}
 	public void startCatching() throws IOException , RowsExceededException, WriteException{
@@ -181,12 +182,12 @@ public class ConnectImpl extends JTextArea{
 				doc = getDoc(urlstring);
 				if(doc!=null) {
 				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));//标题
-				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim());//好评
+				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim().replace("(", "").replace(")", ""));//好评
 				
 				String elimagestring="";
 				Elements elimage=doc.getElementsByClass("productImage");
 				info.setMainimage(elimage.get(0).attr("data-big").toString());//图片
-				for(int i=1;i<elimage.size()-1;i++) {
+				for(int i=1;i<(elimage.size()>8?8:elimage.size()-1);i++) {
 					Class clazz = info.getClass();
 					Method m;
 						try {
@@ -205,11 +206,11 @@ public class ConnectImpl extends JTextArea{
 					elsdstring+=els.text().toString()+"\n";
 				}
 				info.setShort_description(elsdstring);//卖点
-				
+				info.setShort_descriptioncode(doc.getElementsByClass("prd-attributesList").html());//卖点代码
 				info.setSpecial_price(doc.select("span#product_price").text().toString());//特价
-				info.setPrice(doc.select("span#price_box").text().toString());//实价
+				info.setPrice(doc.select("span#price_box").text().toString().replace(",","" ));//实价
 				info.setDescription(doc.select("div.product-description__block").get(0).text().toString());//描述     
-				info.setDescriptioncode(doc.select("div.product-description__block").get(0).getElementsByTag("p").html());//描述代码
+				info.setDescriptioncode(doc.select("div.product-description__block").get(0).html());//描述代码
 				info.setPackage_content(doc.select("li.inbox__item").text().toString().replaceAll("<ul>", "").replaceAll("</ul>", "").replaceAll("<li>", "").replaceAll("</li>", "").replaceAll("<p>", "").replaceAll("</p>", ""));//包装
 				info.setSellersku(doc.select("td#pdtsku").text().toString());//sku
 				info.setOneItemStart(true);
@@ -224,20 +225,21 @@ public class ConnectImpl extends JTextArea{
 				sheet.addCell(new Label(1, this.exlRow, info.getDescription()));
 				sheet.addCell(new Label(2, this.exlRow, info.getDescriptioncode()));
 				sheet.addCell(new Label(3, this.exlRow, info.getShort_description()));
-				sheet.addCell(new Label(4, this.exlRow, info.getPrice()));
-				sheet.addCell(new Label(5, this.exlRow, info.getSpecial_price()));
-				sheet.addCell(new Label(6, this.exlRow, info.getSellersku()));
-				sheet.addCell(new Label(7, this.exlRow, info.getPackage_content()));
-				sheet.addCell(new Label(8, this.exlRow, info.getLink()));
-				sheet.addCell(new Label(9, this.exlRow, info.getComment()));
-				sheet.addCell(new Label(10, this.exlRow, info.getMainimage()));
-				sheet.addCell(new Label(11, this.exlRow, info.getImage2()));
-				sheet.addCell(new Label(12, this.exlRow, info.getImage3()));
-				sheet.addCell(new Label(13, this.exlRow, info.getImage4()));
-				sheet.addCell(new Label(14, this.exlRow, info.getImage5()));
-				sheet.addCell(new Label(15, this.exlRow, info.getImage6()));
-				sheet.addCell(new Label(16, this.exlRow, info.getImage7()));
-				sheet.addCell(new Label(17, this.exlRow++, info.getImage8()));
+				sheet.addCell(new Label(4, this.exlRow, info.getShort_descriptioncode()));
+				sheet.addCell(new Label(5, this.exlRow, info.getPrice()));
+				sheet.addCell(new Label(6, this.exlRow, info.getSpecial_price()));
+				sheet.addCell(new Label(7, this.exlRow, info.getSellersku()));
+				sheet.addCell(new Label(8, this.exlRow, info.getPackage_content()));
+				sheet.addCell(new Label(9, this.exlRow, info.getLink()));
+				sheet.addCell(new Label(10, this.exlRow, info.getComment()));
+				sheet.addCell(new Label(11, this.exlRow, info.getMainimage()));
+				sheet.addCell(new Label(12, this.exlRow, info.getImage2()));
+				sheet.addCell(new Label(13, this.exlRow, info.getImage3()));
+				sheet.addCell(new Label(14, this.exlRow, info.getImage4()));
+				sheet.addCell(new Label(15, this.exlRow, info.getImage5()));
+				sheet.addCell(new Label(16, this.exlRow, info.getImage6()));
+				sheet.addCell(new Label(17, this.exlRow, info.getImage7()));
+				sheet.addCell(new Label(18, this.exlRow++, info.getImage8()));
 				info.backToInit();
 			
 			}
