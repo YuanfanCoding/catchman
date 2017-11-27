@@ -167,28 +167,26 @@ public class Main implements MouseListener{
 				    	JOptionPane.showMessageDialog(d,"没有输入关键词！","请重新输入",JOptionPane.WARNING_MESSAGE);
 				    }
 				    if(textField_1.getText().matches("[0-9]+")&&textField_2.getText().matches("[0-9]+")) {
-				    	textArea1.setPro(textField.getText(),Integer.parseInt(textField_1.getText()),Integer.parseInt(textField_2.getText()),textField_3.getText()+"\\" +textField_4.getText()+".xls");
-						try {
-							textArea1.startCatching();
+				    		new Thread(new Runnable() {
+					            @Override
+					            public void run() {
+							try {
+								textArea1.setPro(textField.getText(),Integer.parseInt(textField_1.getText()),Integer.parseInt(textField_2.getText()),textField_3.getText()+"\\" +textField_4.getText()+".xls");								
+								textArea1.startCatching();
+							} catch (WriteException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
 							if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
 								JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
 								HttpHandler.updateUser(0);
 								//frmLazada.dispose();
 								System.exit(0);
-							}
-						} catch (RowsExceededException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (WriteException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						
-				     }
+							   }
+					            }
+							}).start();							
+				    }
 				    else JOptionPane.showMessageDialog(d,"起始页和终止页需要数字！","请重新输入",JOptionPane.WARNING_MESSAGE);
 				    
 				    }

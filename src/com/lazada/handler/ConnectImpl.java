@@ -135,7 +135,7 @@ public class ConnectImpl extends JTextArea{
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			this.append(e.getMessage());
-			this.paintImmediately(this.getBounds());
+			//this.paintImmediately(this.getBounds());
 			e.printStackTrace();
 		} finally {
 			workbook.write();
@@ -158,7 +158,7 @@ public class ConnectImpl extends JTextArea{
 			for (int i = 0; i < ietlist.size(); i++) {
 				ItemListElement ietelement = ietlist.get(i);
 				this.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
-				this.paintImmediately(this.getBounds());
+				//this.paintImmediately(this.getBounds());
 				getSencondLevel(ietelement.getUrl(), sheet);
 		     	}
 				}catch(Exception e) {
@@ -168,7 +168,7 @@ public class ConnectImpl extends JTextArea{
 		      }
 			else {
 				this.append("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  \n");
-				this.paintImmediately(this.getBounds());
+				//this.paintImmediately(this.getBounds());
 			}
 		}
 	}
@@ -217,7 +217,7 @@ public class ConnectImpl extends JTextArea{
 				}
 				else {
 					this.append("链接：" +urlstring + "获取失败，开始重新获取:--------------  \n");
-					this.paintImmediately(this.getBounds());
+					//this.paintImmediately(this.getBounds());
 				}
 			}
 			if (info.isOneItemStart()) {
