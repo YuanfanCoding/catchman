@@ -61,7 +61,7 @@ public class AddFrame {
 		JLabel lblNewLabel = new JLabel("\u7528\u6237\u540D\uFF1A");
 		lblNewLabel.setBounds(27, 20, 54, 15);
 		panel.add(lblNewLabel);
-		
+		 
 		name = new JTextField();
 		name.setBounds(81, 17, 155, 21);
 		name.setText("QQ\u53F7\u7801");
@@ -153,10 +153,10 @@ public class AddFrame {
 		panel.add(label_5);
 		
 		other = new JTextArea();
-		other.setText("\u9996\u6B21\u8D2D\u4E70");
+		other.setText("Ê×´Î¹ºÂò");
 		other.setBounds(295, 41, 124, 98);
 		panel.add(other);
-		jf.setBounds(100, 100, 445, 311);
+		jf.setBounds(100, 100, 496, 354);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//jf.getContentPane().setLayout(null);
 		//jf.setLocation(Login.centreContainer(jf.getSize()));

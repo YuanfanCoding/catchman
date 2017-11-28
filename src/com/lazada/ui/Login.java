@@ -29,6 +29,7 @@ import javax.swing.UIManager;
 
 import org.apache.http.ParseException;
 
+import com.google.gson.Gson;
 import com.lazada.handler.HttpHandler;
 import com.lazada.model.Constant;
 import com.lazada.model.user.Userinfo;
@@ -166,7 +167,7 @@ public class Login extends JFrame implements ActionListener {
 					   Constant.totalnum=ui.getCatchnum();
 					   this.dispose();
 				       Main window = new Main();
-					}
+					} 
 					else {
 						JOptionPane.showMessageDialog(d, message, "抱歉",
 							JOptionPane.WARNING_MESSAGE);
@@ -192,10 +193,10 @@ public class Login extends JFrame implements ActionListener {
 	}
 
 	private String doCheckUser(Userinfo ui) {
-		try {
-		if(new SimpleDateFormat("yyyy/MM/dd").parse(ui.getLimittime()).before(new Date())) return "你的使用期限已到，请联系客服续费！谢谢！";
+		try {	
 		if(ui.getPcnum().equals("0")) return "您的使用电脑台数超过了！请退出其他已经登陆的电脑！";
 		if(!ui.getCatchnum().equals("无限制") && Integer.parseInt(ui.getCatchnum())<=Integer.parseInt(ui.getAreadynum())) return "抓取数量已超出之前购买的额度！请联系客服续费！";
+		if(new SimpleDateFormat("yyyy/MM/dd").parse(ui.getLimittime()).before(new Date())) return "你的使用期限已到，请联系客服续费！谢谢！";		
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
