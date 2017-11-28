@@ -134,7 +134,7 @@ public class HttpHandler {
 	 * 
 	 * @param type  0为退出时的update
 	 */
-	public static void updateUser(int type) {
+	public static boolean updateUser(int type) { 
 		Userinfo ui = new Userinfo(Constant.name, Constant.password, String.valueOf(Constant.areadycatchnum),Constant.MACADDDRESS);
 		// TODO Auto-generated method stub
 		String body = "";
@@ -161,7 +161,7 @@ public class HttpHandler {
 			if (entity != null) {
 				// 按指定编码转换结果实体为String类型
 				body = EntityUtils.toString(entity, "utf-8");
-				
+				System.out.println(body);
 			}
 
 			EntityUtils.consume(entity);
@@ -172,6 +172,7 @@ public class HttpHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return true;
 	}
 
 }

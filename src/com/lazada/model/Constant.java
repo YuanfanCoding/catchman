@@ -3,7 +3,7 @@ package com.lazada.model;
 import com.lazada.util.IpMacUtil;
 
 public class Constant {
-
+ 
 	public static String name="";
 	public static String password="";
 	public static int areadycatchnum=0;

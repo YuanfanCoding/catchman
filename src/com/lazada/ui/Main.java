@@ -102,7 +102,7 @@ public class Main implements MouseListener{
 			}
 		});
 	}
-
+ 
 	public Main() {
 		initialize();
 	}
@@ -321,11 +321,18 @@ public class Main implements MouseListener{
 		panel_3.add(scrollPane);
 		frmLazada.setVisible(true);
 		frmLazada.addWindowListener(new WindowAdapter() {  //关闭之前要提交已经收集的数量以及mac-1
-			public void windowClosing(WindowEvent e) {  
-			super.windowClosing(e);  
-             HttpHandler.updateUser(0);
-             
-		     }  
+			public void windowClosing(WindowEvent e) { 
+				System.out.println("windowClosing方法被调用");  
+//				frmLazada.dispose();  
+		//	if(HttpHandler.updateUser(0))
+			//super.windowClosing(e);  
+         //    System.exit(0);
+		     }   
+			public void windowClosed(WindowEvent e) {  
+                System.out.println("windowClosed方法被调用");  
+                HttpHandler.updateUser(0);
+                System.exit(0);
+            }  
 			  
 			});
 	}
