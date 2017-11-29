@@ -63,7 +63,7 @@ public class Login extends JFrame implements ActionListener {
 	}
 
 	public Login() {
-		setTitle("系统登录");
+		setTitle(Constant.SOFTWARENAME);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
@@ -159,15 +159,17 @@ public class Login extends JFrame implements ActionListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				if (ui!=null) {
+				if (ui!=null) { 
 					//先验证过期时间，再验证mac数量，最后验证抓取数量
 					String message=doCheckUser(ui);
 					if(message.equals("")) {
 					   Constant.areadycatchnum=Integer.parseInt(ui.getAreadynum());
 					   Constant.totalnum=ui.getCatchnum();
+					   Constant.name=ui.getName();
+					   Constant.password=ui.getPassword();
 					   this.dispose();
 				       Main window = new Main();
-					} 
+					}  
 					else {
 						JOptionPane.showMessageDialog(d, message, "抱歉",
 							JOptionPane.WARNING_MESSAGE);

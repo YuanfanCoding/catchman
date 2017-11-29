@@ -2,7 +2,7 @@ package com.lazada.model;
 
 import com.lazada.util.IpMacUtil;
 
-public class Constant {
+public class Constant { 
  
 	public static String name="";
 	public static String password="";
@@ -11,10 +11,10 @@ public class Constant {
 	public static String MACADDDRESS=IpMacUtil.getMACAddress();
 	
 	public  static final  String WEBSITE="http://ylfcoding.cn";
-	public  static final  String HTTPADDR="http://ylfcoding.cn";
+	public  static final  String HTTPADDR="http://localhost:8080";//http://ylfcoding.cn
 	public  static final  String ADVERTISEMENT="http://ylfcoding.cn";
 	public final static String VERSION="V1.0";
-	
+	public final static String SOFTWARENAME="LAZADA数据收集器";
 	
 	//http请求
 	public final static String GETUSER = HTTPADDR+"/V1/user";

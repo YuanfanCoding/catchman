@@ -111,12 +111,11 @@ public class Main implements MouseListener{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmLazada = new JFrame();
+		frmLazada = new JFrame(Constant.SOFTWARENAME);
 //		frmLazada.setIconImage(Toolkit.getDefaultToolkit().createImage(getClass().getResource("\\image\\lazada.jpg")));
 		frmLazada.setIconImage(new ImageIcon(Main.class.getResource("/image/lazada.jpg")).getImage());
-		frmLazada.setTitle("LAZADA\u6536\u96C6\u5668");
 		frmLazada.setBounds(100, 100, 643, 437);
-		frmLazada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLazada.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmLazada.getContentPane().setLayout(null);
 		frmLazada.setLocation(Login.centreContainer(frmLazada.getSize()));
 		frmLazada.setResizable(false);
@@ -309,7 +308,7 @@ public class Main implements MouseListener{
 		panel_3.setBounds(154, 255, 327, 155);
 		frmLazada.getContentPane().add(panel_3);
 		panel_3.setLayout(null);
-		
+		 
 		
 		textArea1= new ConnectImpl();
 		textArea1.setBounds(0, 0, 327, 151);
@@ -322,15 +321,10 @@ public class Main implements MouseListener{
 		frmLazada.setVisible(true);
 		frmLazada.addWindowListener(new WindowAdapter() {  //关闭之前要提交已经收集的数量以及mac-1
 			public void windowClosing(WindowEvent e) { 
-				System.out.println("windowClosing方法被调用");  
-//				frmLazada.dispose();  
-		//	if(HttpHandler.updateUser(0))
-			//super.windowClosing(e);  
-         //    System.exit(0);
+				frmLazada.dispose();
 		     }   
 			public void windowClosed(WindowEvent e) {  
-                System.out.println("windowClosed方法被调用");  
-                HttpHandler.updateUser(0);
+               if(HttpHandler.updateUser(0))
                 System.exit(0);
             }  
 			  
@@ -341,7 +335,7 @@ public class Main implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		try {  
+		try {   
             URI uri = new URI(Constant.ADVERTISEMENT);  
             Desktop.getDesktop().browse(uri);  
         } catch (URISyntaxException aa) {  
