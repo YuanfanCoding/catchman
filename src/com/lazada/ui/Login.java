@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -63,12 +64,15 @@ public class Login extends JFrame implements ActionListener {
 	}
 
 	public Login() {
+		setIconImage(new ImageIcon(Main.class.getResource("/image/lazada.jpg")).getImage());
 		setTitle(Constant.SOFTWARENAME);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(224, 255, 255));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 		JPanel usernamePanel = new JPanel();
+		usernamePanel.setBackground(new Color(224, 255, 255));
 		contentPane.add(usernamePanel);
 		JLabel usernameLable = new JLabel("\u7528\u6237\u540D\uFF1A");
 		usernameLable.setFont(new Font("微软雅黑", Font.PLAIN, 15));
@@ -78,6 +82,7 @@ public class Login extends JFrame implements ActionListener {
 		usernamePanel.add(usernameTextField);
 		usernameTextField.setColumns(10);
 		JPanel passwordPanel = new JPanel();
+		passwordPanel.setBackground(new Color(224, 255, 255));
 		contentPane.add(passwordPanel);
 		JLabel passwordLabel = new JLabel("\u5BC6 \u7801\uFF1A");
 		passwordLabel.setFont(new Font("微软雅黑", Font.PLAIN, 15));
@@ -87,6 +92,7 @@ public class Login extends JFrame implements ActionListener {
 		passwordField.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		passwordPanel.add(passwordField);
 		JPanel validatePanel = new JPanel();
+		validatePanel.setBackground(new Color(224, 255, 255));
 		contentPane.add(validatePanel);
 		JLabel validateLabel = new JLabel("\u9A8C\u8BC1\u7801\uFF1A");
 		validateLabel.setFont(new Font("微软雅黑", Font.PLAIN, 15));
@@ -100,16 +106,20 @@ public class Login extends JFrame implements ActionListener {
 		label.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		validatePanel.add(label);
 		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBackground(new Color(224, 255, 255));
 		contentPane.add(buttonPanel);
 		JButton submitButton = new JButton("登录");
+		submitButton.setBackground(new Color(255, 222, 173));
 		submitButton.addActionListener(this);
 		submitButton.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		buttonPanel.add(submitButton);
 		JButton cancelButton = new JButton("退出");
+		cancelButton.setBackground(new Color(255, 222, 173));
 		cancelButton.addActionListener(this);
 		cancelButton.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		buttonPanel.add(cancelButton);
 		JButton subscButton = new JButton("没有账号？");
+		subscButton.setBackground(new Color(255, 222, 173));
 		subscButton.addActionListener(this);
 		subscButton.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		//subscButton.setForeground(Color.RED);
