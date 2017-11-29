@@ -11,7 +11,7 @@ public class Constant {
 	public static String MACADDDRESS=IpMacUtil.getMACAddress();
 	
 	public  static final  String WEBSITE="http://ylfcoding.cn";
-	public  static final  String HTTPADDR="http://localhost:8080";//http://ylfcoding.cn
+	public  static final  String HTTPADDR="http://ylfcoding.cn";//http://localhost:8080
 	public  static final  String ADVERTISEMENT="http://ylfcoding.cn";
 	public final static String VERSION="V1.0";
 	public final static String SOFTWARENAME="LAZADA数据收集器";

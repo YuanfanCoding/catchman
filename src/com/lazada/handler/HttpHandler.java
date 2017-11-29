@@ -33,10 +33,10 @@ public class HttpHandler {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Constant.name="1016127734";
-		Constant.password="123456";
-		Constant.areadycatchnum=36;
-		updateUser(0);
+//		Constant.name="1016127734";
+//		Constant.password="123456";
+//		Constant.areadycatchnum=36;
+//		updateUser(0);
 	}
 
 	public static Userinfo getUser(String name, String password,String mac) throws ParseException, IOException {
