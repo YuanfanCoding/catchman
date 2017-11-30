@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.http.ParseException;
 
@@ -54,6 +55,8 @@ public class Login extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+//					UIManager.setLookAndFeel(UIManager.
+//                        getSystemLookAndFeelClassName());
 					Login frame = new Login();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -62,7 +65,7 @@ public class Login extends JFrame implements ActionListener {
 			}
 		});
 	}
-
+ 
 	public Login() {
 		setIconImage(new ImageIcon(Main.class.getResource("/image/lazada.jpg")).getImage());
 		setTitle(Constant.SOFTWARENAME);
@@ -178,6 +181,14 @@ public class Login extends JFrame implements ActionListener {
 					   Constant.name=ui.getName();
 					   Constant.password=ui.getPassword();
 					   this.dispose();
+					   try {
+						UIManager.setLookAndFeel(UIManager.
+						           getSystemLookAndFeelClassName());
+					} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+							| UnsupportedLookAndFeelException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				       Main window = new Main();
 					}  
 					else {

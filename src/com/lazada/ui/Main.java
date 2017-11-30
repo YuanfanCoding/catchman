@@ -94,6 +94,8 @@ public class Main implements MouseListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					UIManager.setLookAndFeel(UIManager.
+	                        getSystemLookAndFeelClassName());
 					Main window = new Main();
 					
 				} catch (Exception e) {
@@ -147,7 +149,7 @@ public class Main implements MouseListener{
 		JLabel label_1 = new JLabel("\u7EC8\u6B62\u9875");
 		label_1.setBounds(170, 64, 54, 15);
 		panel.add(label_1);
-		
+		 
 		textField_2 = new JTextField();
 		textField_2.setBounds(215, 61, 66, 21);
 		panel.add(textField_2);
@@ -269,7 +271,7 @@ public class Main implements MouseListener{
 		txtrqqdsQq.setBackground(new Color(224, 255, 255));
 		txtrqqdsQq.setEditable(false);
 		txtrqqdsQq.setToolTipText("");
-		txtrqqdsQq.setText("   \u5BA2\u670DQQ\uFF1A318074670\r\n   \u5FAE  \u4FE1\uFF1Ads318074670\r\n   Q Q  \u7FA4\uFF1A609970186");
+		txtrqqdsQq.setText(" \u5BA2\u670DQQ\uFF1A318074670\r\n \u5FAE  \u4FE1\uFF1Ads318074670\r\n QQ  \u7FA4\uFF1A609970186");
 		txtrqqdsQq.setBounds(0, 0, 154, 68);
 		panel_1.add(txtrqqdsQq);
 		
