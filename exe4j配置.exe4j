@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <exe4j version="5.1" transformSequenceNumber="2">
-  <directoryPresets config="F:/eclipse_workspace/CatchLazada/lib" />
-  <application name="Lazada数据收集助手" distributionSourceDir="C:/Users/Administrator/Desktop">
+  <directoryPresets config="C:/Users/Administrator/Desktop/lazada项目" />
+  <application name="Lazada数据收集助手" distributionSourceDir="E:/打包jdk版本/64位">
     <languages>
       <principalLanguage id="en" customLocalizationFile="" />
     </languages>
   </application>
-  <executable name="Lazada数据收集助手" type="2" iconSet="false" iconFile="" executableDir="" redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="true" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true" dpiAware="false" amd64="true">
+  <executable name="Lazada数据收集助手" type="2" iconSet="true" iconFile="C:/Users/Administrator/Desktop/lazada项目/lazada.ico" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="true" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true" dpiAware="false" amd64="true">
     <messageSet />
     <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" companyName="" productVersion="" />
   </executable>
@@ -16,15 +16,13 @@
       <versionLine x="20" y="40" text="version %VERSION%" fontSize="8" fontColor="0,0,0" bold="false" />
     </text>
   </splashScreen>
-  <java mainClass="com.lazada.ui.Login" vmParameters="" arguments="" allowVMPassthroughParameters="true" preferredVM="client" bundleRuntime="true" minVersion="1.7" maxVersion="" allowBetaVM="false" jdkOnly="false">
+  <java mainClass="com.lazada.ui.Login" vmParameters="" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true" minVersion="1.7" maxVersion="" allowBetaVM="false" jdkOnly="false">
     <searchSequence>
-      <directory location="../../../Program Files/Java/jre7" />
+      <directory location="./jre7" />
       <registry />
-      <envVar name="JAVA_HOME" />
-      <envVar name="JDK_HOME" />
     </searchSequence>
     <classPath>
-      <archive location="C:/Users/Administrator/Desktop/catchV1.0.1.jar" failOnError="false" />
+      <archive location="E:/打包jdk版本/64位/catchV1.0.1.jar" failOnError="false" />
       <archive location="F:/eclipse_workspace/CatchLazada/lib/commons-codec-1.9.jar" failOnError="false" />
       <archive location="F:/eclipse_workspace/CatchLazada/lib/commons-logging-1.2.jar" failOnError="false" />
       <archive location="F:/eclipse_workspace/CatchLazada/lib/gson-2.7.jar" failOnError="false" />
