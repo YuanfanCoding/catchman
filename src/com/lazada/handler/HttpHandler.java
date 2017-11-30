@@ -175,4 +175,34 @@ public class HttpHandler {
 		return true;
 	}
 
+public static boolean getRecord() throws ParseException, IOException {
+		
+		String body = "true";
+		// 创建httpclient对象
+		CloseableHttpClient client = HttpClients.createDefault();
+		// 装填参数
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("mac", Constant.MACADDDRESS));
+		// 设置参数到请求对象中
+		HttpGet httpGet = new HttpGet(Constant.GETRECORD+"?" + EntityUtils.toString(new UrlEncodedFormEntity(nvps, "utf-8")));
+
+		// 设置header信息
+		// 指定报文头【Content-type】、【User-Agent】
+		httpGet.setHeader("Content-type", "application/json");
+		httpGet.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+
+		// 执行请求操作，并拿到结果（同步阻塞）
+		CloseableHttpResponse response = client.execute(httpGet);
+		// 获取结果实体
+		HttpEntity entity = response.getEntity();
+		if (entity != null) {
+			// 按指定编码转换结果实体为String类型
+			body = EntityUtils.toString(entity, "utf-8");
+			
+		}
+		EntityUtils.consume(entity);
+		// 释放链接
+		response.close();
+		return body.equals("true")?true:false;
+	}
 }
