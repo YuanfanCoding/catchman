@@ -135,7 +135,25 @@ public class TestLogin extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if(!doCheckVersion()) {
+			if(JOptionPane.showConfirmDialog(d, "请到官网"+Constant.WEBSITE+"更新版本！", "版本更新",
+				JOptionPane.WARNING_MESSAGE)==0) {
+				  URI uri;
+				try {
+					uri = new URI(Constant.WEBSITE);
+				    Desktop.getDesktop().browse(uri);  
+				} catch (URISyntaxException |IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}  
+		          
+			}
+			else
+			{
+				System.exit(0);;
+			}
+			
+		}else{
 		String cmd = e.getActionCommand();
 		if (cmd.equals("登录")) {
 			if (!randomText.equals(validateTextField.getText()))
@@ -147,7 +165,7 @@ public class TestLogin extends JFrame implements ActionListener {
 				String password = new String(c);
 //				boolean isvalid = IOhandler.isValid(name, password);
 				//isvalid = true;
-				boolean isvalid = name.equals("abc123") && password.equals("abc123");
+				boolean isvalid = name.equals("lazada") && password.equals("lazada");
 				
 				if (isvalid) {
 					boolean isrecord=true;
@@ -199,6 +217,8 @@ public class TestLogin extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(d, "请添加QQ:318074670 或者 微信:ds318074670免费获取账号！", "账号获取",
 					JOptionPane.WARNING_MESSAGE);
 		}
+		
+		}
 	}
 
 	public static String getRandomString(int length) { // length表示生成字符串的长度
@@ -212,4 +232,14 @@ public class TestLogin extends JFrame implements ActionListener {
 		return sb.toString();
 	}
 
+	private boolean doCheckVersion()  {
+        
+		try {
+			return HttpHandler.getVersion().equals(Constant.VERSION);
+		} catch (ParseException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

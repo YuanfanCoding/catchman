@@ -36,6 +36,7 @@ import org.jsoup.select.Elements;
 import com.google.gson.Gson;
 import com.lazada.handler.ConnectImpl;
 import com.lazada.handler.HttpHandler;
+import com.lazada.handler.TestConnectImpl;
 import com.lazada.model.Constant;
 import com.lazada.model.json.ItemListElement;
 import com.lazada.model.json.JsonRootBean;
@@ -83,7 +84,7 @@ public class TestMain implements MouseListener{
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
-	private ConnectImpl textArea1;
+	private TestConnectImpl textArea1;
 	private JDialog d;
 	public  static final  String ADVERTISEMENT="http://ylfcoding.cn";
 	private final JSeparator separator_2 = new JSeparator();
@@ -323,7 +324,7 @@ public class TestMain implements MouseListener{
 		panel_3.setLayout(null);
 		
 		
-		textArea1= new ConnectImpl();
+		textArea1= new TestConnectImpl();
 		textArea1.setBounds(0, 0, 327, 151);
 		//panel_3.add(textArea1);
 		textArea1.setBackground(SystemColor.text);

@@ -125,19 +125,19 @@ public class TestConnectImpl extends JTextArea{
 		WritableWorkbook workbook = null;
 		workbook = Workbook.createWorkbook(new File(savepath));
 		initWorkbook(workbook);
-		try {
+		//try {
 			
 				this.append("开始抓取第1页的内容。\n");
 			//	this.paintImmediately(this.getBounds());
 				getFirstLevel("1", workbook.getSheet(0));
-				Thread.sleep(6000);// 延迟6秒发送请求
-		} catch (InterruptedException e) {
+				//Thread.sleep(6000);// 延迟6秒发送请求
+		//} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
+		//	e.printStackTrace();
+		//} finally {
 			workbook.write();
 			workbook.close();
-		}
+		//}
 	}
 	private void getFirstLevel(String pagenum,WritableSheet sheet) throws IOException, RowsExceededException, WriteException{
 		String urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&page=" + pagenum;
