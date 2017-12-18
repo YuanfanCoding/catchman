@@ -22,6 +22,9 @@ public class BaseInfo {
 	public boolean getImage8 = false;
 	public boolean getLink = false;
 	public boolean getComment = false;
+	public boolean getSize = false;
+	public boolean getcategory = false;
+	
 	
 	public String name = "";
 	public String description= "";
@@ -42,7 +45,8 @@ public class BaseInfo {
 	public String image8 = "";
 	public String link = "";
 	public String comment = "";
-	
+	public String size="";
+	public String category="";
 	
 	public boolean isOneItemStart() {
 		return oneItemStart;
@@ -278,6 +282,32 @@ public class BaseInfo {
 	public void setShort_descriptioncode(String short_descriptioncode) {
 		this.short_descriptioncode = short_descriptioncode;
 	}
+	public boolean isGetSize() {
+		return getSize;
+	}
+	public void setGetSize(boolean getSize) {
+		this.getSize = getSize;
+	}
+	public boolean isGetcategory() {
+		return getcategory;
+	}
+	public void setGetcategory(boolean getcategory) {
+		this.getcategory = getcategory;
+	}
+	public String getSize() {
+		return size;
+	}
+	public void setSize(String size) {
+		this.size = size;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	
+	
 }	
 	
 

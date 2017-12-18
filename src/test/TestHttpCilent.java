@@ -12,6 +12,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 public class TestHttpCilent {
 
@@ -21,7 +22,7 @@ public class TestHttpCilent {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		
 		try {
-            HttpGet httpget = new HttpGet("https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoespink-63716568.html");
+            HttpGet httpget = new HttpGet("https://www.lazada.com.my/korean-style-womens-clothing-korean-jeans-elastic-highwaist-jeans-high-waist-jeans-long-pants-black-13863285.html");
           //  HttpGet httpget = new HttpGet("https://www.lazada.com.my/petpet/?spm=a2o4k.prod.0.0.27c36a81A1xgwt&ref=popular-search3=petpet");
             
 //           …Ë÷√≥¨ ± 
@@ -69,13 +70,29 @@ public class TestHttpCilent {
                 	web= EntityUtils.toString(entity,"UTF-8");
                 //	System.out.println(web);
                     Document doc= Jsoup.parse(web);
+                    String category="";
+    				Elements categorylist=doc.select("span.breadcrumb__item-text");
+    				if(categorylist!=null && !categorylist.isEmpty()){
+    					for(int i=0;i<categorylist.size()-1;i++)
+    						category+=categorylist.get(i).text().toString()+"/";
+    					
+    				}
+                    System.out.println(category);
+                    String size="";
+    				Elements sizelist=doc.select("span.grouped-size__popup__tab__content__item__size-item");
+    				if(sizelist!=null && !sizelist.isEmpty()){
+    					size+=doc.getElementsByClass("grouped-size__popup__tab__header__item grouped-size__popup__tab__header__item_state_active").text().toString()+" \n";
+    					for(int i=0;i<sizelist.size();i++)
+    						size+=sizelist.get(i).text().toString()+" \n";
+    				}
+    				 System.out.println(size);//≥ﬂ¥Á
 //                    System.out.println(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));
 //                    System.out.println(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim());
 //                    System.out.println(doc.getElementsByClass("productImage").get(0).attr("data-big").toString());
 //                    System.out.println(doc.getElementsByClass("prd-attributesList").select("span").first().text().toString());
 //                    System.out.println(doc.select("span#product_price").text().toString());
 //                    System.out.println(doc.select("span#price_box").text().toString());
-                      System.out.println(doc.select("div.product-description__block").get(0).text().toString());                  
+                  //    System.out.println(doc.select("span.breadcrumb__item-text").text().toString());                  
 //                    System.out.println(doc.select("li.inbox__item").text().toString());
 //                    System.out.println(doc.select("td#pdtsku").text().toString());
                      // System.out.println(doc.select("script[type=application/ld+json]").get(0).data().toString());

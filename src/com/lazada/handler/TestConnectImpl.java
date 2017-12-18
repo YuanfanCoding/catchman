@@ -101,24 +101,26 @@ public class TestConnectImpl extends JTextArea{
 		 this.exlRow = 0;
 	     WritableSheet sheet = workbook.createSheet("web_data", 0);
 	     sheet.addCell(new Label(0, this.exlRow, "标题"));
-	     sheet.addCell(new Label(1, this.exlRow, "详情描述"));
-	     sheet.addCell(new Label(2, this.exlRow, "描述代码"));
-	     sheet.addCell(new Label(3, this.exlRow, "卖点"));
-	     sheet.addCell(new Label(4, this.exlRow, "卖点代码"));
-	     sheet.addCell(new Label(5, this.exlRow, "卖价"));
-	     sheet.addCell(new Label(6, this.exlRow, "特价"));
-	     sheet.addCell(new Label(7, this.exlRow, "SKU"));
-	     sheet.addCell(new Label(8, this.exlRow, "包装包括"));
-	     sheet.addCell(new Label(9, this.exlRow, "产品本身链接"));
-	     sheet.addCell(new Label(10, this.exlRow, "好评"));
-	     sheet.addCell(new Label(11, this.exlRow, "图片1"));
-	     sheet.addCell(new Label(12, this.exlRow, "图片2"));
-	     sheet.addCell(new Label(13, this.exlRow, "图片3"));
-	     sheet.addCell(new Label(14, this.exlRow, "图片4"));
-	     sheet.addCell(new Label(15, this.exlRow, "图片5"));
-	     sheet.addCell(new Label(16, this.exlRow, "图片6"));
-	     sheet.addCell(new Label(17, this.exlRow, "图片7"));
-	     sheet.addCell(new Label(18, this.exlRow++, "图片8"));
+	     sheet.addCell(new Label(1, this.exlRow, "类目"));
+	     sheet.addCell(new Label(2, this.exlRow, "详情描述"));
+	     sheet.addCell(new Label(3, this.exlRow, "描述代码"));
+	     sheet.addCell(new Label(4, this.exlRow, "卖点"));
+	     sheet.addCell(new Label(5, this.exlRow, "卖点代码"));
+	     sheet.addCell(new Label(6, this.exlRow, "卖价"));
+	     sheet.addCell(new Label(7, this.exlRow, "特价"));
+	     sheet.addCell(new Label(8, this.exlRow, "SKU"));
+	     sheet.addCell(new Label(9, this.exlRow, "包装包括"));
+	     sheet.addCell(new Label(10, this.exlRow, "产品本身链接"));
+	     sheet.addCell(new Label(11, this.exlRow, "好评"));
+	     sheet.addCell(new Label(12, this.exlRow, "图片1"));
+	     sheet.addCell(new Label(13, this.exlRow, "图片2"));
+	     sheet.addCell(new Label(14, this.exlRow, "图片3"));
+	     sheet.addCell(new Label(15, this.exlRow, "图片4"));
+	     sheet.addCell(new Label(16, this.exlRow, "图片5"));
+	     sheet.addCell(new Label(17, this.exlRow, "图片6"));
+	     sheet.addCell(new Label(18, this.exlRow, "图片7"));
+	     sheet.addCell(new Label(19, this.exlRow, "图片8"));
+	     sheet.addCell(new Label(20, this.exlRow++, "尺寸"));
 	   
 	}
 	public void startCatching() throws IOException , RowsExceededException, WriteException{
@@ -173,6 +175,13 @@ public class TestConnectImpl extends JTextArea{
 				if(doc!=null) {
 				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));//标题
 				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim().replace("(", "").replace(")", ""));//好评
+				String category="";
+				Elements categorylist=doc.select("span.breadcrumb__item-text");
+				if(categorylist!=null && !categorylist.isEmpty()){
+					for(int i=0;i<categorylist.size()-1;i++)
+						category+=categorylist.get(i).text().toString()+"/";
+				}
+				info.setCategory(category);//分类
 				
 				String elimagestring="";
 				Elements elimage=doc.getElementsByClass("productImage");
@@ -209,6 +218,14 @@ public class TestConnectImpl extends JTextArea{
 				}
 				info.setShort_description(elsdstring);//卖点
 				info.setShort_descriptioncode(doc.getElementsByClass("prd-attributesList").html());//卖点代码
+				String size="";
+				Elements sizelist=doc.select("span.grouped-size__popup__tab__content__item__size-item");
+				if(sizelist!=null && !sizelist.isEmpty()){
+					size+=doc.getElementsByClass("grouped-size__popup__tab__header__item grouped-size__popup__tab__header__item_state_active").text().toString()+" \n";
+					for(int i=0;i<sizelist.size();i++)
+						size+=sizelist.get(i).text().toString()+" \n";
+				}
+				info.setSize(size);//尺寸
 				info.setSpecial_price(doc.select("span#product_price").text().toString());//特价
 				info.setPrice(doc.select("span#price_box").text().toString().replace(",","" ));//实价
 				info.setDescription(doc.select("div.product-description__block").get(0).text().toString());//描述        
@@ -224,24 +241,26 @@ public class TestConnectImpl extends JTextArea{
 			}
 			if (info.isOneItemStart()) {
 				sheet.addCell(new Label(0, this.exlRow, info.getName()));
-				sheet.addCell(new Label(1, this.exlRow, info.getDescription()));
-				sheet.addCell(new Label(2, this.exlRow, info.getDescriptioncode()));
-				sheet.addCell(new Label(3, this.exlRow, info.getShort_description()));
-				sheet.addCell(new Label(4, this.exlRow, info.getShort_descriptioncode()));
-				sheet.addCell(new Label(5, this.exlRow, info.getPrice()));
-				sheet.addCell(new Label(6, this.exlRow, info.getSpecial_price()));
-				sheet.addCell(new Label(7, this.exlRow, info.getSellersku()));
-				sheet.addCell(new Label(8, this.exlRow, info.getPackage_content()));
-				sheet.addCell(new Label(9, this.exlRow, info.getLink()));
-				sheet.addCell(new Label(10, this.exlRow, info.getComment()));
-				sheet.addCell(new Label(11, this.exlRow, info.getMainimage()));
-				sheet.addCell(new Label(12, this.exlRow, info.getImage2()));
-				sheet.addCell(new Label(13, this.exlRow, info.getImage3()));
-				sheet.addCell(new Label(14, this.exlRow, info.getImage4()));
-				sheet.addCell(new Label(15, this.exlRow, info.getImage5()));
-				sheet.addCell(new Label(16, this.exlRow, info.getImage6()));
-				sheet.addCell(new Label(17, this.exlRow, info.getImage7()));
-				sheet.addCell(new Label(18, this.exlRow++, info.getImage8()));
+				sheet.addCell(new Label(1, this.exlRow, info.getCategory()));
+				sheet.addCell(new Label(2, this.exlRow, info.getDescription()));
+				sheet.addCell(new Label(3, this.exlRow, info.getDescriptioncode()));
+				sheet.addCell(new Label(4, this.exlRow, info.getShort_description()));
+				sheet.addCell(new Label(5, this.exlRow, info.getShort_descriptioncode()));
+				sheet.addCell(new Label(6, this.exlRow, info.getPrice()));
+				sheet.addCell(new Label(7, this.exlRow, info.getSpecial_price()));
+				sheet.addCell(new Label(8, this.exlRow, info.getSellersku()));
+				sheet.addCell(new Label(9, this.exlRow, info.getPackage_content()));
+				sheet.addCell(new Label(10, this.exlRow, info.getLink()));
+				sheet.addCell(new Label(11, this.exlRow, info.getComment()));
+				sheet.addCell(new Label(12, this.exlRow, info.getMainimage()));
+				sheet.addCell(new Label(13, this.exlRow, info.getImage2()));
+				sheet.addCell(new Label(14, this.exlRow, info.getImage3()));
+				sheet.addCell(new Label(15, this.exlRow, info.getImage4()));
+				sheet.addCell(new Label(16, this.exlRow, info.getImage5()));
+				sheet.addCell(new Label(17, this.exlRow, info.getImage6()));
+				sheet.addCell(new Label(18, this.exlRow, info.getImage7()));
+				sheet.addCell(new Label(19, this.exlRow, info.getImage8()));
+				sheet.addCell(new Label(20, this.exlRow++, info.getSize()));
 				info.backToInit();
 			
 			}
