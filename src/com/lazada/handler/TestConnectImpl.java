@@ -148,7 +148,7 @@ public class TestConnectImpl extends JTextArea{
 			doc = getDoc(urlstring);
 			if(doc!=null) {
 			Gson gson = new Gson();
-			JsonRootBean info = gson.fromJson(doc.select("script[type=application/ld+json]").get(0).data().toString(),
+			JsonRootBean info = gson.fromJson(doc.select("script[type=application/ld+json]").get(1).data().toString(),
 					JsonRootBean.class);// 对于javabean直接给出class实例
 			List<ItemListElement> ietlist = info.getItemListElement();
 			for (int i = 0; i < ietlist.size(); i++) {
