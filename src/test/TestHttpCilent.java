@@ -68,24 +68,24 @@ public class TestHttpCilent {
                 // ´òÓ¡ÏìÓ¦×´Ì¬
                 if (entity != null) {
                 	web= EntityUtils.toString(entity,"UTF-8");
-                //	System.out.println(web);
-                    Document doc= Jsoup.parse(web);
-                    String category="";
-    				Elements categorylist=doc.select("span.breadcrumb__item-text");
-    				if(categorylist!=null && !categorylist.isEmpty()){
-    					for(int i=0;i<categorylist.size()-1;i++)
-    						category+=categorylist.get(i).text().toString()+"/";
-    					
-    				}
-                    System.out.println(category);
-                    String size="";
-    				Elements sizelist=doc.select("span.grouped-size__popup__tab__content__item__size-item");
-    				if(sizelist!=null && !sizelist.isEmpty()){
-    					size+=doc.getElementsByClass("grouped-size__popup__tab__header__item grouped-size__popup__tab__header__item_state_active").text().toString()+" \n";
-    					for(int i=0;i<sizelist.size();i++)
-    						size+=sizelist.get(i).text().toString()+" \n";
-    				}
-    				 System.out.println(size);//³ß´ç
+                	System.out.println(web);
+//                    Document doc= Jsoup.parse(web);
+//                    String category="";
+//    				Elements categorylist=doc.select("span.breadcrumb__item-text");
+//    				if(categorylist!=null && !categorylist.isEmpty()){
+//    					for(int i=0;i<categorylist.size()-1;i++)
+//    						category+=categorylist.get(i).text().toString()+"/";
+//    					
+//    				}
+//                    System.out.println(category);
+//                    String size="";
+//    				Elements sizelist=doc.select("span.grouped-size__popup__tab__content__item__size-item");
+//    				if(sizelist!=null && !sizelist.isEmpty()){
+//    					size+=doc.getElementsByClass("grouped-size__popup__tab__header__item grouped-size__popup__tab__header__item_state_active").text().toString()+" \n";
+//    					for(int i=0;i<sizelist.size();i++)
+//    						size+=sizelist.get(i).text().toString()+" \n";
+//    				}
+//    				 System.out.println(size);//³ß´ç
 //                    System.out.println(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));
 //                    System.out.println(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim());
 //                    System.out.println(doc.getElementsByClass("productImage").get(0).attr("data-big").toString());
