@@ -152,7 +152,7 @@ public class ConnectImpl extends JTextArea{
 			if(doc!=null) {
 		  try {
 			Gson gson = new Gson();
-			String line=doc.select("script[type=application/ld+json]").get(0).data().toString();
+			String line=doc.select("script[type=application/ld+json]").get(1).data().toString();
 			JsonRootBean info = gson.fromJson(line.replaceAll("@type", "type").replaceAll("@context", "context"),
 					JsonRootBean.class);// 对于javabean直接给出class实例
 			List<ItemListElement> ietlist = info.getItemListElement();
