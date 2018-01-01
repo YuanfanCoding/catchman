@@ -14,7 +14,9 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.SystemColor;
 
 import javax.swing.UIManager;
@@ -82,6 +84,8 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.Font;
 
 import javax.swing.JCheckBox;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 
 public class Main implements MouseListener{
 
@@ -138,43 +142,18 @@ public class Main implements MouseListener{
 		frmLazada.getContentPane().add(panel);
 		panel.setLayout(null);
 		
+//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  
+//		float proportionW = screenSize.width/frmLazada.getWidth();  
+//        float proportionH = screenSize.height/frmLazada.getHeight();  
+          
+//        modifyComponentSize(frmLazada, proportionW,proportionH);  
+		
 		button = new JButton("\u5F00\u59CB\u6536\u96C6");
 		button.setBounds(98, 255, 106, 35);
 		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				    if(store_text.getText().equals("")) {
-				    	JOptionPane.showMessageDialog(d,"没有输入保存路径或者文件名！","请重新输入",JOptionPane.WARNING_MESSAGE);
-				    }
-				    if(startpage_text.getText().equals("")||endpage_text.getText().equals("")) {
-				    	JOptionPane.showMessageDialog(d,"没有输入起始页和终止页！","请重新输入",JOptionPane.WARNING_MESSAGE);
-				    }
-//				    if(textField.getText().equals("")) {
-//				    	JOptionPane.showMessageDialog(d,"没有输入关键词！","请重新输入",JOptionPane.WARNING_MESSAGE);
-//				    }
-				    if(startpage_text.getText().matches("[0-9]+")&&endpage_text.getText().matches("[0-9]+")) {
-				    		new Thread(new Runnable() {
-					            @Override
-					            public void run() {
-							try {
-//								textArea1.setPro(textField.getText(),Integer.parseInt(textField_1.getText()),Integer.parseInt(textField_2.getText()),textField_3.getText()+"\\" +new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date())+".xls");								
-								catchInfoArea.startCatching();
-							} catch (WriteException | IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
-							if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
-								JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
-								HttpHandler.updateUser(0);
-								//frmLazada.dispose();
-								System.exit(0);
-							   }
-					            }
-							}).start();							
-				    }
-				    else JOptionPane.showMessageDialog(d,"起始页和终止页需要数字！","请重新输入",JOptionPane.WARNING_MESSAGE);
-				    
-				    }
+			public void actionPerformed(ActionEvent e) {	   
+				startCatch();
+				 }
 			
 		});
 		button.setBackground(Color.WHITE);
@@ -194,14 +173,17 @@ public class Main implements MouseListener{
 		btnNewButton.setBounds(260, 226, 46, 23);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				JFileChooser jchoose = new JFileChooser();
-				jchoose.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				jchoose.showOpenDialog(new JDialog());
+				FileSystemView fsv = FileSystemView.getFileSystemView(); 
+				jchoose.setCurrentDirectory(fsv.getHomeDirectory());
+//				jchoose.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				jchoose.setSelectedFile(new File(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".xls")); //设置默认文件名
+				String saveType[] = {"xls"};  
+				jchoose.setFileFilter(new FileNameExtensionFilter("xls file", saveType));
+				jchoose.showOpenDialog(new JDialog());				
 		        if(jchoose.getCurrentDirectory()== null||jchoose.getCurrentDirectory().toString().length()==0||jchoose.getSelectedFile()==null){            
 		        }else{  
 		        	store_text.setText(jchoose.getSelectedFile().getPath());  
-//		        	if(textField_4.getText()==null||textField_4.getText().length()==0) textField_4.setText(textField.getText()+"_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 		        }
 		        
 			}
@@ -224,6 +206,7 @@ public class Main implements MouseListener{
 		panel.add(lblNewLabel_1);
 		
 		JCheckBox keywordcheckBox = new JCheckBox("\u8BF7\u8F93\u5165\u5173\u952E\u8BCD\uFF1A");
+		keywordcheckBox.setSelected(true);
 		keywordcheckBox.setBackground(new Color(240, 248, 255));
 		keywordcheckBox.setBounds(20, 26, 115, 23);
 		keywordcheckBox.setName(Constant.KEYWORDCATCH);
@@ -232,6 +215,7 @@ public class Main implements MouseListener{
 		panel.add(keywordcheckBox);
 		
 		keyword_text = new JTextField();
+		keyword_text.setText("womes shoes");
 		keyword_text.setBounds(150, 28, 116, 19);
 		panel.add(keyword_text);
 		keyword_text.setColumns(10);
@@ -240,17 +224,17 @@ public class Main implements MouseListener{
 		JCheckBox storeCheckBox = new JCheckBox("\u8BF7\u8F93\u5165\u5E97\u94FA\u94FE\u63A5\uFF1A");
 		storeCheckBox.setBackground(new Color(240, 248, 255));
 		storeCheckBox.setBounds(19, 55, 121, 23);
-		storeCheckBox.addItemListener(new MyItemListener());
 		storeCheckBox.setName(Constant.STORECATCH);
 		jway[1]=storeCheckBox;
+		storeCheckBox.addItemListener(new MyItemListener());
 		panel.add(storeCheckBox);
 		
 		JCheckBox productCheckBox = new JCheckBox("\u8BF7\u8F93\u5165\u4EA7\u54C1\u94FE\u63A5\uFF1A");
 		productCheckBox.setBackground(new Color(240, 248, 255));
 		productCheckBox.setBounds(19, 83, 121, 23);
-		productCheckBox.addItemListener(new MyItemListener());
 		productCheckBox.setName(Constant.PRODUCTCATCH);
 		jway[2]=productCheckBox;
+		productCheckBox.addItemListener(new MyItemListener());
 		panel.add(productCheckBox);
 		
 		shop_text = new JTextField();
@@ -416,6 +400,39 @@ public class Main implements MouseListener{
 	}
 
 	 
+	/**
+	 * frame中的控件自适应frame大小：改变大小位置和字体
+	 * @param frame 要控制的窗体
+	 * @param proportion 当前和原始的比例
+	 */
+	private static void modifyComponentSize(JFrame frame,float proportionW,float proportionH){
+		
+		try 
+		{
+			Component[] components = frame.getRootPane().getContentPane().getComponents();
+			for(Component co:components)
+			{
+//				String a = co.getClass().getName();//获取类型名称
+//				if(a.equals("javax.swing.JLabel"))
+//				{
+//				}
+				float locX = co.getX() * proportionW;
+				float locY = co.getY() * proportionH;
+				float width = co.getWidth() * proportionW;
+				float height = co.getHeight() * proportionH;
+				co.setLocation((int)locX, (int)locY);
+				co.setSize((int)width, (int)height);
+				int size = (int)(co.getFont().getSize() * proportionH);
+				Font font = new Font(co.getFont().getFontName(), co.getFont().getStyle(), size);
+				co.setFont(font);
+			}
+		} 
+		catch (Exception e) 
+		{
+			// TODO: handle exception
+		}
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
@@ -458,7 +475,7 @@ public class Main implements MouseListener{
     	if(type==1) {//1为jway
     		for(int i=0;i<jway.length;i++) {
     			if(jway[i].isSelected()) {
-    				result.put(jway[i].getName(), wayText[i]);
+    				result.put(jway[i].getName(), wayText[i].getText());
     				break;
     			}
     		}
@@ -473,13 +490,144 @@ public class Main implements MouseListener{
     }
 		return result;
     
-}
+    }
+    
+    public void startCatch(){
+    	
+    	if (doCheck()){
+    		
+    	    HashMap hm=getActiveJcb(1);
+    	    String way=(String)(hm.keySet().iterator().next());
+    	    String waytext=(String)hm.get(way);
+    	   
+    	    catchInfoArea.setPro(waytext,Integer.parseInt(startpage_text.getText()),Integer.parseInt(endpage_text.getText()),store_text.getText());								
+    		switch(way){
+    		case Constant.KEYWORDCATCH:
+
+	    		new Thread(new Runnable() {
+		            @Override
+		            public void run() {
+				try {
+					catchInfoArea.setType(1);
+					catchInfoArea.startCatching();
+					JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
+					if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
+						JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
+						HttpHandler.updateUser(0);
+						//frmLazada.dispose();
+						System.exit(0);
+					   }
+				} catch (WriteException | IOException e) {
+					
+					e.printStackTrace();
+				}
+		            }
+				}).start();				
+    			         break;
+    		case Constant.STORECATCH:
+    			new Thread(new Runnable() {
+		            @Override
+		            public void run() {
+				try {
+					catchInfoArea.startCatching();
+				} catch (WriteException | IOException e) {
+					
+					e.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
+				if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
+					JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
+					HttpHandler.updateUser(0);
+					//frmLazada.dispose();
+					System.exit(0);
+				   }
+		            }
+				}).start();		
+    			         break;
+    		case Constant.PRODUCTCATCH:
+    			new Thread(new Runnable() {
+		            @Override
+		            public void run() {
+				try {
+					catchInfoArea.startCatching();
+				} catch (WriteException | IOException e) {
+					
+					e.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
+				if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
+					JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
+					HttpHandler.updateUser(0);
+					//frmLazada.dispose();
+					System.exit(0);
+				   }
+		            }
+				}).start();		
+    			         break;
+    		
+    		default :break;
+    		}
+    	}
+    	
+    	
+    }
+    
+	private boolean doCheck() {
+		return checkWay() && checkPlatform() && checkPage() && checkSavePah();
+	}
+
+	private boolean checkPage() {
+		// TODO Auto-generated method stub
+		 if(startpage_text.getText().equals("")||endpage_text.getText().equals("")) {
+		    	JOptionPane.showMessageDialog(d,"没有输入起始页和终止页！","请重新输入",JOptionPane.WARNING_MESSAGE);
+		    	return false;
+		    }
+		  if(!startpage_text.getText().matches("[0-9]+")||!endpage_text.getText().matches("[0-9]+")) {
+			  JOptionPane.showMessageDialog(d,"起始页和终止页需要数字！","请重新输入",JOptionPane.WARNING_MESSAGE);
+			  return false;
+		  }
+		 return true;
+	}
+
+	private boolean checkSavePah() {
+		// TODO Auto-generated method stub
+		 if(store_text.getText().equals("")) {
+		    	JOptionPane.showMessageDialog(d,"没有输入保存路径或者文件名！","请重新输入",JOptionPane.WARNING_MESSAGE);
+		    	return false;
+		    }
+		 return true;
+	}
+
+	private boolean checkPlatform() {
+		// TODO Auto-generated method stub
+		for(int i=0;i<jplatform.length;i++) {
+			if(jplatform[i].isSelected()) {
+				return true;
+			}
+		}
+		JOptionPane.showMessageDialog(d,"没有勾选平台！","请重新输入",JOptionPane.WARNING_MESSAGE);
+		return false;
+	}
+
+	private boolean checkWay() {
+		// TODO Auto-generated method stub
+		for(int i=0;i<jway.length;i++) {
+			if(jway[i].isSelected()) {
+				if(!wayText[i].getText().toString().equals(""))
+				return true;
+				break;
+			}
+		}
+		JOptionPane.showMessageDialog(d,"没有勾选采集方式或者没输入采集文本！","请重新输入",JOptionPane.WARNING_MESSAGE);
+		return false;
+	}
+
 	class MyItemListener implements ItemListener {  
 	    public void itemStateChanged(ItemEvent e) {  
 	        JCheckBox jcb = (JCheckBox) e.getItem();// 将得到的事件强制转化为JCheckBox类  
-	        if (jcb.isSelected()) {// 判断是否被选择  
+	        if (jcb.isSelected()) {// 判断是否被选择  	        	
 	        	if(searchArry(jcb)==0)
-	        	for(int i=0;i<jway.length;i++){
+	        	for(int i=0;i<jway.length;i++){	        		
 	        		if(!jway[i].equals(jcb)) jway[i].setSelected(false);
 	        	}
 	        	else 
@@ -495,6 +643,7 @@ public class Main implements MouseListener{
 	    		if(i>2) return 1;
 	    		if(jcb.equals(jway[i])) return 0;
 	    		if(jcb.equals(jplatform[i])) return 1;
+	    		i++;
 	    	}
 			return 0;
 	       

@@ -22,6 +22,10 @@ public class FinalInfo extends BaseInfo{
 		this.getImage8 = false;
 		this.getLink = false;
 		this.getComment = false;
+		this.getSize = false;
+		this.getcategory = false;
+		this.getBrand = false;
+		this.getStore = false;
 		
 		this.name = "";
 		this.description= "";
@@ -40,7 +44,10 @@ public class FinalInfo extends BaseInfo{
 		this.image8 = "";
 		this.link = "";
 		this.comment = "";
-		
+		this.size="";
+		this.category="";
+		this. brand="";
+		this.store="";
 		
 	}
 }

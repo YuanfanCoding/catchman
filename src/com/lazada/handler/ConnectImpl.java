@@ -35,6 +35,7 @@ import com.lazada.model.Constant;
 import com.lazada.model.json.ItemListElement;
 import com.lazada.model.json.JsonRootBean;
 import com.lazada.model.product.FinalInfo;
+import com.lazada.util.ExcelUtil;
 
 import jxl.Workbook;
 import jxl.write.Label;
@@ -51,11 +52,12 @@ import jxl.write.biff.RowsExceededException;
 public class ConnectImpl extends JTextArea{
     
 	public final static String website="http://www.lazada.com.my/catalog/?q="; 
-	private String keyword;
+	private String typetext;
 	private int startpage;
 	private int endpage;
 	private String savepath;
 	private int exlRow;
+	private int type;//1为关键词，2为店铺，3为产品
 	public static void main(String[] args) {
 		
 		try {
@@ -71,9 +73,29 @@ public class ConnectImpl extends JTextArea{
 		}
 	}
 
-	public ConnectImpl( String keyword, int startpage, int endpage, String savepath) {
+
+	public void setPro(String typetext, int startpage, int endpage, String savepath) {
+		// TODO Auto-generated method stub
+		    this.typetext=typetext;
+		    this.startpage=startpage;
+			if(endpage>100) endpage=100;
+			this.endpage=endpage;
+			this.savepath=savepath; 
+	}
+	
+	public int getType() {
+		return type;
+	}
+
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+
+	public ConnectImpl( String typetext, int startpage, int endpage, String savepath) {
 		// TODO Auto-generated constructor stub
-	    this.keyword=keyword;
+	    this.typetext=typetext;
 	    this.startpage=startpage;
 		if(endpage>100) endpage=100;
 		this.endpage=endpage;
@@ -81,8 +103,9 @@ public class ConnectImpl extends JTextArea{
 		
 	}
     
-	public void setPro(String keyword, int startpage, int endpage, String savepath) {
-		 this.keyword=keyword;
+	public void setPro(int type,String typetext, int startpage, int endpage, String savepath) {
+		    this.type=type;
+		    this.typetext=typetext;
 		    this.startpage=startpage;
 			if(endpage>100) endpage=100;
 			this.endpage=endpage;
@@ -93,48 +116,18 @@ public class ConnectImpl extends JTextArea{
 		// TODO Auto-generated constructor stub
 	}
  
-	/*
-	 * @ workbook 传入工作簿
-	 * 初始化sheet的第一行
-	 */
-	private void initWorkbook(WritableWorkbook workbook) throws IOException, RowsExceededException, WriteException {
-		 this.exlRow = 0;
-	     WritableSheet sheet = workbook.createSheet("web_data", 0);
-	     sheet.addCell(new Label(0, this.exlRow, "标题"));
-	     sheet.addCell(new Label(1, this.exlRow, "类目"));
-	     sheet.addCell(new Label(2, this.exlRow, "详情描述"));
-	     sheet.addCell(new Label(3, this.exlRow, "描述代码"));
-	     sheet.addCell(new Label(4, this.exlRow, "卖点"));
-	     sheet.addCell(new Label(5, this.exlRow, "卖点代码"));
-	     sheet.addCell(new Label(6, this.exlRow, "卖价"));
-	     sheet.addCell(new Label(7, this.exlRow, "特价"));
-	     sheet.addCell(new Label(8, this.exlRow, "SKU"));
-	     sheet.addCell(new Label(9, this.exlRow, "包装包括"));
-	     sheet.addCell(new Label(10, this.exlRow, "产品本身链接"));
-	     sheet.addCell(new Label(11, this.exlRow, "好评"));
-	     sheet.addCell(new Label(12, this.exlRow, "图片1"));
-	     sheet.addCell(new Label(13, this.exlRow, "图片2"));
-	     sheet.addCell(new Label(14, this.exlRow, "图片3"));
-	     sheet.addCell(new Label(15, this.exlRow, "图片4"));
-	     sheet.addCell(new Label(16, this.exlRow, "图片5"));
-	     sheet.addCell(new Label(17, this.exlRow, "图片6"));
-	     sheet.addCell(new Label(18, this.exlRow, "图片7"));
-	     sheet.addCell(new Label(19, this.exlRow, "图片8"));
-	     sheet.addCell(new Label(20, this.exlRow++, "尺寸"));
-	   
-	}
+
 	public void startCatching() throws IOException , RowsExceededException, WriteException{
-		WritableWorkbook workbook = null;
-		workbook = Workbook.createWorkbook(new File(savepath));
-		initWorkbook(workbook);
+		WritableWorkbook workbook = ExcelUtil.initWorkbook(savepath);
+		exlRow++;
 		try {
 			for (int i = 0; i < endpage - startpage + 1; i++) {
 				this.append("开始抓取第" + (i + startpage) + "页的内容。\n");
-				this.paintImmediately(this.getBounds());
-				getFirstLevel(String.valueOf(startpage + i), workbook.getSheet(0));
+//				this.paintImmediately(this.getBounds());
+				getFirstLevelByKeyWord(String.valueOf(startpage + i), typetext, workbook.getSheet(0));
 				Thread.sleep(6000);// 延迟6秒发送请求
 			}
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			this.append(e.getMessage());
 			//this.paintImmediately(this.getBounds());
@@ -144,7 +137,7 @@ public class ConnectImpl extends JTextArea{
 			workbook.close();
 		}
 	}
-	private void getFirstLevel(String pagenum,WritableSheet sheet) throws IOException, RowsExceededException, WriteException{
+	public void getFirstLevelByKeyWord(String pagenum,String keyword,WritableSheet sheet) throws IOException, RowsExceededException, WriteException{
 		String urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&page=" + pagenum;
 		Document doc = null;
 		while (doc == null) {
@@ -173,9 +166,10 @@ public class ConnectImpl extends JTextArea{
 				//this.paintImmediately(this.getBounds());
 			}
 		}
+		
 	}
 	
-	private void getSencondLevel(String urlstring,WritableSheet sheet) throws IOException,RowsExceededException, WriteException{
+	public void getSencondLevel(String urlstring,WritableSheet sheet) throws IOException,RowsExceededException, WriteException{
 
 		    FinalInfo info=new FinalInfo();
 		    info.setLink(urlstring);
@@ -185,6 +179,8 @@ public class ConnectImpl extends JTextArea{
 				if(doc!=null) {
 				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));//标题
 				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim().replace("(", "").replace(")", ""));//好评
+				info.setBrand(doc.select("div.prod_header_brand_action").get(0).text().toString());//品牌
+				info.setStore(doc.select("a.basic-info__name").get(0).text().toString());//店铺名
 				String category="";
 				Elements categorylist=doc.select("span.breadcrumb__item-text");
 				if(categorylist!=null && !categorylist.isEmpty()){
@@ -237,35 +233,15 @@ public class ConnectImpl extends JTextArea{
 				}
 			}
 			if (info.isOneItemStart()) {
-				sheet.addCell(new Label(0, this.exlRow, info.getName()));
-				sheet.addCell(new Label(1, this.exlRow, info.getCategory()));
-				sheet.addCell(new Label(2, this.exlRow, info.getDescription()));
-				sheet.addCell(new Label(3, this.exlRow, info.getDescriptioncode()));
-				sheet.addCell(new Label(4, this.exlRow, info.getShort_description()));
-				sheet.addCell(new Label(5, this.exlRow, info.getShort_descriptioncode()));
-				sheet.addCell(new Label(6, this.exlRow, info.getPrice()));
-				sheet.addCell(new Label(7, this.exlRow, info.getSpecial_price()));
-				sheet.addCell(new Label(8, this.exlRow, info.getSellersku()));
-				sheet.addCell(new Label(9, this.exlRow, info.getPackage_content()));
-				sheet.addCell(new Label(10, this.exlRow, info.getLink()));
-				sheet.addCell(new Label(11, this.exlRow, info.getComment()));
-				sheet.addCell(new Label(12, this.exlRow, info.getMainimage()));
-				sheet.addCell(new Label(13, this.exlRow, info.getImage2()));
-				sheet.addCell(new Label(14, this.exlRow, info.getImage3()));
-				sheet.addCell(new Label(15, this.exlRow, info.getImage4()));
-				sheet.addCell(new Label(16, this.exlRow, info.getImage5()));
-				sheet.addCell(new Label(17, this.exlRow, info.getImage6()));
-				sheet.addCell(new Label(18, this.exlRow, info.getImage7()));
-				sheet.addCell(new Label(19, this.exlRow, info.getImage8()));
-				sheet.addCell(new Label(20, this.exlRow++, info.getSize()));
+				ExcelUtil.handleOneItem(sheet, exlRow, 0, info);
+				exlRow++;
 				info.backToInit();
 			
 			}
-			
 		}
 	
 
-	public Document getDoc(String url) {
+	public  Document getDoc(String url) {
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		Document doc = null;
@@ -306,4 +282,6 @@ public class ConnectImpl extends JTextArea{
 		}
 		return doc;
 	}
+	
+
 }
