@@ -22,7 +22,7 @@ public class TestHttpCilent {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		
 		try {
-            HttpGet httpget = new HttpGet("https://www.lazada.com.my/korean-style-womens-clothing-korean-jeans-elastic-highwaist-jeans-high-waist-jeans-long-pants-black-13863285.html");
+            HttpGet httpget = new HttpGet("https://www.lazada.com.my/multicolor-double-layer-stainless-steel-lunch-box-3-tiers-11118276.html");
           //  HttpGet httpget = new HttpGet("https://www.lazada.com.my/petpet/?spm=a2o4k.prod.0.0.27c36a81A1xgwt&ref=popular-search3=petpet");
             
 //           设置超时 
@@ -68,8 +68,10 @@ public class TestHttpCilent {
                 // 打印响应状态
                 if (entity != null) {
                 	web= EntityUtils.toString(entity,"UTF-8");
-                	System.out.println(web);
-//                    Document doc= Jsoup.parse(web);
+//                	System.out.println(web);
+                    Document doc= Jsoup.parse(web);
+                    System.out.println(doc.select("div.prod_header_brand_action").get(0).text().toString());
+                    System.out.println(doc.select("a.basic-info__name").get(0).text().toString());
 //                    String category="";
 //    				Elements categorylist=doc.select("span.breadcrumb__item-text");
 //    				if(categorylist!=null && !categorylist.isEmpty()){

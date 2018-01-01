@@ -23,4 +23,13 @@ public class Constant {
 	public final static String UPDATEUSER = HTTPADDR+"/V1/user/update";
 	public final static String GETRECORD = HTTPADDR+"/testrecord";
 	
+	public static final String KEYWORDCATCH="KEYWORDCATCH";
+	public static final String STORECATCH="STORECATCH";
+	public static final String PRODUCTCATCH="PRODUCTCATCH";
+	
+	public static final String LAZADA="LAZADA";
+	public static final String SHOPEE="SHOPEE";
+	public static final String AMAZON="AMAZON";
+	public static final String ALIEXPRESS="ALIEXPRESS";
+	
 }

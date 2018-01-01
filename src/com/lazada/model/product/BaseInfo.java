@@ -24,7 +24,8 @@ public class BaseInfo {
 	public boolean getComment = false;
 	public boolean getSize = false;
 	public boolean getcategory = false;
-	
+	public boolean getBrand = false;
+	public boolean getStore = false;
 	
 	public String name = "";
 	public String description= "";
@@ -47,6 +48,8 @@ public class BaseInfo {
 	public String comment = "";
 	public String size="";
 	public String category="";
+	public String brand="";
+	public String store="";
 	
 	public boolean isOneItemStart() {
 		return oneItemStart;
@@ -305,6 +308,30 @@ public class BaseInfo {
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public boolean isGetBrand() {
+		return getBrand;
+	}
+	public void setGetBrand(boolean getBrand) {
+		this.getBrand = getBrand;
+	}
+	public String getBrand() {
+		return brand;
+	}
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+	public boolean isGetStore() {
+		return getStore;
+	}
+	public void setGetStore(boolean getStore) {
+		this.getStore = getStore;
+	}
+	public String getStore() {
+		return store;
+	}
+	public void setStore(String store) {
+		this.store = store;
 	}
 	
 	

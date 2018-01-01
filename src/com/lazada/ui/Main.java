@@ -42,6 +42,7 @@ import com.lazada.model.json.JsonRootBean;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
@@ -85,21 +86,21 @@ import javax.swing.JCheckBox;
 public class Main implements MouseListener{
 
 	JFrame frmLazada;
-	private JTextField textField_3;
-	private ConnectImpl textArea1;
+	private JTextField store_text;
+	private ConnectImpl catchInfoArea;
 	private JDialog d;
 	private JButton button;
 	
 	private final JSeparator separator_2 = new JSeparator();
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField keyword_text;
+	private JTextField shop_text;
+	private JTextField product_text;
+	private JTextField startpage_text;
+	private JTextField endpage_text;
 
 	JCheckBox[] jway=new JCheckBox[3];
 	JCheckBox[] jplatform=new JCheckBox[4];
-	
+	JTextField[] wayText=new JTextField[3];
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -141,22 +142,22 @@ public class Main implements MouseListener{
 		button.setBounds(98, 255, 106, 35);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				    if(textField_3.getText().equals("")) {
+				    if(store_text.getText().equals("")) {
 				    	JOptionPane.showMessageDialog(d,"没有输入保存路径或者文件名！","请重新输入",JOptionPane.WARNING_MESSAGE);
 				    }
-				    if(textField_1.getText().equals("")||textField_2.getText().equals("")) {
+				    if(startpage_text.getText().equals("")||endpage_text.getText().equals("")) {
 				    	JOptionPane.showMessageDialog(d,"没有输入起始页和终止页！","请重新输入",JOptionPane.WARNING_MESSAGE);
 				    }
 //				    if(textField.getText().equals("")) {
 //				    	JOptionPane.showMessageDialog(d,"没有输入关键词！","请重新输入",JOptionPane.WARNING_MESSAGE);
 //				    }
-				    if(textField_1.getText().matches("[0-9]+")&&textField_2.getText().matches("[0-9]+")) {
+				    if(startpage_text.getText().matches("[0-9]+")&&endpage_text.getText().matches("[0-9]+")) {
 				    		new Thread(new Runnable() {
 					            @Override
 					            public void run() {
 							try {
 //								textArea1.setPro(textField.getText(),Integer.parseInt(textField_1.getText()),Integer.parseInt(textField_2.getText()),textField_3.getText()+"\\" +new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date())+".xls");								
-								textArea1.startCatching();
+								catchInfoArea.startCatching();
 							} catch (WriteException | IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -184,10 +185,10 @@ public class Main implements MouseListener{
 		label_2.setBounds(19, 230, 67, 15);
 		panel.add(label_2);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(73, 228, 177, 21);
-		panel.add(textField_3);
-		textField_3.setColumns(10);
+		store_text = new JTextField();
+		store_text.setBounds(73, 228, 177, 21);
+		panel.add(store_text);
+		store_text.setColumns(10);
 		
 		JButton btnNewButton = new JButton("----");
 		btnNewButton.setBounds(260, 226, 46, 23);
@@ -199,7 +200,7 @@ public class Main implements MouseListener{
 				jchoose.showOpenDialog(new JDialog());
 		        if(jchoose.getCurrentDirectory()== null||jchoose.getCurrentDirectory().toString().length()==0||jchoose.getSelectedFile()==null){            
 		        }else{  
-		        	textField_3.setText(jchoose.getSelectedFile().getPath());  
+		        	store_text.setText(jchoose.getSelectedFile().getPath());  
 //		        	if(textField_4.getText()==null||textField_4.getText().length()==0) textField_4.setText(textField.getText()+"_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 		        }
 		        
@@ -225,19 +226,22 @@ public class Main implements MouseListener{
 		JCheckBox keywordcheckBox = new JCheckBox("\u8BF7\u8F93\u5165\u5173\u952E\u8BCD\uFF1A");
 		keywordcheckBox.setBackground(new Color(240, 248, 255));
 		keywordcheckBox.setBounds(20, 26, 115, 23);
+		keywordcheckBox.setName(Constant.KEYWORDCATCH);
 		jway[0]=keywordcheckBox;
 		keywordcheckBox.addItemListener(new MyItemListener());
 		panel.add(keywordcheckBox);
 		
-		textField_5 = new JTextField();
-		textField_5.setBounds(150, 28, 116, 19);
-		panel.add(textField_5);
-		textField_5.setColumns(10);
+		keyword_text = new JTextField();
+		keyword_text.setBounds(150, 28, 116, 19);
+		panel.add(keyword_text);
+		keyword_text.setColumns(10);
+		wayText[0]=keyword_text;
 		
 		JCheckBox storeCheckBox = new JCheckBox("\u8BF7\u8F93\u5165\u5E97\u94FA\u94FE\u63A5\uFF1A");
 		storeCheckBox.setBackground(new Color(240, 248, 255));
 		storeCheckBox.setBounds(19, 55, 121, 23);
 		storeCheckBox.addItemListener(new MyItemListener());
+		storeCheckBox.setName(Constant.STORECATCH);
 		jway[1]=storeCheckBox;
 		panel.add(storeCheckBox);
 		
@@ -245,18 +249,21 @@ public class Main implements MouseListener{
 		productCheckBox.setBackground(new Color(240, 248, 255));
 		productCheckBox.setBounds(19, 83, 121, 23);
 		productCheckBox.addItemListener(new MyItemListener());
+		productCheckBox.setName(Constant.PRODUCTCATCH);
 		jway[2]=productCheckBox;
 		panel.add(productCheckBox);
 		
-		textField_6 = new JTextField();
-		textField_6.setBounds(150, 57, 116, 19);
-		textField_6.setColumns(10);
-		panel.add(textField_6);
+		shop_text = new JTextField();
+		shop_text.setBounds(150, 57, 116, 19);
+		shop_text.setColumns(10);
+		panel.add(shop_text);
+		wayText[1]=shop_text;
 		
-		textField_7 = new JTextField();
-		textField_7.setBounds(150, 84, 116, 19);
-		textField_7.setColumns(10);
-		panel.add(textField_7);
+		product_text = new JTextField();
+		product_text.setBounds(150, 84, 116, 19);
+		product_text.setColumns(10);
+		panel.add(product_text);
+		wayText[2]=product_text; 
 		
 		JLabel label_3 = new JLabel("\u8BF7\u60A8\u9009\u62E9\u91C7\u96C6\u5E73\u53F0\uFF1A");
 		label_3.setFont(new Font("仿宋", Font.PLAIN, 12));
@@ -264,30 +271,38 @@ public class Main implements MouseListener{
 		panel.add(label_3);
 		
 		JCheckBox chckbxLazada = new JCheckBox("lazada");
+		chckbxLazada.setSelected(true);
 		chckbxLazada.setBackground(new Color(240, 248, 255));
 		chckbxLazada.setBounds(19, 133, 67, 23);
 		jplatform[0]=chckbxLazada;
-		chckbxLazada.addItemListener(new MyItemListener());
+		chckbxLazada.setName(Constant.LAZADA);
+//		chckbxLazada.addItemListener(new MyItemListener());
 		panel.add(chckbxLazada);
 		
 		JCheckBox chckbxShopee = new JCheckBox("shopee");
+		chckbxShopee.setEnabled(false);
 		chckbxShopee.setBackground(new Color(240, 248, 255));
 		chckbxShopee.setBounds(90, 133, 67, 23);
-		jplatform[1]=chckbxShopee;
+		chckbxShopee.setName(Constant.SHOPEE);
+//		jplatform[1]=chckbxShopee;
 		chckbxShopee.addItemListener(new MyItemListener());
 		panel.add(chckbxShopee);
 		
 		JCheckBox chckbxAmazon = new JCheckBox("Amazon");
+		chckbxAmazon.setEnabled(false);
 		chckbxAmazon.setBackground(new Color(240, 248, 255));
 		chckbxAmazon.setBounds(163, 133, 67, 23);
-		jplatform[2]=chckbxAmazon;
+		chckbxAmazon.setName(Constant.AMAZON);
+//		jplatform[2]=chckbxAmazon;
 		chckbxAmazon.addItemListener(new MyItemListener());
 		panel.add(chckbxAmazon);
 		
 		JCheckBox chckbxAliexpress = new JCheckBox("AliExpress");
+		chckbxAliexpress.setEnabled(false);
 		chckbxAliexpress.setBackground(new Color(240, 248, 255));
 		chckbxAliexpress.setBounds(240, 133, 85, 23);
-		jplatform[3]=chckbxAliexpress;
+		chckbxAliexpress.setName(Constant.ALIEXPRESS);
+//		jplatform[3]=chckbxAliexpress;
 		chckbxAliexpress.addItemListener(new MyItemListener());
 		panel.add(chckbxAliexpress);
 		
@@ -300,19 +315,21 @@ public class Main implements MouseListener{
 		label_1.setBounds(20, 187, 54, 15);
 		panel.add(label_1);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(76, 187, 59, 19);
-		panel.add(textField_1);
+		startpage_text = new JTextField();
+		startpage_text.setText("1");
+		startpage_text.setColumns(10);
+		startpage_text.setBounds(76, 187, 59, 19);
+		panel.add(startpage_text);
 		
 		JLabel label_4 = new JLabel("\u7EC8\u6B62\u9875\uFF1A");
 		label_4.setBounds(176, 187, 54, 15);
 		panel.add(label_4);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(232, 185, 59, 19);
-		panel.add(textField_2);
+		endpage_text = new JTextField();
+		endpage_text.setText("1");
+		endpage_text.setColumns(10);
+		endpage_text.setBounds(232, 185, 59, 19);
+		panel.add(endpage_text);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(224, 255, 255));
@@ -377,12 +394,12 @@ public class Main implements MouseListener{
 		panel_3.setLayout(null);
 		 
 		
-		textArea1= new ConnectImpl();
-		textArea1.setBounds(0, 0, 327, 151);
+		catchInfoArea= new ConnectImpl();
+		catchInfoArea.setBounds(0, 0, 327, 151);
 		//panel_3.add(textArea1);
-		textArea1.setBackground(SystemColor.text);
+		catchInfoArea.setBackground(SystemColor.text);
 		
-		JScrollPane scrollPane = new JScrollPane(textArea1);
+		JScrollPane scrollPane = new JScrollPane(catchInfoArea);
 		scrollPane.setBounds(0, 0, 327, 113);
 		panel_3.add(scrollPane);
 		frmLazada.setVisible(true);
@@ -436,6 +453,27 @@ public class Main implements MouseListener{
 		
 	}
 	
+    public HashMap getActiveJcb(int type) {
+    	HashMap result=new HashMap();
+    	if(type==1) {//1为jway
+    		for(int i=0;i<jway.length;i++) {
+    			if(jway[i].isSelected()) {
+    				result.put(jway[i].getName(), wayText[i]);
+    				break;
+    			}
+    		}
+    	}
+    	else {
+    		for(int i=0;i<jway.length;i++) {
+    			if(jplatform[i].isSelected()) {
+    				result.put(jplatform[i].getName(), true);
+    				break;
+    			}
+    	}
+    }
+		return result;
+    
+}
 	class MyItemListener implements ItemListener {  
 	    public void itemStateChanged(ItemEvent e) {  
 	        JCheckBox jcb = (JCheckBox) e.getItem();// 将得到的事件强制转化为JCheckBox类  
@@ -460,7 +498,8 @@ public class Main implements MouseListener{
 	    	}
 			return 0;
 	       
-	    } 
+	    }
 	    
-	}
+
+}
 }
