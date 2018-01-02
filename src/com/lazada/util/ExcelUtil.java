@@ -100,8 +100,11 @@ public class ExcelUtil {
 	    sheet.addCell(new Label(22, exlRow, info.getBrand()));
 	}
 	
-	
-	public static int getFirstLevelByKeyWord(ConnectImpl ci,String website,String pagenum,String keyword,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
+	public static int getInfoByProductLink(ConnectImpl ci,String link,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
+		
+		return getDetailInfo(ci,link,sheet,exlRow);
+	}
+	public static int getInfoByKeyWord(ConnectImpl ci,String website,String pagenum,String keyword,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
 		String urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&page=" + pagenum;
 		Document doc = null;
 		while (doc == null) {
@@ -118,7 +121,7 @@ public class ExcelUtil {
 				ItemListElement ietelement = ietlist.get(i);
 				ci.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
 				//this.paintImmediately(this.getBounds());
-				exlRow=getSencondLevel(ci,ietelement.getUrl(), sheet,exlRow);
+				exlRow=getDetailInfo(ci,ietelement.getUrl(), sheet,exlRow);
 		     	}
 				}catch(Exception e) {
 					ci.append(e.getMessage());
@@ -133,7 +136,7 @@ public class ExcelUtil {
 		return exlRow;
 	}
 	
-	public static int getSencondLevel(ConnectImpl ci,String urlstring,WritableSheet sheet,int exlRow) throws IOException,RowsExceededException, WriteException{
+	public static int getDetailInfo(ConnectImpl ci,String urlstring,WritableSheet sheet,int exlRow) throws IOException,RowsExceededException, WriteException{
 
 		    FinalInfo info=new FinalInfo();
 		    info.setLink(urlstring);
@@ -144,7 +147,7 @@ public class ExcelUtil {
 				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));//标题
 				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim().replace("(", "").replace(")", ""));//好评
 				info.setBrand(doc.select("div.prod_header_brand_action").get(0).text().toString());//品牌
-				info.setStore(doc.select("a.basic-info__name").get(0).text().toString());//店铺名
+				info.setStore(doc.getElementsByClass("basic-info__name").get(0).text().toString());//店铺名
 				String category="";
 				Elements categorylist=doc.select("span.breadcrumb__item-text");
 				if(categorylist!=null && !categorylist.isEmpty()){

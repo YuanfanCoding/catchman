@@ -496,44 +496,27 @@ public class Main implements MouseListener{
     	
     	if (doCheck()){
     		
-    	    HashMap hm=getActiveJcb(1);
-    	    String way=(String)(hm.keySet().iterator().next());
-    	    String waytext=(String)hm.get(way);
-    	   
-    	    catchInfoArea.setPro(waytext,Integer.parseInt(startpage_text.getText()),Integer.parseInt(endpage_text.getText()),store_text.getText());								
-    		switch(way){
-    		case Constant.KEYWORDCATCH:
-
-	    		new Thread(new Runnable() {
-		            @Override
-		            public void run() {
-				try {
-					catchInfoArea.setType(1);
-					catchInfoArea.startCatching();
-					JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
-					if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
-						JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
-						HttpHandler.updateUser(0);
-						//frmLazada.dispose();
-						System.exit(0);
-					   }
-				} catch (WriteException | IOException e) {
-					
-					e.printStackTrace();
-				}
-		            }
-				}).start();				
-    			         break;
-    		case Constant.STORECATCH:
-    			new Thread(new Runnable() {
-		            @Override
-		            public void run() {
-				try {
-					catchInfoArea.startCatching();
-				} catch (WriteException | IOException e) {
-					
-					e.printStackTrace();
-				}
+    		new Thread(new Runnable() {
+	            @Override
+	            public void run() {
+			try {
+				HashMap hm=getActiveJcb(1);
+		    	String way=(String)(hm.keySet().iterator().next());
+		    	String waytext=(String)hm.get(way);
+		    	catchInfoArea.setPro(waytext,Integer.parseInt(startpage_text.getText()),Integer.parseInt(endpage_text.getText()),store_text.getText());			
+		    	switch(way){
+	    		case Constant.KEYWORDCATCH:
+	    			catchInfoArea.setType(1);
+	    			         break;
+	    		case Constant.STORECATCH:
+	    			catchInfoArea.setType(2);
+			                 break;
+	    		case Constant.PRODUCTCATCH:
+	    			catchInfoArea.setType(3);
+	                 break;
+	    		default :break;
+		    	}
+				catchInfoArea.startCatching();
 				JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
 				if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
 					JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
@@ -541,32 +524,12 @@ public class Main implements MouseListener{
 					//frmLazada.dispose();
 					System.exit(0);
 				   }
-		            }
-				}).start();		
-    			         break;
-    		case Constant.PRODUCTCATCH:
-    			new Thread(new Runnable() {
-		            @Override
-		            public void run() {
-				try {
-					catchInfoArea.startCatching();
-				} catch (WriteException | IOException e) {
-					
-					e.printStackTrace();
-				}
-				JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
-				if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
-					JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
-					HttpHandler.updateUser(0);
-					//frmLazada.dispose();
-					System.exit(0);
-				   }
-		            }
-				}).start();		
-    			         break;
-    		
-    		default :break;
-    		}
+			} catch (WriteException | IOException e) {
+				
+				e.printStackTrace();
+			}
+	            }
+			}).start();				
     	}
     	
     	

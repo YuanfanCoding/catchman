@@ -120,22 +120,41 @@ public class ConnectImpl extends JTextArea{
 	public void startCatching() throws IOException , RowsExceededException, WriteException{
 		WritableWorkbook workbook = ExcelUtil.initWorkbook(savepath);
 		exlRow++;
-		try {
-			for (int i = 0; i < endpage - startpage + 1; i++) {
-				this.append("开始抓取第" + (i + startpage) + "页的内容。\n");
-//				this.paintImmediately(this.getBounds());
-				getFirstLevelByKeyWord(String.valueOf(startpage + i), typetext, workbook.getSheet(0));
-				Thread.sleep(6000);// 延迟6秒发送请求
+		
+		switch (type){
+			
+		case 1://关键词
+			try {
+				for (int i = 0; i < endpage - startpage + 1; i++) {
+					this.append("开始抓取第" + (i + startpage) + "页的内容。\n");
+					exlRow=ExcelUtil.getInfoByKeyWord(this, website, String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);
+					Thread.sleep(6000);// 延迟6秒发送请求
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				this.append(e.getMessage());
+				//this.paintImmediately(this.getBounds());
+				e.printStackTrace();
+			} finally {
+				workbook.write();
+				workbook.close();
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			this.append(e.getMessage());
-			//this.paintImmediately(this.getBounds());
-			e.printStackTrace();
-		} finally {
-			workbook.write();
-			workbook.close();
+			break;
+		case 2://店铺链接
+			
+			break;
+		case 3://产品链接
+			exlRow=ExcelUtil.getInfoByProductLink(this, typetext, workbook.getSheet(0), exlRow);
+			this.append("抓取成功！请打开excel查看。\n");
+			break;
+			
+		default:break;	
 		}
+		
+		
+		
+		
+
 	}
 	public void getFirstLevelByKeyWord(String pagenum,String keyword,WritableSheet sheet) throws IOException, RowsExceededException, WriteException{
 		String urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&page=" + pagenum;
@@ -153,17 +172,21 @@ public class ConnectImpl extends JTextArea{
 			for (int i = 0; i < ietlist.size(); i++) {
 				ItemListElement ietelement = ietlist.get(i);
 				this.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
+				System.out.println("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
 				//this.paintImmediately(this.getBounds());
 				getSencondLevel(ietelement.getUrl(), sheet);
 		     	}
 				}catch(Exception e) {
 					this.append(e.getMessage());
+					System.out.println("error----");
+					System.out.println(e.getMessage());
 					this.paintImmediately(this.getBounds());
 				}
 		      }
 			else {
 				this.append("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  \n");
 				//this.paintImmediately(this.getBounds());
+				System.out.println("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  \n");
 			}
 		}
 		
@@ -180,7 +203,7 @@ public class ConnectImpl extends JTextArea{
 				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));//标题
 				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim().replace("(", "").replace(")", ""));//好评
 				info.setBrand(doc.select("div.prod_header_brand_action").get(0).text().toString());//品牌
-				info.setStore(doc.select("a.basic-info__name").get(0).text().toString());//店铺名
+				info.setStore(doc.getElementsByClass("basic-info__name").get(0).text().toString());//店铺名
 				String category="";
 				Elements categorylist=doc.select("span.breadcrumb__item-text");
 				if(categorylist!=null && !categorylist.isEmpty()){
