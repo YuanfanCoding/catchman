@@ -33,6 +33,9 @@ public class Constant {
 	public static final String ALIEXPRESS="ALIEXPRESS";
 	
 	public final static String KEYWORDSIDE="http://www.lazada.com.my/catalog/?q="; 
-	public final static String STORESIDE="http://www.lazada.com.my/catalog/?q="; 
+	
+	
+	public static final String TESTUSER="test";
+	public static final String TESTPASSWORD="lazada123";
 	
 }

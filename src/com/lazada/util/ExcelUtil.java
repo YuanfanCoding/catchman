@@ -23,8 +23,10 @@ import org.jsoup.select.Elements;
 import com.google.gson.Gson;
 import com.lazada.handler.ConnectImpl;
 import com.lazada.model.Constant;
-import com.lazada.model.json.ItemListElement;
-import com.lazada.model.json.JsonRootBean;
+import com.lazada.model.json.detail.ItemListElement;
+import com.lazada.model.json.detail.JsonRootBean;
+import com.lazada.model.json.firstlevel.FirstLevelJsonRootBean;
+import com.lazada.model.json.firstlevel.ListItems;
 import com.lazada.model.product.BaseInfo;
 import com.lazada.model.product.FinalInfo;
 
@@ -68,7 +70,8 @@ public class ExcelUtil {
 	     sheet.addCell(new Label(19, exlRow, "图片8"));
 	     sheet.addCell(new Label(20, exlRow, "尺寸"));
 	     sheet.addCell(new Label(21, exlRow, "店铺"));
-	     sheet.addCell(new Label(22, exlRow++, "品牌"));
+	     sheet.addCell(new Label(22, exlRow, "品牌"));
+	     sheet.addCell(new Label(23, exlRow++, "地区"));
 	   
 	     return workbook;
 	}
@@ -98,11 +101,12 @@ public class ExcelUtil {
 		sheet.addCell(new Label(20, exlRow, info.getSize()));
 		sheet.addCell(new Label(21, exlRow, info.getStore()));
 	    sheet.addCell(new Label(22, exlRow, info.getBrand()));
+	    sheet.addCell(new Label(23, exlRow, info.getLocation()));
 	}
 	
 	public static int getInfoByProductLink(ConnectImpl ci,String link,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
 		
-		return getDetailInfo(ci,link,sheet,exlRow);
+		return getDetailInfo(ci,link,sheet,exlRow,null);
 	}
 	public static int getInfoFirstLevel(ConnectImpl ci,String website,String pagenum,String keyword,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
 		String urlstring = "";
@@ -115,18 +119,17 @@ public class ExcelUtil {
 			doc = getDoc(urlstring);
 			if(doc!=null) {
 		  try {
-			Gson gson = new Gson();
-			String line=doc.select("script[type=application/ld+json]").get(1).data().toString();
-			JsonRootBean info = gson.fromJson(line.replaceAll("@type", "type").replaceAll("@context", "context"),
-					JsonRootBean.class);// 对于javabean直接给出class实例
-			List<ItemListElement> ietlist = info.getItemListElement();
-			Constant.areadycatchnum += ietlist.size();
-			for (int i = 0; i < ietlist.size(); i++) {
-				ItemListElement ietelement = ietlist.get(i);
-				ci.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
-				//this.paintImmediately(this.getBounds());
-				System.out.println("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
-				exlRow=getDetailInfo(ci,ietelement.getUrl(), sheet,exlRow);
+			Gson gson = new Gson();			
+			String lines=doc.select("script").get(2).data().toString();
+            FirstLevelJsonRootBean firstLevelJsonRootBean = gson.fromJson(lines.replaceAll("window.pageData=", ""),
+           		 FirstLevelJsonRootBean.class);// 对于javabean直接给出class实例
+			List<ListItems> secondietlist = firstLevelJsonRootBean.getMods().getListItems();
+			Constant.areadycatchnum += secondietlist.size();
+			for (int i = 0; i < secondietlist.size(); i++) {
+				ListItems ietelement = secondietlist.get(i);
+				ci.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getProductUrl()+"\n");
+				exlRow=getDetailInfo(ci,"https:"+ietelement.getProductUrl(), sheet,exlRow,ietelement);
+				 ietelement.getLocation();
 		     	}
 				}catch(Exception e) {
 					ci.append(e.getMessage());
@@ -141,14 +144,15 @@ public class ExcelUtil {
 		return exlRow;
 	}
 	
-	public static int getDetailInfo(ConnectImpl ci,String urlstring,WritableSheet sheet,int exlRow) throws IOException,RowsExceededException, WriteException{
+	public static int getDetailInfo(ConnectImpl ci,String urlstring,WritableSheet sheet,int exlRow,ListItems ietelement) throws IOException,RowsExceededException, WriteException{
 
-		    FinalInfo info=new FinalInfo();
-		    info.setLink(urlstring);
+		 FinalInfo info=new FinalInfo();
+		if(ietelement!=null) info.setLocation(ietelement.getLocation());  
 		    Document doc = null;
 			while (doc == null) {
 				doc = getDoc(urlstring);
 				if(doc!=null) {
+				info.setLink(urlstring);//链接
 				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));//标题
 				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim().replace("(", "").replace(")", ""));//好评
 				info.setBrand(doc.select("div.prod_header_brand_action").get(0).text().toString());//品牌
@@ -192,7 +196,7 @@ public class ExcelUtil {
 				}
 				info.setSize(size);//尺寸
 				info.setSpecial_price(doc.select("span#product_price").text().toString());//特价
-				info.setPrice(doc.select("span#price_box").text().toString().replace(",","" ));//实价
+				info.setPrice(doc.select("span#price_box").text().toString().replace(",","" ).replace("RM", "").trim());//实价
 				info.setDescription(doc.select("div.product-description__block").get(0).text().toString());//描述     
 				info.setDescriptioncode(doc.select("div.product-description__block").get(0).html());//描述代码
 				info.setPackage_content(doc.select("li.inbox__item").text().toString().replaceAll("<ul>", "").replaceAll("</ul>", "").replaceAll("<li>", "").replaceAll("</li>", "").replaceAll("<p>", "").replaceAll("</p>", ""));//包装
@@ -210,6 +214,7 @@ public class ExcelUtil {
 				info.backToInit();
 			
 			}
+		
 			return exlRow;
 		}
 	

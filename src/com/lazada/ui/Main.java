@@ -38,8 +38,8 @@ import com.google.gson.Gson;
 import com.lazada.handler.ConnectImpl;
 import com.lazada.handler.HttpHandler;
 import com.lazada.model.Constant;
-import com.lazada.model.json.ItemListElement;
-import com.lazada.model.json.JsonRootBean;
+import com.lazada.model.json.detail.ItemListElement;
+import com.lazada.model.json.detail.JsonRootBean;
 
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;

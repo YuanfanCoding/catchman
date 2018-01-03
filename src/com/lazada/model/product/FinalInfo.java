@@ -26,6 +26,7 @@ public class FinalInfo extends BaseInfo{
 		this.getcategory = false;
 		this.getBrand = false;
 		this.getStore = false;
+		this.getLocation = false;
 		
 		this.name = "";
 		this.description= "";
@@ -48,6 +49,6 @@ public class FinalInfo extends BaseInfo{
 		this.category="";
 		this. brand="";
 		this.store="";
-		
+		this.location="";
 	}
 }

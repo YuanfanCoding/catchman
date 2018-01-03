@@ -32,8 +32,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
-import com.lazada.model.json.ItemListElement;
-import com.lazada.model.json.JsonRootBean;
+import com.lazada.model.json.detail.ItemListElement;
+import com.lazada.model.json.detail.JsonRootBean;
 import com.lazada.model.product.FinalInfo;
 
 import jxl.Workbook;

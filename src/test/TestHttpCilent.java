@@ -16,8 +16,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
-import com.lazada.model.json.ItemListElement;
-import com.lazada.model.json.JsonRootBean;
+import com.lazada.model.json.detail.ItemListElement;
+import com.lazada.model.json.detail.JsonRootBean;
+import com.lazada.model.json.firstlevel.FirstLevelJsonRootBean;
+import com.lazada.model.json.firstlevel.ListItems;
 
 public class TestHttpCilent {
 
@@ -27,7 +29,7 @@ public class TestHttpCilent {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		
 		try {
-            HttpGet httpget = new HttpGet("https://www.lazada.com.my/maccosmetics-flagship-store?sort=popularity&page=1");
+            HttpGet httpget = new HttpGet("https://www.lazada.com.my/catalog/?spm=a2o4k.home.search.1.34d536e5I6TZE5&q=womens%20shoes&_keyori=ss&from=search_history&sugg=womens%20shoes_0_1");
           //  HttpGet httpget = new HttpGet("https://www.lazada.com.my/petpet/?spm=a2o4k.prod.0.0.27c36a81A1xgwt&ref=popular-search3=petpet");
             
 //           设置超时 
@@ -76,14 +78,26 @@ public class TestHttpCilent {
 //                	System.out.println(web);
                     Document doc= Jsoup.parse(web);
                 	Gson gson = new Gson();
-                    String line=doc.select("script[type=application/ld+json]").get(1).data().toString();
-                    JsonRootBean info = gson.fromJson(line.replaceAll("@type", "type").replaceAll("@context", "context"),
-        					JsonRootBean.class);// 对于javabean直接给出class实例
-        			List<ItemListElement> ietlist = info.getItemListElement();
-        			for (int i = 0; i < ietlist.size(); i++) {
-        				ItemListElement ietelement = ietlist.get(i);
-        				System.out.println("第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
-        		     	}
+//                    String line=doc.select("script[type=application/ld+json]").get(1).data().toString();
+//                    JsonRootBean info = gson.fromJson(line.replaceAll("@type", "type").replaceAll("@context", "context"),
+//        					JsonRootBean.class);// 对于javabean直接给出class实例
+//        			List<ItemListElement> ietlist = info.getItemListElement();
+//        			for (int i = 0; i < ietlist.size(); i++) {
+//        				ItemListElement ietelement = ietlist.get(i);
+//        				System.out.println("第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
+//        		     	}
+        			
+        			 String line=doc.select("script").get(2).data().toString();
+        			 System.out.println(line);
+                     FirstLevelJsonRootBean info = gson.fromJson(line.replaceAll("window.pageData=", ""),
+                    		 FirstLevelJsonRootBean.class);// 对于javabean直接给出class实例
+         			List<ListItems> ietlist = info.getMods().getListItems();
+         			for (int i = 0; i < ietlist.size(); i++) {
+         				ListItems ietelement = ietlist.get(i);
+         				System.out.println("第" + (i + 1) + "个详情:  " + ietelement.getLocation()+"\n");
+         		     	}
+        			
+        			
 //                    System.out.println(doc.select("div.prod_header_brand_action").get(0).text().toString());
 //                    System.out.println(doc.select("a.basic-info__name").get(0).text().toString());
 //                    String category="";

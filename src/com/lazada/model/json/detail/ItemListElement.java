@@ -1,4 +1,4 @@
-package com.lazada.model.json;
+package com.lazada.model.json.detail;
 
 import com.google.gson.annotations.SerializedName;
 

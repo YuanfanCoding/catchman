@@ -26,6 +26,7 @@ public class BaseInfo {
 	public boolean getcategory = false;
 	public boolean getBrand = false;
 	public boolean getStore = false;
+	public boolean getLocation = false;
 	
 	public String name = "";
 	public String description= "";
@@ -50,6 +51,7 @@ public class BaseInfo {
 	public String category="";
 	public String brand="";
 	public String store="";
+	public String location="";
 	
 	public boolean isOneItemStart() {
 		return oneItemStart;
@@ -332,6 +334,18 @@ public class BaseInfo {
 	}
 	public void setStore(String store) {
 		this.store = store;
+	}
+	public boolean isGetLocation() {
+		return getLocation;
+	}
+	public void setGetLocation(boolean getLocation) {
+		this.getLocation = getLocation;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	
 	
