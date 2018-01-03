@@ -51,7 +51,6 @@ import jxl.write.biff.RowsExceededException;
  */
 public class ConnectImpl extends JTextArea{
     
-	public final static String website="http://www.lazada.com.my/catalog/?q="; 
 	private String typetext;
 	private int startpage;
 	private int endpage;
@@ -62,7 +61,7 @@ public class ConnectImpl extends JTextArea{
 		
 		try {
 			long startTime=System.currentTimeMillis();   
-			new ConnectImpl("women shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
+			new ConnectImpl(2,"https://www.lazada.com.my/maccosmetics-flagship-store/?spm=a2o4k.home.officialStores.5.41060a2f2P8E7A&abtest=&pos=4&abbucket=&up_id=71530474&acm=icms-zebra-5000097-2585696.1003.1.2262608&scm=1007.16293.95200.100200300000000&aldid=OuU9Xn1w",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
 			long endTime=System.currentTimeMillis();
 			System.out.println("程序运行时间： "+(endTime-startTime)/1000+"s");
 		} catch (WriteException | IOException e ) {
@@ -102,6 +101,17 @@ public class ConnectImpl extends JTextArea{
 		this.savepath=savepath;
 		
 	}
+	
+	public ConnectImpl(int type, String typetext, int startpage, int endpage, String savepath) {
+		// TODO Auto-generated constructor stub
+		this.type=type;
+	    this.typetext=typetext;
+	    this.startpage=startpage;
+		if(endpage>100) endpage=100;
+		this.endpage=endpage;
+		this.savepath=savepath;
+		
+	}
     
 	public void setPro(int type,String typetext, int startpage, int endpage, String savepath) {
 		    this.type=type;
@@ -116,32 +126,34 @@ public class ConnectImpl extends JTextArea{
 		// TODO Auto-generated constructor stub
 	}
  
-
+	public void pageCatching(int type,WritableWorkbook workbook) throws IOException , RowsExceededException, WriteException{
+		
+		try {
+			for (int i = 0; i < endpage - startpage + 1; i++) {
+				this.append("开始抓取第" + (i + startpage) + "页的内容。\n");
+				if(type==1)
+				exlRow=ExcelUtil.getInfoFirstLevel(this, Constant.KEYWORDSIDE, String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);
+				else exlRow=ExcelUtil.getInfoByStoreLink(this,String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);
+				Thread.sleep(6000);// 延迟6秒发送请求
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			this.append(e.getMessage());
+			//this.paintImmediately(this.getBounds());
+			e.printStackTrace();
+		}
+	}
 	public void startCatching() throws IOException , RowsExceededException, WriteException{
 		WritableWorkbook workbook = ExcelUtil.initWorkbook(savepath);
 		exlRow++;
 		
 		switch (type){
-			
+		
 		case 1://关键词
-			try {
-				for (int i = 0; i < endpage - startpage + 1; i++) {
-					this.append("开始抓取第" + (i + startpage) + "页的内容。\n");
-					exlRow=ExcelUtil.getInfoByKeyWord(this, website, String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);
-					Thread.sleep(6000);// 延迟6秒发送请求
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				this.append(e.getMessage());
-				//this.paintImmediately(this.getBounds());
-				e.printStackTrace();
-			} finally {
-				workbook.write();
-				workbook.close();
-			}
+			pageCatching(type,workbook) ;
 			break;
 		case 2://店铺链接
-			
+			pageCatching(type,workbook) ;
 			break;
 		case 3://产品链接
 			exlRow=ExcelUtil.getInfoByProductLink(this, typetext, workbook.getSheet(0), exlRow);
@@ -151,159 +163,9 @@ public class ConnectImpl extends JTextArea{
 		default:break;	
 		}
 		
+			workbook.write();
+			workbook.close();
 		
-		
-		
-
-	}
-	public void getFirstLevelByKeyWord(String pagenum,String keyword,WritableSheet sheet) throws IOException, RowsExceededException, WriteException{
-		String urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&page=" + pagenum;
-		Document doc = null;
-		while (doc == null) {
-			doc = getDoc(urlstring);
-			if(doc!=null) {
-		  try {
-			Gson gson = new Gson();
-			String line=doc.select("script[type=application/ld+json]").get(1).data().toString();
-			JsonRootBean info = gson.fromJson(line.replaceAll("@type", "type").replaceAll("@context", "context"),
-					JsonRootBean.class);// 对于javabean直接给出class实例
-			List<ItemListElement> ietlist = info.getItemListElement();
-			Constant.areadycatchnum += ietlist.size();
-			for (int i = 0; i < ietlist.size(); i++) {
-				ItemListElement ietelement = ietlist.get(i);
-				this.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
-				System.out.println("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
-				//this.paintImmediately(this.getBounds());
-				getSencondLevel(ietelement.getUrl(), sheet);
-		     	}
-				}catch(Exception e) {
-					this.append(e.getMessage());
-					System.out.println("error----");
-					System.out.println(e.getMessage());
-					this.paintImmediately(this.getBounds());
-				}
-		      }
-			else {
-				this.append("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  \n");
-				//this.paintImmediately(this.getBounds());
-				System.out.println("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  \n");
-			}
-		}
-		
-	}
-	
-	public void getSencondLevel(String urlstring,WritableSheet sheet) throws IOException,RowsExceededException, WriteException{
-
-		    FinalInfo info=new FinalInfo();
-		    info.setLink(urlstring);
-		    Document doc = null;
-			while (doc == null) {
-				doc = getDoc(urlstring);
-				if(doc!=null) {
-				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));//标题
-				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim().replace("(", "").replace(")", ""));//好评
-				info.setBrand(doc.select("div.prod_header_brand_action").get(0).text().toString());//品牌
-				info.setStore(doc.getElementsByClass("basic-info__name").get(0).text().toString());//店铺名
-				String category="";
-				Elements categorylist=doc.select("span.breadcrumb__item-text");
-				if(categorylist!=null && !categorylist.isEmpty()){
-					for(int i=0;i<categorylist.size()-1;i++)
-						category+=categorylist.get(i).text().toString()+"/";
-				}
-				info.setCategory(category);//分类
-				String elimagestring="";
-				Elements elimage=doc.getElementsByClass("productImage");
-				info.setMainimage(elimage.get(0).attr("data-big").toString());//图片
-				for(int i=1;i<(elimage.size()>8?8:elimage.size()-1);i++) {
-					Class clazz = info.getClass();
-					Method m;
-						try {
-							m = clazz.getMethod("setImage"+(i+1),String.class);
-							m.invoke(info, elimage.get(i).attr("data-big").toString());
-						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-							
-							e.printStackTrace();
-						}
-					
-				}
-				
-				Elements elsd=doc.getElementsByClass("prd-attributesList").select("span");
-				String elsdstring="";
-				for(Element els:elsd) {
-					elsdstring+=els.text().toString()+"\n";
-				}
-				info.setShort_description(elsdstring);//卖点
-				info.setShort_descriptioncode(doc.getElementsByClass("prd-attributesList").html());//卖点代码
-				String size="";
-				Elements sizelist=doc.select("span.grouped-size__popup__tab__content__item__size-item");
-				if(sizelist!=null && !sizelist.isEmpty()){
-					size+=doc.getElementsByClass("grouped-size__popup__tab__header__item grouped-size__popup__tab__header__item_state_active").text().toString()+" \n";
-					for(int i=0;i<sizelist.size();i++)
-						size+=sizelist.get(i).text().toString()+" \n";
-				}
-				info.setSize(size);//尺寸
-				info.setSpecial_price(doc.select("span#product_price").text().toString());//特价
-				info.setPrice(doc.select("span#price_box").text().toString().replace(",","" ));//实价
-				info.setDescription(doc.select("div.product-description__block").get(0).text().toString());//描述     
-				info.setDescriptioncode(doc.select("div.product-description__block").get(0).html());//描述代码
-				info.setPackage_content(doc.select("li.inbox__item").text().toString().replaceAll("<ul>", "").replaceAll("</ul>", "").replaceAll("<li>", "").replaceAll("</li>", "").replaceAll("<p>", "").replaceAll("</p>", ""));//包装
-				info.setSellersku(doc.select("td#pdtsku").text().toString());//sku
-				info.setOneItemStart(true);
-				}
-				else {
-					this.append("链接：" +urlstring + "获取失败，开始重新获取:--------------  \n");
-					//this.paintImmediately(this.getBounds());
-				}
-			}
-			if (info.isOneItemStart()) {
-				ExcelUtil.handleOneItem(sheet, exlRow, 0, info);
-				exlRow++;
-				info.backToInit();
-			
-			}
-		}
-	
-
-	public  Document getDoc(String url) {
-
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		Document doc = null;
-		try {
-			HttpGet httpget = new HttpGet(url);
-			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(6*1000).build();
-			httpget.setConfig(requestConfig);
-			httpget.setHeader("User-Agent",
-					"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");
-
-			CloseableHttpResponse response = httpclient.execute(httpget);
-
-			String web = "";
-			try {
-				// 获取响应实体
-				HttpEntity entity = response.getEntity();
-				// 打印响应状态
-				if (entity != null) {
-					web = EntityUtils.toString(entity, "UTF-8");
-					doc = Jsoup.parse(web);
-					return doc;
-
-				}
-			} finally {
-				response.close();
-				httpclient.close();
-			}
-		} catch (org.apache.http.NoHttpResponseException e) {
-			e.printStackTrace();
-		} 
-		  catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch(java.net.UnknownHostException u) {
-			u.printStackTrace();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return doc;
 	}
 	
 

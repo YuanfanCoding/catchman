@@ -104,8 +104,12 @@ public class ExcelUtil {
 		
 		return getDetailInfo(ci,link,sheet,exlRow);
 	}
-	public static int getInfoByKeyWord(ConnectImpl ci,String website,String pagenum,String keyword,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
-		String urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&page=" + pagenum;
+	public static int getInfoFirstLevel(ConnectImpl ci,String website,String pagenum,String keyword,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
+		String urlstring = "";
+		if(!keyword.equals(""))
+		urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&page=" + pagenum;
+		else 
+		urlstring = website+ "&page=" + pagenum;
 		Document doc = null;
 		while (doc == null) {
 			doc = getDoc(urlstring);
@@ -121,6 +125,7 @@ public class ExcelUtil {
 				ItemListElement ietelement = ietlist.get(i);
 				ci.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
 				//this.paintImmediately(this.getBounds());
+				System.out.println("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
 				exlRow=getDetailInfo(ci,ietelement.getUrl(), sheet,exlRow);
 		     	}
 				}catch(Exception e) {
@@ -254,6 +259,14 @@ public class ExcelUtil {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+	}
+
+
+	public static int getInfoByStoreLink(ConnectImpl connectImpl,
+		    String pagenum, String storelink,
+			WritableSheet sheet, int exlRow) throws RowsExceededException, WriteException, IOException {
+		return getInfoFirstLevel(connectImpl,storelink, pagenum, "", sheet, exlRow);
+		 
 	}
 
 	

@@ -2,6 +2,7 @@ package test;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -14,6 +15,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import com.google.gson.Gson;
+import com.lazada.model.json.ItemListElement;
+import com.lazada.model.json.JsonRootBean;
+
 public class TestHttpCilent {
 
 	public static void main(String[] args) {
@@ -22,7 +27,7 @@ public class TestHttpCilent {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		
 		try {
-            HttpGet httpget = new HttpGet("https://www.lazada.com.my/multicolor-double-layer-stainless-steel-lunch-box-3-tiers-11118276.html");
+            HttpGet httpget = new HttpGet("https://www.lazada.com.my/maccosmetics-flagship-store?sort=popularity&page=1");
           //  HttpGet httpget = new HttpGet("https://www.lazada.com.my/petpet/?spm=a2o4k.prod.0.0.27c36a81A1xgwt&ref=popular-search3=petpet");
             
 //           设置超时 
@@ -70,8 +75,17 @@ public class TestHttpCilent {
                 	web= EntityUtils.toString(entity,"UTF-8");
 //                	System.out.println(web);
                     Document doc= Jsoup.parse(web);
-                    System.out.println(doc.select("div.prod_header_brand_action").get(0).text().toString());
-                    System.out.println(doc.select("a.basic-info__name").get(0).text().toString());
+                	Gson gson = new Gson();
+                    String line=doc.select("script[type=application/ld+json]").get(1).data().toString();
+                    JsonRootBean info = gson.fromJson(line.replaceAll("@type", "type").replaceAll("@context", "context"),
+        					JsonRootBean.class);// 对于javabean直接给出class实例
+        			List<ItemListElement> ietlist = info.getItemListElement();
+        			for (int i = 0; i < ietlist.size(); i++) {
+        				ItemListElement ietelement = ietlist.get(i);
+        				System.out.println("第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
+        		     	}
+//                    System.out.println(doc.select("div.prod_header_brand_action").get(0).text().toString());
+//                    System.out.println(doc.select("a.basic-info__name").get(0).text().toString());
 //                    String category="";
 //    				Elements categorylist=doc.select("span.breadcrumb__item-text");
 //    				if(categorylist!=null && !categorylist.isEmpty()){
