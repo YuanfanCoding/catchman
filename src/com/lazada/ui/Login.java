@@ -167,42 +167,87 @@ public class Login extends JFrame implements ActionListener {
 				String password = new String(c);
 				Userinfo ui=null;
 				try {
-					ui = HttpHandler.getUser(name, password,Constant.MACADDDRESS);
+					if(name.equals(Constant.TESTUSER) && password.equals(Constant.TESTPASSWORD)) { //测试版
+						
+							boolean isrecord=true;
+							try {
+								isrecord=HttpHandler.getRecord();
+							} catch (ParseException | IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							if(isrecord){
+								if(JOptionPane.showConfirmDialog(d, "您已经体验过试用版，请到官网下载正式版！", "体验到期",
+										JOptionPane.DEFAULT_OPTION)==0){
+									try {  
+							            URI uri = new URI("http://ylfcoding.cn");  
+							            Desktop.getDesktop().browse(uri);  
+							        } catch (URISyntaxException aa) {  
+							            aa.printStackTrace();  
+							        } catch (IOException ee) {  
+							            ee.printStackTrace();  
+							        }  
+								}
+								System.exit(0);
+							}
+							else{		
+								
+							this.dispose();
+							 try {
+									UIManager.setLookAndFeel(UIManager.
+									           getSystemLookAndFeelClassName());
+								} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+										| UnsupportedLookAndFeelException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							    Main window = new Main(true);
+						   }
+						
+						
+					}
+					else { //正式版或者账号错误
+						
+						ui = HttpHandler.getUser(name, password,Constant.MACADDDRESS);
+						
+						if (ui!=null) { 
+							//先验证过期时间，再验证mac数量，最后验证抓取数量
+							String message=doCheckUser(ui);
+							if(message.equals("")) {
+							   Constant.areadycatchnum=Integer.parseInt(ui.getAreadynum());
+							   Constant.totalnum=ui.getCatchnum();
+							   Constant.name=ui.getName();
+							   Constant.password=ui.getPassword();
+							   this.dispose();
+							   try {
+								UIManager.setLookAndFeel(UIManager.
+								           getSystemLookAndFeelClassName());
+							} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+									| UnsupportedLookAndFeelException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						       Main window = new Main(false);
+							}  
+							else {
+								JOptionPane.showMessageDialog(d, message, "抱歉",
+									JOptionPane.WARNING_MESSAGE);
+							      usernameTextField.setText("");
+							      passwordField.setText("");
+							}
+						} else {
+							JOptionPane.showMessageDialog(d, "用户名或密码错误", "请重新输入",
+									JOptionPane.WARNING_MESSAGE);
+							usernameTextField.setText("");
+							passwordField.setText("");
+						}
+					}
+				
 				} catch (ParseException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				if (ui!=null) { 
-					//先验证过期时间，再验证mac数量，最后验证抓取数量
-					String message=doCheckUser(ui);
-					if(message.equals("")) {
-					   Constant.areadycatchnum=Integer.parseInt(ui.getAreadynum());
-					   Constant.totalnum=ui.getCatchnum();
-					   Constant.name=ui.getName();
-					   Constant.password=ui.getPassword();
-					   this.dispose();
-					   try {
-						UIManager.setLookAndFeel(UIManager.
-						           getSystemLookAndFeelClassName());
-					} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-							| UnsupportedLookAndFeelException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				       Main window = new Main();
-					}  
-					else {
-						JOptionPane.showMessageDialog(d, message, "抱歉",
-							JOptionPane.WARNING_MESSAGE);
-					      usernameTextField.setText("");
-					      passwordField.setText("");
-					}
-				} else {
-					JOptionPane.showMessageDialog(d, "用户名或密码错误", "请重新输入",
-							JOptionPane.WARNING_MESSAGE);
-					usernameTextField.setText("");
-					passwordField.setText("");
-				}
+
 			}
 			}
 		}

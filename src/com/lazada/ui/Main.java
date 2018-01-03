@@ -102,6 +102,8 @@ public class Main implements MouseListener{
 	private JTextField startpage_text;
 	private JTextField endpage_text;
 
+	private boolean istest=false;
+	
 	JCheckBox[] jway=new JCheckBox[3];
 	JCheckBox[] jplatform=new JCheckBox[4];
 	JTextField[] wayText=new JTextField[3];
@@ -111,7 +113,7 @@ public class Main implements MouseListener{
 				try {
 					UIManager.setLookAndFeel(UIManager.
 	                        getSystemLookAndFeelClassName());
-					Main window = new Main();
+					Main window = new Main(false);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -120,7 +122,8 @@ public class Main implements MouseListener{
 		});
 	}
  
-	public Main() {
+	public Main(boolean istest) {
+		this.istest=istest;
 		initialize();
 	}
 
@@ -141,12 +144,6 @@ public class Main implements MouseListener{
 		panel.setBounds(154, 0, 327, 300);
 		frmLazada.getContentPane().add(panel);
 		panel.setLayout(null);
-		
-//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  
-//		float proportionW = screenSize.width/frmLazada.getWidth();  
-//        float proportionH = screenSize.height/frmLazada.getHeight();  
-          
-//        modifyComponentSize(frmLazada, proportionW,proportionH);  
 		
 		button = new JButton("\u5F00\u59CB\u6536\u96C6");
 		button.setBounds(98, 255, 106, 35);
@@ -518,12 +515,29 @@ public class Main implements MouseListener{
 		    	}
 				catchInfoArea.startCatching();
 				JOptionPane.showMessageDialog(d,"您的数据收集完成！","nice!",JOptionPane.WARNING_MESSAGE);
-				if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
-					JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
-					HttpHandler.updateUser(0);
-					//frmLazada.dispose();
-					System.exit(0);
-				   }
+				if(istest) {
+					
+					try {
+					if(JOptionPane.showConfirmDialog(d,"需要更多数据请访问本软件官网！","nice!",JOptionPane.DEFAULT_OPTION)==0){							 
+			            URI uri = new URI(Constant.ADVERTISEMENT);  
+			            Desktop.getDesktop().browse(uri);  						    
+				    }
+					} catch (IOException | URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				    }
+					System.exit(0);	//强制退出
+					
+			   	}
+				  else {
+					
+					if(!Constant.totalnum.equals("无限制") && Constant.areadycatchnum>=Integer.parseInt(Constant.totalnum)) {
+						JOptionPane.showMessageDialog(d,"您的收集数量已经达到上限，请联系客服续费！","即将关闭",JOptionPane.WARNING_MESSAGE);
+						HttpHandler.updateUser(0);
+						System.exit(0);
+					   }
+				}
+				
 			} catch (WriteException | IOException e) {
 				
 				e.printStackTrace();

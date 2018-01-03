@@ -7,6 +7,9 @@ import java.net.UnknownHostException;
 
 public class IpMacUtil {
 	
+	public static void  main(String args[]) {
+		System.out.println(getMACAddress());
+	}
 	
 	 //获取MAC地址的方法  
     public static String getMACAddress(){  

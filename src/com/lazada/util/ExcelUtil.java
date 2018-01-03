@@ -104,9 +104,14 @@ public class ExcelUtil {
 	    sheet.addCell(new Label(23, exlRow, info.getLocation()));
 	}
 	
-	public static int getInfoByProductLink(ConnectImpl ci,String link,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
+	public static int getInfoByProductLink(ConnectImpl ci,String links,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
 		
-		return getDetailInfo(ci,link,sheet,exlRow,null);
+		String[] arry=links.split(" ");
+		for(int i=0;i<arry.length;i++) {
+			exlRow=getDetailInfo(ci,arry[i],sheet,exlRow,null);
+			ci.append("抓取成功:"+arry[i]+"\n");
+		}
+		return exlRow;
 	}
 	public static int getInfoFirstLevel(ConnectImpl ci,String website,String pagenum,String keyword,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
 		String urlstring = "";

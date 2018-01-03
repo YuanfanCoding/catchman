@@ -13,7 +13,7 @@ public class Constant {
 	public  static final  String WEBSITE="http://ylfcoding.cn";
 	public  static final  String HTTPADDR="http://ylfcoding.cn";//http://localhost:8080
 	public  static final  String ADVERTISEMENT="http://ylfcoding.cn";
-	public final static String VERSION="V1.0";
+	public final static String VERSION="V2.0";
 	public final static String SOFTWARENAME="LAZADA数据收集器";
 	
 	//http请求
@@ -21,7 +21,8 @@ public class Constant {
 	public final static String ADDUSER = HTTPADDR+"/V1/user";
 	public final static String GETVERSION = HTTPADDR+"/version";
 	public final static String UPDATEUSER = HTTPADDR+"/V1/user/update";
-	public final static String GETRECORD = HTTPADDR+"/testrecord";
+	public final static String GETRECORD = HTTPADDR+"/isExisTestrecord";
+	public final static String SAVERECORD = HTTPADDR+"/saveTestrecord";
 	
 	public static final String KEYWORDCATCH="KEYWORDCATCH";
 	public static final String STORECATCH="STORECATCH";

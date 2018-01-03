@@ -61,9 +61,9 @@ public class ConnectImpl extends JTextArea{
 		
 		try {
 			long startTime=System.currentTimeMillis();   
-//			new ConnectImpl(2,"https://www.lazada.com.my/maccosmetics-flagship-store/?spm=a2o4k.home.officialStores.5.41060a2f2P8E7A&abtest=&pos=4&abbucket=&up_id=71530474&acm=icms-zebra-5000097-2585696.1003.1.2262608&scm=1007.16293.95200.100200300000000&aldid=OuU9Xn1w",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
-			new ConnectImpl(1,"womens shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
-//			new ConnectImpl(3,"https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoeswhite-63716565.html",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
+//			new ConnectImpl(2,"https://www.lazada.com.my/maccosmetics-flagship-store/?sort=popularity",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
+//			new ConnectImpl(1,"womens shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
+			new ConnectImpl(3,"https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoeswhite-63716565.html \t\n https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoeswhite-63716565.html",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
 			long endTime=System.currentTimeMillis();
 			System.out.println("程序运行时间： "+(endTime-startTime)/1000+"s");
 		} catch (WriteException | IOException e ) {

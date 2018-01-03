@@ -17,7 +17,7 @@ public class Page {
     private String regCategoryId;
     private String xParams;
     private String SortingPattern;
-    private List<String> filters;
+    private List<Object> filters;
     private String rn;
     private long resultNr;
     private String internalSearchResultType;
@@ -56,10 +56,10 @@ public class Page {
          return SortingPattern;
      }
 
-    public void setFilters(List<String> filters) {
+    public void setFilters(List<Object> filters) {
          this.filters = filters;
      }
-     public List<String> getFilters() {
+     public List<Object> getFilters() {
          return filters;
      }
 
