@@ -171,7 +171,7 @@ public class Login extends JFrame implements ActionListener {
 						
 							boolean isrecord=true;
 							try {
-								isrecord=HttpHandler.getRecord();
+								isrecord=HttpHandler.handleRecord(Constant.GETRECORD);
 							} catch (ParseException | IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -180,7 +180,7 @@ public class Login extends JFrame implements ActionListener {
 								if(JOptionPane.showConfirmDialog(d, "您已经体验过试用版，请到官网下载正式版！", "体验到期",
 										JOptionPane.DEFAULT_OPTION)==0){
 									try {  
-							            URI uri = new URI("http://ylfcoding.cn");  
+							            URI uri = new URI(Constant.WEBSITE);  
 							            Desktop.getDesktop().browse(uri);  
 							        } catch (URISyntaxException aa) {  
 							            aa.printStackTrace();  

@@ -63,7 +63,7 @@ public class ConnectImpl extends JTextArea{
 			long startTime=System.currentTimeMillis();   
 //			new ConnectImpl(2,"https://www.lazada.com.my/maccosmetics-flagship-store/?sort=popularity",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
 //			new ConnectImpl(1,"womens shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
-			new ConnectImpl(3,"https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoeswhite-63716565.html \t\n https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoeswhite-63716565.html",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
+			new ConnectImpl(3,"https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoeswhite-63716565.html https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoeswhite-63716565.html",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
 			long endTime=System.currentTimeMillis();
 			System.out.println("程序运行时间： "+(endTime-startTime)/1000+"s");
 		} catch (WriteException | IOException e ) {

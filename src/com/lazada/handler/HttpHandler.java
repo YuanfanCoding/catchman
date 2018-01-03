@@ -30,16 +30,16 @@ import com.lazada.util.IpMacUtil;
 
 public class HttpHandler {
 
-	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-//		Constant.name="1016127734";
-//		Constant.password="123456";
-//		Constant.areadycatchnum=36;
-//		updateUser(0);
+		// Constant.name="1016127734";
+		// Constant.password="123456";
+		// Constant.areadycatchnum=36;
+		// updateUser(0);
 	}
 
-	public static Userinfo getUser(String name, String password,String mac) throws ParseException, IOException {
+	public static Userinfo getUser(String name, String password, String mac)
+			throws ParseException, IOException {
 		Userinfo ui = null;
 		String body = "";
 		// 创建httpclient对象
@@ -50,12 +50,14 @@ public class HttpHandler {
 		nvps.add(new BasicNameValuePair("password", password));
 		nvps.add(new BasicNameValuePair("mac", mac));
 		// 设置参数到请求对象中
-		HttpGet httpGet = new HttpGet(Constant.GETUSER + "?" + EntityUtils.toString(new UrlEncodedFormEntity(nvps, "utf-8")));
+		HttpGet httpGet = new HttpGet(Constant.GETUSER + "?"
+				+ EntityUtils.toString(new UrlEncodedFormEntity(nvps, "utf-8")));
 
 		// 设置header信息
 		// 指定报文头【Content-type】、【User-Agent】
 		httpGet.setHeader("Content-type", "application/json");
-		httpGet.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+		httpGet.setHeader("User-Agent",
+				"Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 
 		// 执行请求操作，并拿到结果（同步阻塞）
 		CloseableHttpResponse response = client.execute(httpGet);
@@ -73,21 +75,23 @@ public class HttpHandler {
 		return ui;
 	}
 
-	public static boolean addUser(Userinfo ui) throws ParseException, IOException {
+	public static boolean addUser(Userinfo ui) throws ParseException,
+			IOException {
 
 		String body = "";
 		// 创建httpclient对象
 		CloseableHttpClient client = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(Constant.ADDUSER);
-		StringEntity entitys = new StringEntity(new Gson().toJson(ui),"utf-8"); //解决中文乱码问题 
-		entitys.setContentEncoding("UTF-8"); 
+		StringEntity entitys = new StringEntity(new Gson().toJson(ui), "utf-8"); // 解决中文乱码问题
+		entitys.setContentEncoding("UTF-8");
 		entitys.setContentType("application/json");
 		httpPost.setEntity(entitys);
 
 		// 设置header信息
 		// 指定报文头【Content-type】、【User-Agent】
 		httpPost.setHeader("Content-type", "application/json");
-		httpPost.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+		httpPost.setHeader("User-Agent",
+				"Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 
 		// 执行请求操作，并拿到结果（同步阻塞）
 		CloseableHttpResponse response = client.execute(httpPost);
@@ -106,7 +110,7 @@ public class HttpHandler {
 		return false;
 	}
 
-	public static String getVersion() throws ParseException, IOException{
+	public static String getVersion() throws ParseException, IOException {
 		String body = "";
 		CloseableHttpClient client = HttpClients.createDefault();
 		// 设置参数到请求对象中
@@ -114,7 +118,8 @@ public class HttpHandler {
 		// 设置header信息
 		// 指定报文头【Content-type】、【User-Agent】
 		httpGet.setHeader("Content-type", "application/json");
-		httpGet.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+		httpGet.setHeader("User-Agent",
+				"Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 
 		// 执行请求操作，并拿到结果（同步阻塞）
 		CloseableHttpResponse response = client.execute(httpGet);
@@ -132,10 +137,12 @@ public class HttpHandler {
 
 	/**
 	 * 
-	 * @param type  0为退出时的update
+	 * @param type
+	 *            0为退出时的update
 	 */
-	public static boolean updateUser(int type) {  
-		Userinfo ui = new Userinfo(Constant.name, Constant.password, String.valueOf(Constant.areadycatchnum),Constant.MACADDDRESS);
+	public static boolean updateUser(int type) {
+		Userinfo ui = new Userinfo(Constant.name, Constant.password,
+				String.valueOf(Constant.areadycatchnum), Constant.MACADDDRESS);
 		// TODO Auto-generated method stub
 		String body = "";
 		// 创建httpclient对象
@@ -149,7 +156,8 @@ public class HttpHandler {
 		// 设置header信息
 		// 指定报文头【Content-type】、【User-Agent】
 		httpPost.setHeader("Content-type", "application/json");
-		httpPost.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+		httpPost.setHeader("User-Agent",
+				"Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 
 		// 执行请求操作，并拿到结果（同步阻塞）
 		CloseableHttpResponse response;
@@ -161,7 +169,7 @@ public class HttpHandler {
 			if (entity != null) {
 				// 按指定编码转换结果实体为String类型
 				body = EntityUtils.toString(entity, "utf-8");
-				
+
 			}
 
 			EntityUtils.consume(entity);
@@ -175,8 +183,8 @@ public class HttpHandler {
 		return true;
 	}
 
-public static boolean getRecord() throws ParseException, IOException {
-		
+	public static boolean handleRecord(String api) throws ParseException, IOException {
+
 		String body = "true";
 		// 创建httpclient对象
 		CloseableHttpClient client = HttpClients.createDefault();
@@ -184,12 +192,14 @@ public static boolean getRecord() throws ParseException, IOException {
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("mac", Constant.MACADDDRESS));
 		// 设置参数到请求对象中
-		HttpGet httpGet = new HttpGet(Constant.GETRECORD+"?" + EntityUtils.toString(new UrlEncodedFormEntity(nvps, "utf-8")));
+		HttpGet httpGet = new HttpGet(api + "?"
+				+ EntityUtils.toString(new UrlEncodedFormEntity(nvps, "utf-8")));
 
 		// 设置header信息
 		// 指定报文头【Content-type】、【User-Agent】
 		httpGet.setHeader("Content-type", "application/json");
-		httpGet.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+		httpGet.setHeader("User-Agent",
+				"Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 
 		// 执行请求操作，并拿到结果（同步阻塞）
 		CloseableHttpResponse response = client.execute(httpGet);
@@ -198,11 +208,11 @@ public static boolean getRecord() throws ParseException, IOException {
 		if (entity != null) {
 			// 按指定编码转换结果实体为String类型
 			body = EntityUtils.toString(entity, "utf-8");
-			
+
 		}
 		EntityUtils.consume(entity);
 		// 释放链接
 		response.close();
-		return body.equals("true")?true:false;
+		return body.equals("true") ? true : false;
 	}
 }

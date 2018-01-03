@@ -526,6 +526,7 @@ public class Main implements MouseListener{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				    }
+					HttpHandler.handleRecord(Constant.SAVERECORD);
 					System.exit(0);	//Ç¿ÖÆÍË³ö
 					
 			   	}
