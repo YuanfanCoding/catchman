@@ -36,7 +36,7 @@ public class Constant {
 	public final static String KEYWORDSIDE="http://www.lazada.com.my/catalog/?q="; 
 	
 	
-	public static final String TESTUSER="test";
-	public static final String TESTPASSWORD="lazada123";
+	public static final String TESTUSER="user";
+	public static final String TESTPASSWORD="123456";
 	
 }

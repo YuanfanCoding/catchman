@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <exe4j version="5.1" transformSequenceNumber="2">
-  <directoryPresets config="C:/Users/Administrator/Desktop/lazada项目" />
-  <application name="Lazada数据收集助手" distributionSourceDir="E:/打包jdk版本/64位">
+  <directoryPresets config="C:/Users/Administrator/Desktop/lazada项目/64位安装包" />
+  <application name="Lazada批量采集工具" distributionSourceDir="C:/Users/Administrator/Desktop/lazada项目/64位安装包">
     <languages>
       <principalLanguage id="en" customLocalizationFile="" />
     </languages>
   </application>
-  <executable name="Lazada数据收集助手" type="2" iconSet="true" iconFile="C:/Users/Administrator/Desktop/lazada项目/lazada.ico" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="true" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true" dpiAware="false" amd64="true">
+  <executable name="Lazada批量采集工具" type="2" iconSet="true" iconFile="C:/Users/Administrator/Desktop/lazada项目/lazada.ico" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="true" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true" dpiAware="false" amd64="true">
     <messageSet />
     <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" companyName="" productVersion="" />
   </executable>
@@ -22,14 +22,14 @@
       <registry />
     </searchSequence>
     <classPath>
-      <archive location="E:/打包jdk版本/64位/catchV1.0.1.jar" failOnError="false" />
-      <archive location="F:/eclipse_workspace/CatchLazada/lib/commons-codec-1.9.jar" failOnError="false" />
-      <archive location="F:/eclipse_workspace/CatchLazada/lib/commons-logging-1.2.jar" failOnError="false" />
-      <archive location="F:/eclipse_workspace/CatchLazada/lib/gson-2.7.jar" failOnError="false" />
-      <archive location="F:/eclipse_workspace/CatchLazada/lib/httpclient-4.5.3.jar" failOnError="false" />
-      <archive location="F:/eclipse_workspace/CatchLazada/lib/httpcore-4.4.6.jar" failOnError="false" />
-      <archive location="F:/eclipse_workspace/CatchLazada/lib/jsoup-1.10.2.jar" failOnError="false" />
-      <archive location="F:/eclipse_workspace/CatchLazada/lib/jxl.jar" failOnError="false" />
+      <archive location="C:/Users/Administrator/Desktop/lazada项目/64位安装包/catchV2.0.jar" failOnError="false" />
+      <archive location="F:/eclipse_workspace/catchman/lib/commons-codec-1.9.jar" failOnError="false" />
+      <archive location="F:/eclipse_workspace/catchman/lib/commons-logging-1.2.jar" failOnError="false" />
+      <archive location="F:/eclipse_workspace/catchman/lib/gson-2.7.jar" failOnError="false" />
+      <archive location="F:/eclipse_workspace/catchman/lib/httpclient-4.5.3.jar" failOnError="false" />
+      <archive location="F:/eclipse_workspace/catchman/lib/httpcore-4.4.6.jar" failOnError="false" />
+      <archive location="F:/eclipse_workspace/catchman/lib/jsoup-1.10.2.jar" failOnError="false" />
+      <archive location="F:/eclipse_workspace/catchman/lib/jxl.jar" failOnError="false" />
     </classPath>
     <nativeLibraryDirectories />
     <vmOptions />

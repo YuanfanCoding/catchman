@@ -1,11 +1,11 @@
 ; 脚本由 Inno Setup 脚本向导 生成！
 ; 有关创建 Inno Setup 脚本文件的详细资料请查阅帮助文档！
 
-#define MyAppName "LazadaCatch"
-#define MyAppVersion "1.0"
+#define MyAppName "Lazada批量采集工具"
+#define MyAppVersion "2.0"
 #define MyAppPublisher "yuanfan"
 #define MyAppURL "http://ylfcoding.cn"
-#define MyAppExeName "Lazada数据收集助手.exe"
+#define MyAppExeName "Lazada批量采集工具.exe"
 
 [Setup]
 ; 注: AppId的值为单独标识该应用程序。
@@ -22,7 +22,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=C:\Users\Administrator\Desktop\lazada项目\64位安装包
-OutputBaseFilename=Lazada数据收集助手
+OutputBaseFilename=Lazada批量采集工具V2.0
 SetupIconFile=C:\Users\Administrator\Desktop\lazada项目\lazada.ico
 Compression=lzma
 SolidCompression=yes
@@ -34,7 +34,7 @@ Name: "chinesesimp"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags:checkablealone; OnlyBelowVersion: 0,8.1
 
 [Files]
-Source: "C:\Users\Administrator\Desktop\lazada项目\64位安装包\Lazada数据收集助手正式版V1.0.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Administrator\Desktop\lazada项目\64位安装包\Lazada批量采集工具.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Administrator\Desktop\lazada项目\64位安装包\jre\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Users\Administrator\Desktop\lazada项目\lazada.ico"; DestDir: "{app}"; Flags: ignoreversion
 ; 注意: 不要在任何共享系统文件上使用“Flags: ignoreversion”

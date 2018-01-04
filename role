@@ -1,14 +1,14 @@
--injars 'C:\Users\Administrator\Desktop\catchV1.0.jar'
--outjars 'C:\Users\Administrator\Desktop\catchV1.0.1.jar'
+-injars 'C:\Users\Administrator\Desktop\lazada项目\64位安装包\catch.jar'
+-outjars 'C:\Users\Administrator\Desktop\lazada项目\64位安装包\catchV2.0.jar'
 
 -libraryjars 'C:\Program Files\Java\jre7\lib\rt.jar'
--libraryjars 'F:\eclipse_workspace\CatchLazada\lib\commons-codec-1.9.jar'
--libraryjars 'F:\eclipse_workspace\CatchLazada\lib\commons-logging-1.2.jar'
--libraryjars 'F:\eclipse_workspace\CatchLazada\lib\gson-2.7.jar'
--libraryjars 'F:\eclipse_workspace\CatchLazada\lib\httpclient-4.5.3.jar'
--libraryjars 'F:\eclipse_workspace\CatchLazada\lib\httpcore-4.4.6.jar'
--libraryjars 'F:\eclipse_workspace\CatchLazada\lib\jsoup-1.10.2.jar'
--libraryjars 'F:\eclipse_workspace\CatchLazada\lib\jxl.jar'
+-libraryjars lib\commons-codec-1.9.jar
+-libraryjars lib\commons-logging-1.2.jar
+-libraryjars lib\gson-2.7.jar
+-libraryjars lib\httpclient-4.5.3.jar
+-libraryjars lib\httpcore-4.4.6.jar
+-libraryjars lib\jsoup-1.10.2.jar
+-libraryjars lib\jxl.jar
 
 -target 1.7
 -keepattributes Signature,*Annotation*
@@ -24,7 +24,7 @@
     private <methods>;
 }
 
--keep class com.lazada.model.product.BaseInfo {
+-keep class com.lazada.model.product.** {
     <fields>;
     <methods>;
 }
