@@ -33,8 +33,10 @@ public class Constant {
 	public static final String AMAZON="AMAZON";
 	public static final String ALIEXPRESS="ALIEXPRESS";
 	
-	public final static String KEYWORDSIDE="http://www.lazada.com.my/catalog/?q="; 
+	public final static String LAZADAKEYWORDSIDE="https://www.lazada.com.my/catalog/?sort=popularity&q="; 
+	public final static String ALIEXPRESSKEYWORDSIDE="https://www.aliexpress.com/wholesale?SearchText=";
 	
+	public final static String SHOPEEITEMSSITE="https://shopee.com.my/api/v1/search_items/?by=pop&order=desc&limit=50&keyword="; 
 	
 	public static final String TESTUSER="user";
 	public static final String TESTPASSWORD="123456";

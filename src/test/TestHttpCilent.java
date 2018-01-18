@@ -1,8 +1,11 @@
 package test;
 
+import java.awt.ScrollPane;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+
+import javax.print.attribute.Size2DSyntax;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -14,6 +17,7 @@ import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.omg.CORBA.ULongLongSeqHelper;
 
 import com.google.gson.Gson;
 import com.lazada.model.json.detail.ItemListElement;
@@ -29,7 +33,7 @@ public class TestHttpCilent {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		
 		try {
-            HttpGet httpget = new HttpGet("https://www.lazada.com.my/catalog/?spm=a2o4k.home.search.1.34d536e5I6TZE5&q=womens%20shoes&_keyori=ss&from=search_history&sugg=womens%20shoes_0_1");
+            HttpGet httpget = new HttpGet("http://www.lazada.com.my/catalog/?_keyori=ss&from=input&q=womens+shoes&page=2&spm=a2o4k.searchlist.search.go.5ee640ccDBwI9W");
           //  HttpGet httpget = new HttpGet("https://www.lazada.com.my/petpet/?spm=a2o4k.prod.0.0.27c36a81A1xgwt&ref=popular-search3=petpet");
             
 //           设置超时 
@@ -64,8 +68,9 @@ public class TestHttpCilent {
 //      
 //            httpGet.setHeader("refer", "http://www.baidu.com/s?tn=monline_5_dg&bs=httpclient4+MultiThreadedHttpConnectionManager");  
       //http://blog.csdn.net/a9529lty/article/details/7008537
-            httpget.setHeader("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");  
-            
+            httpget.setHeader("User-Agent",
+            		"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");  
+//            "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36");
             CloseableHttpResponse response = httpclient.execute(httpget);
             
             String web="";
@@ -75,9 +80,28 @@ public class TestHttpCilent {
                 // 打印响应状态
                 if (entity != null) {
                 	web= EntityUtils.toString(entity,"UTF-8");
-//                	System.out.println(web);
-                    Document doc= Jsoup.parse(web);
-                	Gson gson = new Gson();
+                 	System.out.println(web);
+//                    Document doc= Jsoup.parse(web);
+//                    System.out.println(doc.select("div.ui-breadcrumb").text().toString());
+//                    
+//                    Elements elimage =doc.select("span.img-thumb-item");
+//                    for (int i = 0; i < (elimage.size() > 8 ? 8 : elimage.size() ); i++) {
+//                    	System.out.println(elimage.get(i).children().attr("src").toString().replaceFirst(".jpg_50x50", ""));
+//                    }
+//                    Elements maidians =doc.select("ul.product-property-list").select("li.property-item");
+//                
+//                    for(int i=0;i<maidians.size();i++) {
+//                        System.out.println(maidians.get(i).text().toString());
+//                        if(maidians.get(i).text().toString().contains("Brand Name"))
+//                    }
+//                    System.out.println(doc.select("ul.product-property-list").select("ul.util-clearfix").html());
+//                    System.out.println(doc.select("ul#j-sku-list-2").text().toString());
+//                    String line1=doc.select("script[type=text/javascript]").get(2).data().toString();
+//                    String line2=line1.substring(line1.indexOf("window.runParams.detailDesc="), line1.indexOf("window.runParams.transAbTest=")).trim();
+//                    System.out.println(line2.substring(line2.indexOf("https://"),line2.length()-2));
+//                    System.out.println(doc.select("div.ui-box").html().toString());
+                    
+//                	Gson gson = new Gson();
 //                    String line=doc.select("script[type=application/ld+json]").get(1).data().toString();
 //                    JsonRootBean info = gson.fromJson(line.replaceAll("@type", "type").replaceAll("@context", "context"),
 //        					JsonRootBean.class);// 对于javabean直接给出class实例
@@ -86,16 +110,16 @@ public class TestHttpCilent {
 //        				ItemListElement ietelement = ietlist.get(i);
 //        				System.out.println("第" + (i + 1) + "个详情:  " + ietelement.getUrl()+"\n");
 //        		     	}
-        			
-        			 String line=doc.select("script").get(2).data().toString();
-        			 System.out.println(line);
-                     FirstLevelJsonRootBean info = gson.fromJson(line.replaceAll("window.pageData=", ""),
-                    		 FirstLevelJsonRootBean.class);// 对于javabean直接给出class实例
-         			List<ListItems> ietlist = info.getMods().getListItems();
-         			for (int i = 0; i < ietlist.size(); i++) {
-         				ListItems ietelement = ietlist.get(i);
-         				System.out.println("第" + (i + 1) + "个详情:  " + ietelement.getLocation()+"\n");
-         		     	}
+//        			
+//        			 String line=doc.select("script").get(2).data().toString();
+//        			 System.out.println(line);
+//                     FirstLevelJsonRootBean info = gson.fromJson(line.replaceAll("window.pageData=", ""),
+//                    		 FirstLevelJsonRootBean.class);// 对于javabean直接给出class实例
+//         			List<ListItems> ietlist = info.getMods().getListItems();
+//         			for (int i = 0; i < ietlist.size(); i++) {
+//         				ListItems ietelement = ietlist.get(i);
+//         				System.out.println("第" + (i + 1) + "个详情:  " + ietelement.getLocation()+"\n");
+//         		     	}
         			
         			
 //                    System.out.println(doc.select("div.prod_header_brand_action").get(0).text().toString());

@@ -105,7 +105,7 @@ public class Main implements MouseListener{
 	private boolean istest=false;
 	
 	JCheckBox[] jway=new JCheckBox[3];
-	JCheckBox[] jplatform=new JCheckBox[4];
+	JCheckBox[] jplatform=new JCheckBox[1];
 	JTextField[] wayText=new JTextField[3];
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -260,32 +260,32 @@ public class Main implements MouseListener{
 //		chckbxLazada.addItemListener(new MyItemListener());
 		panel.add(chckbxLazada);
 		
+		JCheckBox chckbxAliexpress = new JCheckBox("AliExpress");
+		chckbxAliexpress.setEnabled(false);
+		chckbxAliexpress.setBackground(new Color(240, 248, 255));
+		chckbxAliexpress.setBounds(88, 133, 85, 23);
+		chckbxAliexpress.setName(Constant.ALIEXPRESS);
+//		jplatform[1]=chckbxAliexpress;
+		chckbxAliexpress.addItemListener(new MyItemListener());
+		panel.add(chckbxAliexpress);
+		
 		JCheckBox chckbxShopee = new JCheckBox("shopee");
 		chckbxShopee.setEnabled(false);
 		chckbxShopee.setBackground(new Color(240, 248, 255));
-		chckbxShopee.setBounds(90, 133, 67, 23);
+		chckbxShopee.setBounds(183, 133, 67, 23);
 		chckbxShopee.setName(Constant.SHOPEE);
-//		jplatform[1]=chckbxShopee;
+//		jplatform[2]=chckbxShopee;
 		chckbxShopee.addItemListener(new MyItemListener());
 		panel.add(chckbxShopee);
 		
 		JCheckBox chckbxAmazon = new JCheckBox("Amazon");
 		chckbxAmazon.setEnabled(false);
 		chckbxAmazon.setBackground(new Color(240, 248, 255));
-		chckbxAmazon.setBounds(163, 133, 67, 23);
+		chckbxAmazon.setBounds(260, 133, 67, 23);
 		chckbxAmazon.setName(Constant.AMAZON);
-//		jplatform[2]=chckbxAmazon;
+//		jplatform[3]=chckbxAmazon;
 		chckbxAmazon.addItemListener(new MyItemListener());
 		panel.add(chckbxAmazon);
-		
-		JCheckBox chckbxAliexpress = new JCheckBox("AliExpress");
-		chckbxAliexpress.setEnabled(false);
-		chckbxAliexpress.setBackground(new Color(240, 248, 255));
-		chckbxAliexpress.setBounds(240, 133, 85, 23);
-		chckbxAliexpress.setName(Constant.ALIEXPRESS);
-//		jplatform[3]=chckbxAliexpress;
-		chckbxAliexpress.addItemListener(new MyItemListener());
-		panel.add(chckbxAliexpress);
 		
 		JLabel label = new JLabel("\u8BF7\u60A8\u586B\u5199\u91C7\u96C6\u9875\u6570\uFF1A");
 		label.setFont(new Font("·ÂËÎ", Font.PLAIN, 12));
@@ -478,7 +478,7 @@ public class Main implements MouseListener{
     		}
     	}
     	else {
-    		for(int i=0;i<jway.length;i++) {
+    		for(int i=0;i<jplatform.length;i++) {
     			if(jplatform[i].isSelected()) {
     				result.put(jplatform[i].getName(), true);
     				break;
@@ -500,7 +500,12 @@ public class Main implements MouseListener{
 				HashMap hm=getActiveJcb(1);
 		    	String way=(String)(hm.keySet().iterator().next());
 		    	String waytext=(String)hm.get(way);
-		    	catchInfoArea.setPro(waytext,Integer.parseInt(startpage_text.getText()),Integer.parseInt(endpage_text.getText()),store_text.getText());			
+		    	
+		    	HashMap hm2=getActiveJcb(2);
+		    	String platform=(String)(hm2.keySet().iterator().next());
+		    	if(istest) catchInfoArea.setPro(waytext,1,1,store_text.getText());	
+		    	else  catchInfoArea.setPro(waytext,Integer.parseInt(startpage_text.getText()),Integer.parseInt(endpage_text.getText()),store_text.getText());	
+		    	catchInfoArea.setPlatform(platform);
 		    	switch(way){
 	    		case Constant.KEYWORDCATCH:
 	    			catchInfoArea.setType(1);
@@ -577,7 +582,7 @@ public class Main implements MouseListener{
 	}
 
 	private boolean checkPlatform() {
-		// TODO Auto-generated method stub
+
 		for(int i=0;i<jplatform.length;i++) {
 			if(jplatform[i].isSelected()) {
 				return true;

@@ -27,7 +27,7 @@ public class ListItems {
     private String review;
     private String installment;
     private String tItemType;
-    private String location;
+    private String location="";
     private String cheapest_sku;
     private String sku;
     private List<Skus> skus;

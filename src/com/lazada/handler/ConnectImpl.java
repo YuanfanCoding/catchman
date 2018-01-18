@@ -57,13 +57,21 @@ public class ConnectImpl extends JTextArea{
 	private String savepath;
 	private int exlRow;
 	private int type;//1为关键词，2为店铺，3为产品
+	
+	private String platform;//选择的平台
 	public static void main(String[] args) {
 		
 		try {
 			long startTime=System.currentTimeMillis();   
-//			new ConnectImpl(2,"https://www.lazada.com.my/maccosmetics-flagship-store/?sort=popularity",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
-//			new ConnectImpl(1,"womens shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
-			new ConnectImpl(3,"https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoeswhite-63716565.html https://www.lazada.com.my/amart-fashion-women-flat-shoes-spring-rose-embroidery-platform-casual-shoeswhite-63716565.html",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls").startCatching();
+			
+//			ConnectImpl connectImpl=new ConnectImpl(2,"http://www.lazada.com.my/shop/xiangqian-trade-co-ltd?sort=popularity",1,2,"C:\\Users\\Administrator\\Desktop\\123.xls");
+			ConnectImpl connectImpl=new ConnectImpl(1,"womens shoes",1,2,"C:\\Users\\Administrator\\Desktop\\123.xls");
+//			ConnectImpl connectImpl=new ConnectImpl();
+//			connectImpl.setType(1);
+//			connectImpl.setPro("womens shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");	
+//			ConnectImpl connectImpl=new ConnectImpl(3,"https://www.lazada.com.my/beaded-bracelet-spring-and-autumn-new-style-foot-covering-and-comfortable-flat-sandals-off-white-color-145929702.html",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
+			connectImpl.setPlatform(Constant.LAZADA);
+			connectImpl.startCatching();
 			long endTime=System.currentTimeMillis();
 			System.out.println("程序运行时间： "+(endTime-startTime)/1000+"s");
 		} catch (WriteException | IOException e ) {
@@ -91,6 +99,16 @@ public class ConnectImpl extends JTextArea{
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+
+	public String getPlatform() {
+		return platform;
+	}
+
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 
 
@@ -129,13 +147,23 @@ public class ConnectImpl extends JTextArea{
 	}
  
 	public void pageCatching(int type,WritableWorkbook workbook) throws IOException , RowsExceededException, WriteException{
+		String site="";
+		
+		
 		
 		try {
 			for (int i = 0; i < endpage - startpage + 1; i++) {
 				this.append("开始抓取第" + (i + startpage) + "页的内容。\n");
-				if(type==1)
-				exlRow=ExcelUtil.getInfoFirstLevel(this, Constant.KEYWORDSIDE, String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);
-				else exlRow=ExcelUtil.getInfoByStoreLink(this,String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);
+				
+				if(type==1) //关键词
+					 exlRow=ExcelUtil.getInfoFirstLevel(this, site, String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);//关键词
+				
+				else {//店铺
+					
+					exlRow=ExcelUtil.getInfoByStoreLink(this,String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);//店铺
+				}
+				
+				
 				Thread.sleep(6000);// 延迟6秒发送请求
 			}
 		} catch (Exception e) {
@@ -145,29 +173,57 @@ public class ConnectImpl extends JTextArea{
 			e.printStackTrace();
 		}
 	}
-	public void startCatching() throws IOException , RowsExceededException, WriteException{
-		WritableWorkbook workbook = ExcelUtil.initWorkbook(savepath);
+	
+	
+	public void startCatching() throws IOException, WriteException{
+
+//		System.setProperty("org.apache.commons.httpclient", "OFF");// "stdout"为标准输出格式，"debug"为调试模式
+//		System.setProperty("log4j.logger.org.apache.http", "OFF");
+//		System.setProperty("log4j.logger.org.apache.http.wire", "OFF");
+		WritableWorkbook workbook = null;
+		
+		try {
+			
+		workbook = ExcelUtil.initWorkbook(savepath);
 		exlRow++;
+		PlatformService platformService=getPlatFormInstance();
 		
-		switch (type){
+		platformService.startCatching(this,exlRow,workbook);
+		}catch (IOException | WriteException e) {
+			e.printStackTrace();
+			this.append(e.getMessage());
+		}
+		finally {
+				workbook.write();
+				workbook.close();
+		}
+			
 		
-		case 1://关键词
-			pageCatching(type,workbook) ;
+	}
+
+
+	private PlatformService getPlatFormInstance() {
+		
+       switch (platform) {
+		
+		case Constant.LAZADA:
+			return  new LazadaImpl(type,typetext,startpage,endpage);
+	    case Constant.ALIEXPRESS:
+        	return new AliexpressImpl(type,typetext);
+			
+        case Constant.SHOPEE:
+//        	return new ShopeeImpl(type,typetext);
 			break;
-		case 2://店铺链接
-			pageCatching(type,workbook) ;
+        case Constant.AMAZON:
+//        	return new AmazonImpl(type,typetext);
 			break;
-		case 3://产品链接
-			exlRow=ExcelUtil.getInfoByProductLink(this, typetext, workbook.getSheet(0), exlRow);
-			this.append("抓取成功！请打开excel查看。\n");
+		default:
 			break;
 			
-		default:break;	
 		}
 		
-			workbook.write();
-			workbook.close();
-		
+
+		return null;
 	}
 	
 
