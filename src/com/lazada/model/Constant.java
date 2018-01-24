@@ -38,6 +38,11 @@ public class Constant {
 	
 	public final static String SHOPEEITEMSSITE="https://shopee.com.my/api/v1/search_items/?by=pop&order=desc&limit=50&keyword="; 
 	
+	
+	public final static String LAZADASIDE="www.lazada.com.my";
+	public final static String SHOPEESIDE="shopee.com.my";
+	public final static String ALIEXPRESSSIDE="www.aliexpress.com";
+	
 	public static final String TESTUSER="user";
 	public static final String TESTPASSWORD="123456";
 	

@@ -27,6 +27,7 @@ public class BaseInfo {
 	public boolean getBrand = false;
 	public boolean getStore = false;
 	public boolean getLocation = false;
+	public boolean getCompatibility=false;
 	
 	public String name = "";
 	public String description= "";
@@ -52,6 +53,7 @@ public class BaseInfo {
 	public String brand="";
 	public String store="";
 	public String location="";
+	public String compatibility="";
 	
 	public boolean isOneItemStart() {
 		return oneItemStart;
@@ -346,6 +348,18 @@ public class BaseInfo {
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	public boolean isGetCompatibility() {
+		return getCompatibility;
+	}
+	public void setGetCompatibility(boolean getCompatibility) {
+		this.getCompatibility = getCompatibility;
+	}
+	public String getCompatibility() {
+		return compatibility;
+	}
+	public void setCompatibility(String compatibility) {
+		this.compatibility = compatibility;
 	}
 	
 	

@@ -78,8 +78,8 @@ public class ExcelUtil {
 	     sheet.addCell(new Label(20, exlRow, "尺寸"));
 	     sheet.addCell(new Label(21, exlRow, "店铺"));
 	     sheet.addCell(new Label(22, exlRow, "品牌"));
-	     sheet.addCell(new Label(23, exlRow++, "地区"));
-	   
+	     sheet.addCell(new Label(23, exlRow, "地区"));
+	     sheet.addCell(new Label(24, exlRow++, "Compatibility by Model"));
 	     return workbook;
 	}
 	
@@ -109,6 +109,7 @@ public class ExcelUtil {
 		sheet.addCell(new Label(21, exlRow, info.getStore()));
 	    sheet.addCell(new Label(22, exlRow, info.getBrand()));
 	    sheet.addCell(new Label(23, exlRow, info.getLocation()));
+	    sheet.addCell(new Label(24, exlRow, info.getCompatibility()));
 	}
 	
 	public static int getInfoByProductLink(ConnectImpl ci,String links,WritableSheet sheet,int exlRow) throws IOException, RowsExceededException, WriteException{
@@ -408,16 +409,20 @@ public class ExcelUtil {
 
 	public static Document getDoc(String url) {
 
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+//		CloseableHttpClient httpclient = HttpClients.createDefault();
 //		CookieStore cookieStore = new BasicCookieStore();  
-//		CloseableHttpClient httpclient =  HttpClients.custom()  
-//	             .setDefaultCookieStore(cookieStore)  
-//	             .build();  
+		long startTime=System.currentTimeMillis();   
+		RequestConfig defaultRequestConfig = RequestConfig.custom()
+			    .setSocketTimeout(4000)//读取超时 readtime-out
+			    .setConnectTimeout(4000)//连接超时
+			    .setConnectionRequestTimeout(4000)
+			    .build();
+		CloseableHttpClient httpclient =HttpClients.createDefault();   
 		Document doc = null;
 		try {
 			HttpGet httpget = new HttpGet(url);
-			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(6*1000).build();
-			httpget.setConfig(requestConfig);
+//			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(6*1000).build();
+			httpget.setConfig(defaultRequestConfig);
 			httpget.setHeader("User-Agent",
 					"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0");
 //			if(url.contains("page=1")) {
@@ -432,7 +437,9 @@ public class ExcelUtil {
 //	        cookie.setPath("/");   
 //	        cookieStore.addCookie(cookie); 
 			CloseableHttpResponse response = httpclient.execute(httpget);
-
+			
+			long endTime=System.currentTimeMillis(); 
+			System.out.println("此次请求总耗时： "+(endTime-startTime));
 			String web = "";
 			try {
 				// 获取响应实体

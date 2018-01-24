@@ -64,14 +64,15 @@ public class ConnectImpl extends JTextArea{
 		try {
 			long startTime=System.currentTimeMillis();   
 			
-//			ConnectImpl connectImpl=new ConnectImpl(2,"http://www.lazada.com.my/shop/xiangqian-trade-co-ltd?sort=popularity",1,2,"C:\\Users\\Administrator\\Desktop\\123.xls");
-			ConnectImpl connectImpl=new ConnectImpl(1,"womens shoes",1,2,"C:\\Users\\Administrator\\Desktop\\123.xls");
+//			ConnectImpl connectImpl=new ConnectImpl(2,"https://www.lazada.com.my/kristall-official-store/?hybrid=1&q=All-Products&from=wangpu&pageTypeId=2",1,3,"C:\\Users\\Administrator\\Desktop\\123.xls");
+			ConnectImpl connectImpl=new ConnectImpl(1,"Mobile Phone Cases",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
 //			ConnectImpl connectImpl=new ConnectImpl();
 //			connectImpl.setType(1);
 //			connectImpl.setPro("womens shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");	
-//			ConnectImpl connectImpl=new ConnectImpl(3,"https://www.lazada.com.my/beaded-bracelet-spring-and-autumn-new-style-foot-covering-and-comfortable-flat-sandals-off-white-color-145929702.html",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
+//			ConnectImpl connectImpl=new ConnectImpl(3,"https://www.aliexpress.com/item/2017-new-fashion-women-shoes/32823588095.html?ws_ab_test=searchweb0_0,searchweb201602_4_10152_10151_10065_10068_10344_10342_10325_10546_10343_10340_10548_10341_10084_10617_10083_10616_10615_10307_10313_10059_10534_100031_10604_10103_10142,searchweb201603_25,ppcSwitch_5&algo_expid=9fe502ce-c27d-4ac6-b4a5-afc709abac99-6&algo_pvid=9fe502ce-c27d-4ac6-b4a5-afc709abac99&priceBeautifyAB=3",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
 			connectImpl.setPlatform(Constant.LAZADA);
-			connectImpl.startCatching();
+			WritableWorkbook workbook=null;
+			connectImpl.startCatching(workbook);
 			long endTime=System.currentTimeMillis();
 			System.out.println("程序运行时间： "+(endTime-startTime)/1000+"s");
 		} catch (WriteException | IOException e ) {
@@ -175,30 +176,27 @@ public class ConnectImpl extends JTextArea{
 	}
 	
 	
-	public void startCatching() throws IOException, WriteException{
+	public void startCatching(WritableWorkbook workbook) throws IOException, WriteException {
 
-//		System.setProperty("org.apache.commons.httpclient", "OFF");// "stdout"为标准输出格式，"debug"为调试模式
-//		System.setProperty("log4j.logger.org.apache.http", "OFF");
-//		System.setProperty("log4j.logger.org.apache.http.wire", "OFF");
-		WritableWorkbook workbook = null;
-		
+		// WritableWorkbook workbook = null;
+
 		try {
-			
-		workbook = ExcelUtil.initWorkbook(savepath);
-		exlRow++;
-		PlatformService platformService=getPlatFormInstance();
-		
-		platformService.startCatching(this,exlRow,workbook);
-		}catch (IOException | WriteException e) {
+			if (workbook == null)
+				workbook = ExcelUtil.initWorkbook(savepath);
+			exlRow++;
+			PlatformService platformService = getPlatFormInstance();
+
+			platformService.startCatching(this, exlRow, workbook);
+		} catch (IOException | WriteException e) {
 			e.printStackTrace();
 			this.append(e.getMessage());
+		} finally {
+//			System.out.println(44444);
+			workbook.write();
+			workbook.close();
+			workbook=null;
 		}
-		finally {
-				workbook.write();
-				workbook.close();
-		}
-			
-		
+
 	}
 
 
@@ -208,8 +206,9 @@ public class ConnectImpl extends JTextArea{
 		
 		case Constant.LAZADA:
 			return  new LazadaImpl(type,typetext,startpage,endpage);
+			
 	    case Constant.ALIEXPRESS:
-        	return new AliexpressImpl(type,typetext);
+        	return new AliexpressImpl(type,typetext,startpage,endpage);
 			
         case Constant.SHOPEE:
 //        	return new ShopeeImpl(type,typetext);

@@ -78,8 +78,8 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 					exlRow=getInfoByStoreLink(connectImpl,String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);//店铺
 				}
 				
-				
-				Thread.sleep(6000);// 延迟6秒发送请求
+				if(i!=endpage)
+				Thread.sleep(10000);// 延迟6秒发送请求
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -131,7 +131,7 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 		System.out.println(secondietlist.size());
 		for (int i = 0; i < secondietlist.size(); i++) {
 			ListItems ietelement = secondietlist.get(i);
-			ci.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " + ietelement.getProductUrl() + "\n");
+			ci.append("第" + pagenum + "页  " + "第" + (i + 1) + "个详情:  " +"https:"+ ietelement.getProductUrl() + "\n");
 			System.out.println(ietelement.getProductUrl());
 			exlRow = getDetailInfo(ci, "https:" + ietelement.getProductUrl(), sheet, exlRow, ietelement);
 			ietelement.getLocation();
@@ -207,6 +207,16 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 						.replaceAll("</ul>", "").replaceAll("<li>", "").replaceAll("</li>", "")
 						.replaceAll("<p>", "").replaceAll("</p>", ""));// 包装
 				info.setSellersku(doc.select("td#pdtsku").text().toString());// sku
+				Elements trs =doc.select("table.specification-table").select("tr");
+				
+				for (Element tr : trs) { //Compatibility by Model--手机类
+					if(tr.select("td").get(0).text().toString().contains("Compatibility by Model")) {
+						info.setCompatibility(tr.select("td").get(1).text().toString());
+						 System.out.print(tr.select("td").get(0).text().toString()+"  ");
+					     System.out.println(tr.select("td").get(1).text().toString());
+					}
+					 
+				}
 				info.setOneItemStart(true);
 					
 			} else {
