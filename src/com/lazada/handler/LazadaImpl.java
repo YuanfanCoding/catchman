@@ -212,8 +212,8 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 				for (Element tr : trs) { //Compatibility by Model-- ÷ª˙¿‡
 					if(tr.select("td").get(0).text().toString().contains("Compatibility by Model")) {
 						info.setCompatibility(tr.select("td").get(1).text().toString());
-						 System.out.print(tr.select("td").get(0).text().toString()+"  ");
-					     System.out.println(tr.select("td").get(1).text().toString());
+//						 System.out.print(tr.select("td").get(0).text().toString()+"  ");
+//					     System.out.println(tr.select("td").get(1).text().toString());
 					}
 					 
 				}

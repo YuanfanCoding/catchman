@@ -108,7 +108,7 @@ public class Main implements MouseListener {
 	private boolean istest = false;
 
 	JCheckBox[] jway = new JCheckBox[3];
-	JCheckBox[] jplatform = new JCheckBox[2];
+	JCheckBox[] jplatform = new JCheckBox[3];
 	JTextField[] wayText = new JTextField[3];
 
 	public static void main(String[] args) {
@@ -277,8 +277,8 @@ public class Main implements MouseListener {
 		chckbxShopee.setBackground(new Color(240, 248, 255));
 		chckbxShopee.setBounds(183, 133, 67, 23);
 		chckbxShopee.setName(Constant.SHOPEE);
-		// jplatform[2]=chckbxShopee;
-		// chckbxShopee.addItemListener(new MyItemListener());
+		jplatform[2]=chckbxShopee;
+		chckbxShopee.addItemListener(new MyItemListener());
 		panel.add(chckbxShopee);
 
 		JCheckBox chckbxAmazon = new JCheckBox("Amazon");

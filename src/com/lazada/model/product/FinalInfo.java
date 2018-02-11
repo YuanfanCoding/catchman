@@ -28,6 +28,23 @@ public class FinalInfo extends BaseInfo{
 		this.getStore = false;
 		this.getLocation = false;
 		this.getCompatibility=false;
+		this.getDiscuss=false;
+		this.getSalenum=false;
+		this.getsmallimage1=false;
+		this.getsmallimage2=false;
+		this.getsmallimage3=false;
+		this.getsmallimage4=false;
+		this.getsmallimage5=false;
+		this.getsmallimage6=false;
+		this.getsmallimage7=false;
+		this.getsmallimage8=false;
+		this.getsmallimage9=false;
+		this.getsmallimage10=false;
+		this.getsmallimage11=false;
+		this.getsmallimage12=false;
+		this.getsmallimage14=false;
+		this.getsmallimage15=false;
+		this.getVideoLink=false;
 		
 		this.name = "";
 		this.description= "";
@@ -46,11 +63,29 @@ public class FinalInfo extends BaseInfo{
 		this.image8 = "";
 		this.link = "";
 		this.comment = "";
+		this.discuss="";
+		this.salenum="";
 		this.size="";
 		this.category="";
 		this. brand="";
 		this.store="";
 		this.location="";
 		this.compatibility="";
+		this.smallimage1="";
+		this.smallimage2="";
+		this.smallimage3="";
+		this.smallimage4="";
+		this.smallimage5="";
+		this.smallimage6="";
+		this.smallimage7="";
+		this.smallimage8="";
+		this.smallimage9="";
+		this.smallimage10="";
+		this.smallimage11="";
+		this.smallimage12="";
+		this.smallimage13="";
+		this.smallimage14="";
+		this.smallimage15="";
+		this.videoLink="";
 	}
 }

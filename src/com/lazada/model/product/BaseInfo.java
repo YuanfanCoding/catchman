@@ -22,12 +22,32 @@ public class BaseInfo {
 	public boolean getImage8 = false;
 	public boolean getLink = false;
 	public boolean getComment = false;
+	public boolean getDiscuss = false;
+	public boolean getSalenum = false;
 	public boolean getSize = false;
 	public boolean getcategory = false;
 	public boolean getBrand = false;
 	public boolean getStore = false;
 	public boolean getLocation = false;
 	public boolean getCompatibility=false;
+	public boolean getVideoLink=false;
+	
+	public boolean getsmallimage1=false;
+	public boolean getsmallimage2=false;
+	public boolean getsmallimage3=false;
+	public boolean getsmallimage4=false;
+	public boolean getsmallimage5=false;
+	public boolean getsmallimage6=false;
+	public boolean getsmallimage7=false;
+	public boolean getsmallimage8=false;
+	public boolean getsmallimage9=false;
+	public boolean getsmallimage10=false;
+	public boolean getsmallimage11=false;
+	public boolean getsmallimage12=false;
+	public boolean getsmallimage13=false;
+	public boolean getsmallimage14=false;
+	public boolean getsmallimage15=false;
+	
 	
 	public String name = "";
 	public String description= "";
@@ -48,12 +68,30 @@ public class BaseInfo {
 	public String image8 = "";
 	public String link = "";
 	public String comment = "";
+	public String discuss = "";
+	public String salenum = "";
 	public String size="";
 	public String category="";
 	public String brand="";
 	public String store="";
 	public String location="";
 	public String compatibility="";
+	public String smallimage1="";
+	public String smallimage2="";
+	public String smallimage3="";
+	public String smallimage4="";
+	public String smallimage5="";
+	public String smallimage6="";
+	public String smallimage7="";
+	public String smallimage8="";
+	public String smallimage9="";
+	public String smallimage10="";
+	public String smallimage11="";
+	public String smallimage12="";
+	public String smallimage13="";
+	public String smallimage14="";
+	public String smallimage15="";
+	public String videoLink="";
 	
 	public boolean isOneItemStart() {
 		return oneItemStart;
@@ -360,6 +398,222 @@ public class BaseInfo {
 	}
 	public void setCompatibility(String compatibility) {
 		this.compatibility = compatibility;
+	}
+	public boolean isGetDiscuss() {
+		return getDiscuss;
+	}
+	public void setGetDiscuss(boolean getDiscuss) {
+		this.getDiscuss = getDiscuss;
+	}
+	public boolean isGetSalenum() {
+		return getSalenum;
+	}
+	public void setGetSalenum(boolean getSalenum) {
+		this.getSalenum = getSalenum;
+	}
+	public String getDiscuss() {
+		return discuss;
+	}
+	public void setDiscuss(String discuss) {
+		this.discuss = discuss;
+	}
+	public String getSalenum() {
+		return salenum;
+	}
+	public void setSalenum(String salenum) {
+		this.salenum = salenum;
+	}
+	public boolean isGetsmallimage1() {
+		return getsmallimage1;
+	}
+	public void setGetsmallimage1(boolean getsmallimage1) {
+		this.getsmallimage1 = getsmallimage1;
+	}
+	public boolean isGetsmallimage2() {
+		return getsmallimage2;
+	}
+	public void setGetsmallimage2(boolean getsmallimage2) {
+		this.getsmallimage2 = getsmallimage2;
+	}
+	public boolean isGetsmallimage3() {
+		return getsmallimage3;
+	}
+	public void setGetsmallimage3(boolean getsmallimage3) {
+		this.getsmallimage3 = getsmallimage3;
+	}
+	public boolean isGetsmallimage4() {
+		return getsmallimage4;
+	}
+	public void setGetsmallimage4(boolean getsmallimage4) {
+		this.getsmallimage4 = getsmallimage4;
+	}
+	public boolean isGetsmallimage5() {
+		return getsmallimage5;
+	}
+	public void setGetsmallimage5(boolean getsmallimage5) {
+		this.getsmallimage5 = getsmallimage5;
+	}
+	public boolean isGetsmallimage6() {
+		return getsmallimage6;
+	}
+	public void setGetsmallimage6(boolean getsmallimage6) {
+		this.getsmallimage6 = getsmallimage6;
+	}
+	public boolean isGetsmallimage7() {
+		return getsmallimage7;
+	}
+	public void setGetsmallimage7(boolean getsmallimage7) {
+		this.getsmallimage7 = getsmallimage7;
+	}
+	public boolean isGetsmallimage8() {
+		return getsmallimage8;
+	}
+	public void setGetsmallimage8(boolean getsmallimage8) {
+		this.getsmallimage8 = getsmallimage8;
+	}
+	public boolean isGetsmallimage9() {
+		return getsmallimage9;
+	}
+	public void setGetsmallimage9(boolean getsmallimage9) {
+		this.getsmallimage9 = getsmallimage9;
+	}
+	public boolean isGetsmallimage10() {
+		return getsmallimage10;
+	}
+	public void setGetsmallimage10(boolean getsmallimage10) {
+		this.getsmallimage10 = getsmallimage10;
+	}
+	public boolean isGetsmallimage11() {
+		return getsmallimage11;
+	}
+	public void setGetsmallimage11(boolean getsmallimage11) {
+		this.getsmallimage11 = getsmallimage11;
+	}
+	public boolean isGetsmallimage12() {
+		return getsmallimage12;
+	}
+	public void setGetsmallimage12(boolean getsmallimage12) {
+		this.getsmallimage12 = getsmallimage12;
+	}
+	public boolean isGetsmallimage13() {
+		return getsmallimage13;
+	}
+	public void setGetsmallimage13(boolean getsmallimage13) {
+		this.getsmallimage13 = getsmallimage13;
+	}
+	public boolean isGetsmallimage14() {
+		return getsmallimage14;
+	}
+	public void setGetsmallimage14(boolean getsmallimage14) {
+		this.getsmallimage14 = getsmallimage14;
+	}
+	public boolean isGetsmallimage15() {
+		return getsmallimage15;
+	}
+	public void setGetsmallimage15(boolean getsmallimage15) {
+		this.getsmallimage15 = getsmallimage15;
+	}
+	public String getSmallimage1() {
+		return smallimage1;
+	}
+	public void setSmallimage1(String smallimage1) {
+		this.smallimage1 = smallimage1;
+	}
+	public String getSmallimage2() {
+		return smallimage2;
+	}
+	public void setSmallimage2(String smallimage2) {
+		this.smallimage2 = smallimage2;
+	}
+	public String getSmallimage3() {
+		return smallimage3;
+	}
+	public void setSmallimage3(String smallimage3) {
+		this.smallimage3 = smallimage3;
+	}
+	public String getSmallimage4() {
+		return smallimage4;
+	}
+	public void setSmallimage4(String smallimage4) {
+		this.smallimage4 = smallimage4;
+	}
+	public String getSmallimage5() {
+		return smallimage5;
+	}
+	public void setSmallimage5(String smallimage5) {
+		this.smallimage5 = smallimage5;
+	}
+	public String getSmallimage6() {
+		return smallimage6;
+	}
+	public void setSmallimage6(String smallimage6) {
+		this.smallimage6 = smallimage6;
+	}
+	public String getSmallimage7() {
+		return smallimage7;
+	}
+	public void setSmallimage7(String smallimage7) {
+		this.smallimage7 = smallimage7;
+	}
+	public String getSmallimage8() {
+		return smallimage8;
+	}
+	public void setSmallimage8(String smallimage8) {
+		this.smallimage8 = smallimage8;
+	}
+	public String getSmallimage9() {
+		return smallimage9;
+	}
+	public void setSmallimage9(String smallimage9) {
+		this.smallimage9 = smallimage9;
+	}
+	public String getSmallimage10() {
+		return smallimage10;
+	}
+	public void setSmallimage10(String smallimage10) {
+		this.smallimage10 = smallimage10;
+	}
+	public String getSmallimage11() {
+		return smallimage11;
+	}
+	public void setSmallimage11(String smallimage11) {
+		this.smallimage11 = smallimage11;
+	}
+	public String getSmallimage12() {
+		return smallimage12;
+	}
+	public void setSmallimage12(String smallimage12) {
+		this.smallimage12 = smallimage12;
+	}
+	public String getSmallimage13() {
+		return smallimage13;
+	}
+	public void setSmallimage13(String smallimage13) {
+		this.smallimage13 = smallimage13;
+	}
+	public String getSmallimage14() {
+		return smallimage14;
+	}
+	public void setSmallimage14(String smallimage14) {
+		this.smallimage14 = smallimage14;
+	}
+	public String getSmallimage15() {
+		return smallimage15;
+	}
+	public void setSmallimage15(String smallimage15) {
+		this.smallimage15 = smallimage15;
+	}
+	public boolean isGetVideoLink() {
+		return getVideoLink;
+	}
+	public void setGetVideoLink(boolean getVideoLink) {
+		this.getVideoLink = getVideoLink;
+	}
+	public String getVideoLink() {
+		return videoLink;
+	}
+	public void setVideoLink(String videoLink) {
+		this.videoLink = videoLink;
 	}
 	
 	

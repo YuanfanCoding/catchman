@@ -1,5 +1,9 @@
 package com.lazada.model;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
+import java.util.HashMap;
+
 import com.lazada.util.IpMacUtil;
 
 public class Constant { 
@@ -34,7 +38,7 @@ public class Constant {
 	public static final String ALIEXPRESS="ALIEXPRESS";
 	
 	public final static String LAZADAKEYWORDSIDE="https://www.lazada.com.my/catalog/?sort=popularity&q="; 
-	public final static String ALIEXPRESSKEYWORDSIDE="https://www.aliexpress.com/wholesale?SearchText=";
+	public final static String ALIEXPRESSKEYWORDSIDE="https://www.aliexpress.com/wholesale?g=y&SearchText=";
 	
 	public final static String SHOPEEITEMSSITE="https://shopee.com.my/api/v1/search_items/?by=pop&order=desc&limit=50&keyword="; 
 	
@@ -45,5 +49,9 @@ public class Constant {
 	
 	public static final String TESTUSER="user";
 	public static final String TESTPASSWORD="123456";
+	
+	
+	public static  HashMap<Integer,String> calMap=null;//shopee∑÷¿‡π˛œ£map
+		
 	
 }

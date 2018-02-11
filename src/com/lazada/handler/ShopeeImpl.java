@@ -98,7 +98,13 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService{
 			doc = ExcelUtil.getDoc(urlstring);
 			if(doc!=null) {
 		  try {
+			  
+			  doc.toString();
+			  
+			  
 			  exlRow=getFisrtLevelLink (ci,doc, sheet, pagenum, exlRow);
+			  
+			  
 				}catch(Exception e) {
 					ci.append(e.getMessage());
 					ci.paintImmediately(ci.getBounds());

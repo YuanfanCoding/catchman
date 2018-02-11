@@ -120,7 +120,9 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 			doc = ExcelUtil.getDoc(urlstring);
 			if (doc != null) {
 			    info.setName(doc.select("h1.product-name").text().toString());// 标题
-				info.setComment(doc.select("span.percent-num").text().toString()+"  "+doc.select("span.rantings-num").text().toString());// 好评
+				info.setComment(doc.select("span.percent-num").text().toString());// 好评
+				info.setDiscuss(doc.select("span.rantings-num").text().toString().replace("votes", "").replaceAll("[( )]", ""));//评论量
+				info.setSalenum(doc.select("span.order-num").text().toString().replace("orders",""));//销量
 				info.setStore(doc.select("a.store-lnk").text().toString());// 店铺名
 				info.setCategory(doc.select("div.ui-breadcrumb").text().toString());// 分类
 				Elements elimage =doc.select("span.img-thumb-item");
@@ -147,13 +149,19 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 		            	info.setBrand(maidians.get(i).text().toString());
 		        }
 				info.setShort_description(elsdstring);// 卖点
-				info.setShort_descriptioncode(doc.select("ul.product-property-list").select("ul.util-clearfix").html());// 卖点代码
+				Elements es=doc.select("ul.product-property-list").select("ul.util-clearfix").select("li");
+				String maidiancode="";
+				for(int i=0;i<(es.size()>8?8:es.size());i++) {
+					maidiancode+=es.get(i).html()+" \n";
+				}
+				info.setShort_descriptioncode(maidiancode);// 卖点代码
+				
 				if(!doc.select("ul#j-sku-list-2").text().toString().equals(""))
 				info.setSize(doc.select("ul#j-sku-list-2").text().toString());// 尺寸
 				else 
 				info.setSize(doc.select("ul#j-sku-list-3").text().toString());// 尺寸
-				info.setSpecial_price(doc.select("div.p-price-content").text().toString());// 特价
-				info.setPrice(doc.select("del.p-del-price-content").select("del.notranslate").text().toString());// 实价
+				info.setSpecial_price(doc.select("div.p-price-content").text().toString().replaceAll("US $", ""));// 特价
+				info.setPrice(doc.select("del.p-del-price-content").select("del.notranslate").text().toString().replaceAll("US $", ""));// 实价
 				
 
 		        Document tempdoc = null;
@@ -179,6 +187,20 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 				info.setPackage_content(pElement);// 包装
 				info.setSellersku("");// sku
 				info.setLocation(doc.select("dd.store-address").text().toString());
+				
+				Elements itemskuimagelist=doc.select("li.item-sku-image").select("img"); //小图
+				 for (int i = 0; i < (itemskuimagelist.size() > 15 ? 15 : itemskuimagelist.size() ); i++) {
+			        	Class clazz = info.getClass();
+						Method m;
+						try {
+							m = clazz.getMethod("setSmallimage" + (i + 1), String.class);
+							m.invoke(info, itemskuimagelist.get(i).attr("src").toString().replaceFirst(".jpg_50x50", ""));
+						} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+								| IllegalArgumentException | InvocationTargetException e) {
+
+							e.printStackTrace();
+						}
+			        }
 				info.setOneItemStart(true);
 					
 			} else {
