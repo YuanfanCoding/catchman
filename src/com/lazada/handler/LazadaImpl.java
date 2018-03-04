@@ -16,7 +16,7 @@ import com.lazada.model.Constant;
 import com.lazada.model.json.firstlevel.FirstLevelJsonRootBean;
 import com.lazada.model.json.firstlevel.ListItems;
 import com.lazada.model.product.FinalInfo;
-import com.lazada.util.ExcelUtil;
+import com.lazada.util.BasicUtil;
 
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -102,7 +102,7 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 		System.out.println(urlstring);	
 		Document doc = null;
 		while (doc == null) {
-			doc = ExcelUtil.getDoc(urlstring);
+			doc = BasicUtil.getDoc(urlstring);
 			if(doc!=null) {
 		  try {
 			  exlRow=getFisrtLevelLink (ci,doc, sheet, pagenum, exlRow);
@@ -144,7 +144,7 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 		Document doc = null;
 		int failcount=0;//失败两次就跳过不收集
 		while (doc == null) {
-			doc = ExcelUtil.getDoc(urlstring);
+			doc = BasicUtil.getDoc(urlstring);
 			if (doc != null) {
 //				System.out.println(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));
 				info.setLink(urlstring);// 链接	
@@ -229,7 +229,7 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 				}
 			}
 			if (info.isOneItemStart()) {
-				ExcelUtil.handleOneItem(sheet, exlRow,info);
+				BasicUtil.handleOneItem(sheet, exlRow,info);
 				exlRow++;
 				info.backToInit();
 			}

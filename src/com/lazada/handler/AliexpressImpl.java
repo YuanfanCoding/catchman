@@ -15,7 +15,7 @@ import com.lazada.model.Constant;
 import com.lazada.model.json.firstlevel.FirstLevelJsonRootBean;
 import com.lazada.model.json.firstlevel.ListItems;
 import com.lazada.model.product.FinalInfo;
-import com.lazada.util.ExcelUtil;
+import com.lazada.util.BasicUtil;
 
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -93,7 +93,7 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 		System.out.println(urlstring);	
 		Document doc = null;
 		while (doc == null) {
-			doc = ExcelUtil.getDoc(urlstring);
+			doc = BasicUtil.getDoc(urlstring);
 			if(doc!=null) {
 		  try {
 			  exlRow=getFisrtLevelLink (ci,doc, sheet, pagenum, exlRow);
@@ -117,7 +117,7 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 		Document doc = null;
 		int failcount=0;//失败两次就跳过不收集
 		while (doc == null) {
-			doc = ExcelUtil.getDoc(urlstring);
+			doc = BasicUtil.getDoc(urlstring);
 			if (doc != null) {
 			    info.setName(doc.select("h1.product-name").text().toString());// 标题
 				info.setComment(doc.select("span.percent-num").text().toString());// 好评
@@ -169,7 +169,7 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 		 			 String line1=doc.select("script[type=text/javascript]").get(2).data().toString();
 		 	         String line2=line1.substring(line1.indexOf("window.runParams.detailDesc="), line1.indexOf("window.runParams.transAbTest=")).trim();
 		 	        
-		 			tempdoc = ExcelUtil.getDoc(line2.substring(line2.indexOf("https://"),line2.length()-2));
+		 			tempdoc = BasicUtil.getDoc(line2.substring(line2.indexOf("https://"),line2.length()-2));
 		 			if (tempdoc != null) {
 		 				int length1=tempdoc.text().length();
 		 				int length2=tempdoc.toString().length();
@@ -213,7 +213,7 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 				}
 			}
 			if (info.isOneItemStart()) {
-				ExcelUtil.handleOneItem(sheet, exlRow,info);
+				BasicUtil.handleOneItem(sheet, exlRow,info);
 				exlRow++;
 				info.backToInit();
 			}

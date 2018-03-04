@@ -35,7 +35,7 @@ import com.lazada.model.Constant;
 import com.lazada.model.json.detail.ItemListElement;
 import com.lazada.model.json.detail.JsonRootBean;
 import com.lazada.model.product.FinalInfo;
-import com.lazada.util.ExcelUtil;
+import com.lazada.util.BasicUtil;
 
 import jxl.Workbook;
 import jxl.write.Label;
@@ -147,33 +147,33 @@ public class ConnectImpl extends JTextArea{
 		// TODO Auto-generated constructor stub
 	}
  
-	public void pageCatching(int type,WritableWorkbook workbook) throws IOException , RowsExceededException, WriteException{
-		String site="";
-		
-		
-		
-		try {
-			for (int i = 0; i < endpage - startpage + 1; i++) {
-				this.append("开始抓取第" + (i + startpage) + "页的内容。\n");
-				
-				if(type==1) //关键词
-					 exlRow=ExcelUtil.getInfoFirstLevel(this, site, String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);//关键词
-				
-				else {//店铺
-					
-					exlRow=ExcelUtil.getInfoByStoreLink(this,String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);//店铺
-				}
-				
-				
-				Thread.sleep(6000);// 延迟6秒发送请求
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			this.append(e.getMessage());
-			//this.paintImmediately(this.getBounds());
-			e.printStackTrace();
-		}
-	}
+//	public void pageCatching(int type,WritableWorkbook workbook) throws IOException , RowsExceededException, WriteException{
+//		String site="";
+//		
+//		
+//		
+//		try {
+//			for (int i = 0; i < endpage - startpage + 1; i++) {
+//				this.append("开始抓取第" + (i + startpage) + "页的内容。\n");
+//				
+//				if(type==1) //关键词
+//					 exlRow=BasicUtil.getInfoFirstLevel(this, site, String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);//关键词
+//				
+//				else {//店铺
+//					
+//					exlRow=BasicUtil.getInfoByStoreLink(this,String.valueOf(startpage + i), typetext, workbook.getSheet(0), exlRow);//店铺
+//				}
+//				
+//				
+//				Thread.sleep(6000);// 延迟6秒发送请求
+//			}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			this.append(e.getMessage());
+//			//this.paintImmediately(this.getBounds());
+//			e.printStackTrace();
+//		}
+//	}
 	
 	
 	public void startCatching(WritableWorkbook workbook) throws IOException, WriteException {
@@ -182,7 +182,7 @@ public class ConnectImpl extends JTextArea{
 
 		try {
 			if (workbook == null)
-				workbook = ExcelUtil.initWorkbook(savepath);
+				workbook = BasicUtil.initWorkbook(savepath);
 			exlRow++;
 			PlatformService platformService = getPlatFormInstance();
 
@@ -211,8 +211,8 @@ public class ConnectImpl extends JTextArea{
         	return new AliexpressImpl(type,typetext,startpage,endpage);
 			
         case Constant.SHOPEE:
-//        	return new ShopeeImpl(type,typetext);
-			break;
+        	return new ShopeeImpl(type,typetext);
+			
         case Constant.AMAZON:
 //        	return new AmazonImpl(type,typetext);
 			break;

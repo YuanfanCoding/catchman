@@ -7,10 +7,12 @@ import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -28,8 +30,8 @@ public class TestShopee {
 			
 			try {
 //	            HttpGet httpget = new HttpGet("https://shopee.com.my/api/v1/search_items/?by=pop&order=desc&keyword=sport%20shoes&newest=0&limit=50");
-	            HttpGet httpget = new HttpGet("https://shopee.com.my/api/v1/search_items/?by=pop&order=desc&keyword=women%20shoes&newest=100&limit=50");
-	            
+//	            HttpGet httpget = new HttpGet("https://shopee.com.my/Women-Casual-Fashion-New-Sandal-Slippers-Beach-Outdoor-Open-Toe-Shoes-i.27639727.564092163");
+				HttpGet httpget = new HttpGet("https://shopee.com.my/api/v1/item_detail/?item_id=564092163&shop_id=27639727");
 //	           设置超时 
 //	            3.X是这样的
 	//
@@ -58,16 +60,19 @@ public class TestShopee {
 //	      
 //	            httpGet.setHeader("Cookie", "__utma=226521935.73826752.1323672782.1325068020.1328770420.6;");  
 //	      
-//	            httpGet.setHeader("Host", "www.cnblogs.com");  
+//	            httpget.setHeader("if-none-match-", "55b03-8d36597e481f0378f615099f8388bb27");  
 //	      
-//	            httpGet.setHeader("refer", "http://www.baidu.com/s?tn=monline_5_dg&bs=httpclient4+MultiThreadedHttpConnectionManager");  
+				httpget.setHeader("refer", "https://shopee.com.my/Women-Casual-Fashion-New-Sandal-Slippers-Beach-Outdoor-Open-Toe-Shoes-i.27639727.564092163");  
 	      //http://blog.csdn.net/a9529lty/article/details/7008537
 //	            httpget.setHeader("if-none-match-", "55b03-35472a6b759e4acdea22d1c79a88188a");  
 //	            httpget.setHeader("User-Agent",
 //	            		"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");  
 //	            "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36");
 	            CloseableHttpResponse response = httpclient.execute(httpget);
-	            
+//	             Header[] headers=response.getAllHeaders();
+//	             for(int i=0;i<headers.length;i++)
+//	            	 System.out.println(headers[i].getName()+"  "+headers[i].getValue());
+	           
 	            String web="";
 	            try {
 	                // 获取响应实体
@@ -77,13 +82,13 @@ public class TestShopee {
 	                	web= EntityUtils.toString(entity,"UTF-8");
 	                 	System.out.println(web);
 	                 	
-	                 	Gson gson = new Gson();
-	                    FirstShopeeList firstShopeeList = gson.fromJson(web,FirstShopeeList.class);// 对于javabean直接给出class实例
-	                 	
-	                    System.out.println(firstShopeeList.getItems().size());
-	                    for(int i=0;i<firstShopeeList.getItems().size();i++) {
-	                    Items items	=firstShopeeList.getItems().get(i);
-	                    	System.out.println(items.getItemid()+items.getShopid());
+//	                 	Gson gson = new Gson();
+//	                    FirstShopeeList firstShopeeList = gson.fromJson(web,FirstShopeeList.class);// 对于javabean直接给出class实例
+//	                 	
+//	                    System.out.println(firstShopeeList.getItems().size());
+//	                    for(int i=0;i<firstShopeeList.getItems().size();i++) {
+//	                    Items items	=firstShopeeList.getItems().get(i);
+//	                    	System.out.println(items.getItemid()+items.getShopid());
 	                    	
 	                    }
 	                 	
@@ -113,6 +118,7 @@ public class TestShopee {
 	                 	
 	                 	
 	                 	
+	                
 	                 	
 //	                    Document doc= Jsoup.parse(web);
 //	                    System.out.println(doc.select("div.ui-breadcrumb").text().toString());
@@ -184,7 +190,7 @@ public class TestShopee {
 //	                    System.out.println(doc.select("td#pdtsku").text().toString());
 	                     // System.out.println(doc.select("script[type=application/ld+json]").get(0).data().toString());
 	                      
-	                }   
+//	                }   
 	            } finally {
 	                response.close();
 	            }

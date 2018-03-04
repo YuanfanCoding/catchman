@@ -4,6 +4,9 @@ import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.util.HashMap;
 
+import org.openqa.selenium.Cookie;
+
+import com.gargoylesoftware.htmlunit.javascript.host.Set;
 import com.lazada.util.IpMacUtil;
 
 public class Constant { 
@@ -41,7 +44,7 @@ public class Constant {
 	public final static String ALIEXPRESSKEYWORDSIDE="https://www.aliexpress.com/wholesale?g=y&SearchText=";
 	
 	public final static String SHOPEEITEMSSITE="https://shopee.com.my/api/v1/search_items/?by=pop&order=desc&limit=50&keyword="; 
-	
+	public final static String SHOPEEKEYWORDSITE="https://shopee.com.my/search/?subcategory&keyword=";
 	
 	public final static String LAZADASIDE="www.lazada.com.my";
 	public final static String SHOPEESIDE="shopee.com.my";
@@ -52,6 +55,11 @@ public class Constant {
 	
 	
 	public static  HashMap<Integer,String> calMap=null;//shopee∑÷¿‡π˛œ£map
-		
+	
+	public static String shopeecookies="";
+	
+	public static String shopeecsrftoken="";
+	
+	
 	
 }

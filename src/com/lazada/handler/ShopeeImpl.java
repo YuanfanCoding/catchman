@@ -10,12 +10,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.gargoylesoftware.htmlunit.javascript.host.Set;
 import com.google.gson.Gson;
 import com.lazada.model.Constant;
 import com.lazada.model.json.firstlevel.FirstLevelJsonRootBean;
 import com.lazada.model.json.firstlevel.ListItems;
 import com.lazada.model.product.FinalInfo;
-import com.lazada.util.ExcelUtil;
+import com.lazada.util.BasicUtil;
 
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -85,6 +86,13 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService{
 	@Override
 	public int getFirstLevel(ConnectImpl ci, String website, String pagenum, String keyword, WritableSheet sheet,
 			int exlRow) throws IOException {
+		
+		if(Constant.shopeecookies.equals("")&&Constant.shopeecsrftoken.equals("")) {
+			ci.append("正在初始化工作:--------------  \n");
+		//获得cookies
+		    BasicUtil.getCookies(Constant.SHOPEEKEYWORDSITE+ URLEncoder.encode(keyword, "utf-8")+ "&page="+(Integer.parseInt(pagenum)-1));
+		}
+		
 		String urlstring = "";
 		if(!keyword.equals("")) //关键词
 			urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&newest=" + Integer.parseInt(pagenum)*50;
@@ -93,13 +101,14 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService{
 		
 		urlstring = website+ "&page=" + pagenum;
 		System.out.println(urlstring);	
+		
 		Document doc = null;
 		while (doc == null) {
-			doc = ExcelUtil.getDoc(urlstring);
+			doc = BasicUtil.getDoc(urlstring);
 			if(doc!=null) {
 		  try {
-			  
-			  doc.toString();
+			  String jsontemp=doc.toString();
+			  jsontemp="{"+jsontemp.substring(jsontemp.indexOf("items")-1).replace("items", "item_shop_ids");
 			  
 			  
 			  exlRow=getFisrtLevelLink (ci,doc, sheet, pagenum, exlRow);
@@ -142,7 +151,7 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService{
 		FinalInfo info = new FinalInfo();
 		Document doc = null;
 		while (doc == null) {
-			doc = ExcelUtil.getDoc(urlstring);
+			doc = BasicUtil.getDoc(urlstring);
 			if (doc != null) {
 //				System.out.println(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));
 				info.setLink(urlstring);// 链接	
@@ -211,7 +220,7 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService{
 				ci.append("链接：" + urlstring + "获取失败，开始重新获取:--------------  \n");
 
 			if (info.isOneItemStart()) {
-				ExcelUtil.handleOneItem(sheet, exlRow,info);
+				BasicUtil.handleOneItem(sheet, exlRow,info);
 				exlRow++;
 				info.backToInit();
 			}
