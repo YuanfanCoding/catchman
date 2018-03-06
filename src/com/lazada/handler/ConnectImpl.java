@@ -64,13 +64,13 @@ public class ConnectImpl extends JTextArea{
 		try {
 			long startTime=System.currentTimeMillis();   
 			
-//			ConnectImpl connectImpl=new ConnectImpl(2,"https://www.lazada.com.my/kristall-official-store/?hybrid=1&q=All-Products&from=wangpu&pageTypeId=2",1,3,"C:\\Users\\Administrator\\Desktop\\123.xls");
-			ConnectImpl connectImpl=new ConnectImpl(1,"Mobile Phone",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
+//			ConnectImpl connectImpl=new ConnectImpl(3,"https://www.lazada.com.my/products/huawei-nova-2i-59-4gb-ram-64gb-rom-official-huawei-malaysia-set-i183285172-s221192291.html",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
+			ConnectImpl connectImpl=new ConnectImpl(1,"Petpet",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
 //			ConnectImpl connectImpl=new ConnectImpl();
 //			connectImpl.setType(1);
-//			connectImpl.setPro("womens shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");	
+//			connectImpl.setPro("Petpet",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");	
 //			ConnectImpl connectImpl=new ConnectImpl(3,"https://www.aliexpress.com/item/2017-new-fashion-women-shoes/32823588095.html?ws_ab_test=searchweb0_0,searchweb201602_4_10152_10151_10065_10068_10344_10342_10325_10546_10343_10340_10548_10341_10084_10617_10083_10616_10615_10307_10313_10059_10534_100031_10604_10103_10142,searchweb201603_25,ppcSwitch_5&algo_expid=9fe502ce-c27d-4ac6-b4a5-afc709abac99-6&algo_pvid=9fe502ce-c27d-4ac6-b4a5-afc709abac99&priceBeautifyAB=3",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
-			connectImpl.setPlatform(Constant.ALIEXPRESS);
+			connectImpl.setPlatform(Constant.LAZADA);
 			WritableWorkbook workbook=null;
 			connectImpl.startCatching(workbook);
 			long endTime=System.currentTimeMillis();

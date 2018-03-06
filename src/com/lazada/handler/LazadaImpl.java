@@ -150,27 +150,31 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 				info.setLink(urlstring);// 链接	
 				if(ietelement!=null)
 				info.setLocation(ietelement.getLocation());// 地区，存在第一页，所以在这抓取
-				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada Malaysia")));// 标题
-				info.setComment(doc.getElementsByClass("prd-reviews").get(0).text().toString().trim()
-						.replace("(", "").replace(")", ""));// 好评
-				info.setBrand(doc.select("div.prod_header_brand_action").get(0).text().toString());// 品牌
-				info.setStore(doc.getElementsByClass("basic-info__name").get(0).text().toString());// 店铺名
+				info.setName(doc.title().substring(0, doc.title().indexOf("| Lazada")));// 标题
+				
+				info.setComment(doc.getElementsByClass("score").get(0).text().toString().trim().replace("out of 5", ""));// 好评
+				info.setSalenum(doc.getElementsByClass("pdp-review-summary__link").get(0).text().toString().trim().replace("Ratings", "")
+						);// 评论
+//				if(doc.getElementsByClass("pdp-review-summary__link").size()>1)
+//				info.setSalenum(doc.getElementsByClass("pdp-review-summary__link").get(1).text().toString().trim().replace("Answered Questions", ""));//销量
+				info.setBrand(doc.select("div.key-value").get(0).text().toString());// 品牌
+				info.setStore(doc.getElementsByClass("seller-name__detail-name").get(0).text().toString());// 店铺名
 				String category = "";
-				Elements categorylist = doc.select("span.breadcrumb__item-text");
+				Elements categorylist = doc.select("span.breadcrumb_item_text");
 				if (categorylist != null && !categorylist.isEmpty()) {
 					for (int i = 0; i < categorylist.size() - 1; i++)
 						category += categorylist.get(i).text().toString() + "/";
 				}
 				info.setCategory(category);// 分类
 				String elimagestring = "";
-				Elements elimage = doc.getElementsByClass("productImage");
-				info.setMainimage(elimage.get(0).attr("data-big").toString());// 图片
+				Elements elimage = doc.getElementsByClass("item-gallery__thumbnail-image");
+				info.setMainimage("https:"+elimage.get(0).attr("src").toString().replaceFirst(".jpg_110x110q75", ".jpg_800x800q83"));// 图片
 				for (int i = 1; i < (elimage.size() > 8 ? 8 : elimage.size() - 1); i++) {
 					Class clazz = info.getClass();
 					Method m;
 					try {
 						m = clazz.getMethod("setImage" + (i + 1), String.class);
-						m.invoke(info, elimage.get(i).attr("data-big").toString());
+						m.invoke(info, elimage.get(i).attr("src").toString().replaceFirst(".jpg_110x110q75", ".jpg_800x800q83"));
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 							| IllegalArgumentException | InvocationTargetException e) {
 
@@ -179,41 +183,40 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 
 				}
 
-				Elements elsd = doc.getElementsByClass("prd-attributesList").select("span");
+				Elements elsd = doc.getElementsByClass("pdp-product-highlights").select("li");
 				String elsdstring = "";
 				for (Element els : elsd) {
 					elsdstring += els.text().toString() + "\n";
 				}
 				info.setShort_description(elsdstring);// 卖点
-				int length1=doc.getElementsByClass("prd-attributesList").html().length();
-				info.setShort_descriptioncode(doc.getElementsByClass("prd-attributesList").html().substring(0, length1>32767?32767:length1));// 卖点代码
+				int length1=doc.getElementsByClass("pdp-product-highlights").html().length();
+				info.setShort_descriptioncode(doc.getElementsByClass("pdp-product-highlights").html().substring(0, length1>32767?32767:length1));// 卖点代码
 				String size = "";
-				Elements sizelist = doc.select("span.grouped-size__popup__tab__content__item__size-item");
+				Elements sizelist = doc.select("span.sku-variable-size");
 				if (sizelist != null && !sizelist.isEmpty()) {
 					size += doc.getElementsByClass(
-							"grouped-size__popup__tab__header__item grouped-size__popup__tab__header__item_state_active")
+							"sku-tabpath-single")
 							.text().toString() + " \n";
 					for (int i = 0; i < sizelist.size(); i++)
 						size += sizelist.get(i).text().toString() + " \n";
 				}
 				info.setSize(size);// 尺寸
-				info.setSpecial_price(doc.select("span#product_price").text().toString());// 特价
+				info.setSpecial_price(doc.select("span.pdp-price_color_orange").text().toString().replace("RM", ""));// 特价
 				info.setPrice(
-						doc.select("span#price_box").text().toString().replace(",", "").replace("RM", "").trim());// 实价
-				info.setDescription(doc.select("div.product-description__block").get(0).text().toString());// 描述
-				int length2=doc.select("div.product-description__block").get(0).html().length();
-				info.setDescriptioncode(doc.select("div.product-description__block").get(0).html().substring(0,length2>32767?32767:length2));// 描述代码
-				info.setPackage_content(doc.select("li.inbox__item").text().toString().replaceAll("<ul>", "")
-						.replaceAll("</ul>", "").replaceAll("<li>", "").replaceAll("</li>", "")
-						.replaceAll("<p>", "").replaceAll("</p>", ""));// 包装
-				info.setSellersku(doc.select("td#pdtsku").text().toString());// sku
-				Elements trs =doc.select("table.specification-table").select("tr");
+						doc.select("span.pdp-price_color_lightgray").text().toString().replace(",", "").replace("RM", "").trim());// 实价
+				info.setDescription(doc.select("div.detail-content").get(0).text().toString());// 描述
+				int length2=doc.select("div.detail-content").get(0).html().length();
+				info.setDescriptioncode(doc.select("div.detail-content").get(0).html().substring(0,length2>32767?32767:length2));// 描述代码
+				info.setPackage_content(doc.select("div.box-content-html").text().toString());// 包装
+				info.setSellersku(doc.select("div.key-value").get(1).text().toString());// sku
+				Elements trs =doc.select("span.key-title");
 				
-				for (Element tr : trs) { //Compatibility by Model--手机类
-					if(tr.select("td").get(0).text().toString().contains("Compatibility by Model")) {
-						info.setCompatibility(tr.select("td").get(1).text().toString());
+				for (int i=0;i<trs.size();i++) { //Compatibility by Model--手机类
+					if(trs.get(i).text().toString().contains("Model")) {
+						info.setCompatibility(doc.select("div.key-value").get(i).text().toString());
 //						 System.out.print(tr.select("td").get(0).text().toString()+"  ");
 //					     System.out.println(tr.select("td").get(1).text().toString());
+						break;
 					}
 					 
 				}
