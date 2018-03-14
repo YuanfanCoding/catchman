@@ -19,6 +19,9 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 import com.lazada.model.Constant;
+import com.lazada.model.json.shopee.category.CategoryList;
+import com.lazada.model.json.shopee.category.Sub;
+import com.lazada.model.json.shopee.category.Sub_sub;
 import com.lazada.model.json.shopee.first.FirstShopeeList;
 import com.lazada.model.json.shopee.first.Items;
 
@@ -31,7 +34,7 @@ public class TestShopee {
 			try {
 //	            HttpGet httpget = new HttpGet("https://shopee.com.my/api/v1/search_items/?by=pop&order=desc&keyword=sport%20shoes&newest=0&limit=50");
 //	            HttpGet httpget = new HttpGet("https://shopee.com.my/Women-Casual-Fashion-New-Sandal-Slippers-Beach-Outdoor-Open-Toe-Shoes-i.27639727.564092163");
-				HttpGet httpget = new HttpGet("https://shopee.com.my/api/v1/item_detail/?item_id=564092163&shop_id=27639727");
+				HttpGet httpget = new HttpGet("https://shopee.com.my/api/v1/category_list/");
 //	           设置超时 
 //	            3.X是这样的
 	//
@@ -62,7 +65,7 @@ public class TestShopee {
 //	      
 //	            httpget.setHeader("if-none-match-", "55b03-8d36597e481f0378f615099f8388bb27");  
 //	      
-				httpget.setHeader("refer", "https://shopee.com.my/Women-Casual-Fashion-New-Sandal-Slippers-Beach-Outdoor-Open-Toe-Shoes-i.27639727.564092163");  
+//				httpget.setHeader("refer", "https://shopee.com.my/Women-Casual-Fashion-New-Sandal-Slippers-Beach-Outdoor-Open-Toe-Shoes-i.27639727.564092163");  
 	      //http://blog.csdn.net/a9529lty/article/details/7008537
 //	            httpget.setHeader("if-none-match-", "55b03-35472a6b759e4acdea22d1c79a88188a");  
 //	            httpget.setHeader("User-Agent",
@@ -92,29 +95,30 @@ public class TestShopee {
 	                    	
 	                    }
 	                 	
-//	                 	Gson gson = new Gson();
-//	                    CategoryList categoryList = gson.fromJson("{\"calist\":"+web+"}",CategoryList.class);// 对于javabean直接给出class实例
-//	                    
-//	                    System.out.println(categoryList.getCalist().size());
-//	                    if(Constant.calMap==null || Constant.calMap.size()==0) {
-//	                    	Constant.calMap=new HashMap<Integer,String>();
-//	                    	for(int i=0;i<categoryList.getCalist().size();i++) {//一层id
-//	                    		
-//	                    		List<Sub> sub=categoryList.getCalist().get(i).getSub();
-//	                    		String firstname=categoryList.getCalist().get(i).getMain().getDisplay_name();
-//	                    		
-//	                    		for(int j=0;j<sub.size();j++) {
-//	                    			
-//	                    			List<Sub_sub> sub_sub=sub.get(j).getSub_sub();
-//	                    			String secondname=sub.get(j).getDisplay_name();
-//	                    			for(int k=0;k<sub_sub.size();k++) {
-//	                    				System.out.println(sub_sub.get(k).getCatid());
-//	                    				System.out.println(sub_sub.get(k).getDisplay_name());
-//	                    				Constant.calMap.put(sub_sub.get(k).getCatid(),firstname+">"+secondname+ ">"+sub_sub.get(k).getDisplay_name());
-//	                    			}
-//	                    		}
-//	                    	}	
-//	                    }
+	                 	Gson gson = new Gson();
+	                    CategoryList categoryList = gson.fromJson("{\"calist\":"+web+"}",CategoryList.class);// 对于javabean直接给出class实例
+	                    
+	                    System.out.println(categoryList.getCalist().size());
+	                    if(Constant.calMap==null || Constant.calMap.size()==0) {
+	                    	Constant.calMap=new HashMap<Integer,String>();
+	                    	for(int i=0;i<categoryList.getCalist().size();i++) {//一层id
+	                    		
+	                    		List<Sub> sub=categoryList.getCalist().get(i).getSub();
+	                    		String firstname=categoryList.getCalist().get(i).getMain().getDisplay_name();
+	                    		
+	                    		for(int j=0;j<sub.size();j++) {
+	                    			
+	                    			List<Sub_sub> sub_sub=sub.get(j).getSub_sub();
+	                    			String secondname=sub.get(j).getDisplay_name();
+	                    			for(int k=0;k<sub_sub.size();k++) {
+	                    				System.out.println(sub_sub.get(k).getCatid());
+	                    				System.out.println(sub_sub.get(k).getDisplay_name());
+	                    				Constant.calMap.put(sub_sub.get(k).getCatid(),firstname+">"+secondname+ ">"+sub_sub.get(k).getDisplay_name());
+	                    				System.out.println(Constant.calMap.get(sub_sub.get(k).getCatid()));
+	                    			}
+	                    		}
+	                    	}	
+	                    }
 	                 	
 	                 	
 	                 	

@@ -6,6 +6,15 @@ import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -14,9 +23,11 @@ import com.google.gson.Gson;
 import com.lazada.model.Constant;
 import com.lazada.model.json.firstlevel.FirstLevelJsonRootBean;
 import com.lazada.model.json.firstlevel.ListItems;
+import com.lazada.model.product.BaseInfo;
 import com.lazada.model.product.FinalInfo;
-import com.lazada.util.BasicUtil;
+import com.lazada.util.BasicUtils;
 
+import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
@@ -93,7 +104,7 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 		System.out.println(urlstring);	
 		Document doc = null;
 		while (doc == null) {
-			doc = BasicUtil.getDoc(urlstring);
+			doc = getDoc(urlstring);
 			if(doc!=null) {
 		  try {
 			  exlRow=getFisrtLevelLink (ci,doc, sheet, pagenum, exlRow);
@@ -117,7 +128,7 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 		Document doc = null;
 		int failcount=0;//失败两次就跳过不收集
 		while (doc == null) {
-			doc = BasicUtil.getDoc(urlstring);
+			doc = getDoc(urlstring);
 			if (doc != null) {
 			    info.setName(doc.select("h1.product-name").text().toString());// 标题
 				info.setComment(doc.select("span.percent-num").text().toString());// 好评
@@ -166,10 +177,10 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 
 		        Document tempdoc = null;
 		 		while (tempdoc == null) {
-		 			 String line1=doc.select("script[type=text/javascript]").get(2).data().toString();
+		 			 String line1=doc.select("script[type=text/javascript]").get(3).data().toString();
 		 	         String line2=line1.substring(line1.indexOf("window.runParams.detailDesc="), line1.indexOf("window.runParams.transAbTest=")).trim();
 		 	        
-		 			tempdoc = BasicUtil.getDoc(line2.substring(line2.indexOf("https://"),line2.length()-2));
+		 			tempdoc = getDoc(line2.substring(line2.indexOf("https://"),line2.length()-2));
 		 			if (tempdoc != null) {
 		 				int length1=tempdoc.text().length();
 		 				int length2=tempdoc.toString().length();
@@ -213,7 +224,7 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 				}
 			}
 			if (info.isOneItemStart()) {
-				BasicUtil.handleOneItem(sheet, exlRow,info);
+				handleOneItem(sheet, exlRow,info);
 				exlRow++;
 				info.backToInit();
 			}
@@ -256,6 +267,113 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 		return exlRow;
 	}
 
+	public static void handleOneItem(WritableSheet sheet,int exlRow,BaseInfo info) throws RowsExceededException, WriteException{
+		int index=0;
+		sheet.addCell(new Label(index++, exlRow, info.getName()));
+		sheet.addCell(new Label(index++, exlRow, info.getCategory()));
+		sheet.addCell(new Label(index++, exlRow, info.getDescription()));
+		sheet.addCell(new Label(index++, exlRow, info.getDescriptioncode()));
+		sheet.addCell(new Label(index++, exlRow, info.getShort_description()));
+		sheet.addCell(new Label(index++, exlRow, info.getShort_descriptioncode()));
+		sheet.addCell(new Label(index++, exlRow, info.getVideoLink()));
+		sheet.addCell(new Label(index++, exlRow, info.getPrice()));
+		sheet.addCell(new Label(index++, exlRow, info.getSpecial_price()));
+		sheet.addCell(new Label(index++, exlRow, info.getSellersku()));
+		sheet.addCell(new Label(index++, exlRow, info.getPackage_content()));
+		sheet.addCell(new Label(index++, exlRow, info.getLink()));
+		sheet.addCell(new Label(index++, exlRow, info.getComment()));
+		sheet.addCell(new Label(index++, exlRow, info.getDiscuss()));
+		sheet.addCell(new Label(index++, exlRow, info.getSalenum()));
+		sheet.addCell(new Label(index++, exlRow, info.getMainimage()));
+		sheet.addCell(new Label(index++, exlRow, info.getImage2()));
+		sheet.addCell(new Label(index++, exlRow, info.getImage3()));
+		sheet.addCell(new Label(index++, exlRow, info.getImage4()));
+		sheet.addCell(new Label(index++, exlRow, info.getImage5()));
+		sheet.addCell(new Label(index++, exlRow, info.getImage6()));
+		sheet.addCell(new Label(index++, exlRow, info.getImage7()));
+		sheet.addCell(new Label(index++, exlRow, info.getImage8()));
+		sheet.addCell(new Label(index++, exlRow, info.getSize()));
+		sheet.addCell(new Label(index++, exlRow, info.getStore()));
+	    sheet.addCell(new Label(index++, exlRow, info.getBrand()));
+	    sheet.addCell(new Label(index++, exlRow, info.getLocation()));
+	    sheet.addCell(new Label(index++, exlRow, info.getCompatibility()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage1()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage2()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage3()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage4()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage5()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage6()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage7()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage8()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage9()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage10()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage11()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage12()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage13()));
+	    sheet.addCell(new Label(index++, exlRow, info.getSmallimage14()));
+	    sheet.addCell(new Label(index, exlRow, info.getSmallimage15()));
+	}
 	
+	public static Document getDoc(String url) {
+        
+//		CloseableHttpClient httpclient = HttpClients.createDefault();
+//		CookieStore cookieStore = new BasicCookieStore();  
+		long startTime=System.currentTimeMillis();   
+		RequestConfig defaultRequestConfig = RequestConfig.custom()
+			    .setSocketTimeout(4000)//读取超时 readtime-out
+			    .setConnectTimeout(4000)//连接超时
+			    .setConnectionRequestTimeout(4000)
+			    .build();
+		CloseableHttpClient httpclient =HttpClients.createDefault();   
+		Document doc = null;
+		try {
+			HttpGet httpget = new HttpGet(url);
+//			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(6*1000).build();
+			httpget.setConfig(defaultRequestConfig);
+			httpget.setHeader("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0");
+//			if(url.contains("page=1")) {
+//			Header[] header=httpget.getAllHeaders();
+//			for(int i=0;i<header.length;i++) {
+//				System.out.println(header[i].toString());
+//			}
+//			}
+//	        BasicClientCookie cookie = new BasicClientCookie("JSESSIONID", "B960BA73258DB81B7204FEE3A5A78CA3");   
+//	        cookie.setVersion(0);    
+//	        cookie.setDomain("/pms/");   //设置范围  
+//	        cookie.setPath("/");   
+//	        cookieStore.addCookie(cookie); 
+			CloseableHttpResponse response = httpclient.execute(httpget);
+			
+			long endTime=System.currentTimeMillis(); 
+			System.out.println("此次请求总耗时： "+(endTime-startTime));
+			String web = "";
+			try {
+				// 获取响应实体
+				HttpEntity entity = response.getEntity();
+				// 打印响应状态
+				if (entity != null) {
+					web = EntityUtils.toString(entity, "UTF-8");
+					doc = Jsoup.parse(web);
+					return doc;
+
+				}
+			} finally {
+				response.close();
+				httpclient.close();
+			}
+		} catch (org.apache.http.NoHttpResponseException e) {
+			e.printStackTrace();
+		} 
+		  catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch(java.net.UnknownHostException u) {
+			u.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		return doc;
+	}
 
 }

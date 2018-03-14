@@ -510,8 +510,9 @@ public class Main implements MouseListener {
 	}
 
 	public void startCatch() {
-
+		
 		if (doCheck()) {
+			
 			startCatchThread = new Thread(new StartCatchThread());
 			startCatchThread.start();
 
@@ -662,6 +663,7 @@ public class Main implements MouseListener {
 		@Override
 		public void run() {
 
+			
 			try {
 				HashMap hm = getActiveJcb(1);
 				String way = (String) (hm.keySet().iterator().next());
@@ -688,7 +690,9 @@ public class Main implements MouseListener {
 				default:
 					break;
 				}
+				
 				catchInfoArea.startCatching(workbook);
+				
 				JOptionPane.showMessageDialog(d, "您的数据收集完成！", "nice!", JOptionPane.WARNING_MESSAGE);
 				if (istest) {
 

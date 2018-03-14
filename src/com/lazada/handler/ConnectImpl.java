@@ -35,7 +35,7 @@ import com.lazada.model.Constant;
 import com.lazada.model.json.detail.ItemListElement;
 import com.lazada.model.json.detail.JsonRootBean;
 import com.lazada.model.product.FinalInfo;
-import com.lazada.util.BasicUtil;
+import com.lazada.util.BasicUtils;
 
 import jxl.Workbook;
 import jxl.write.Label;
@@ -65,12 +65,12 @@ public class ConnectImpl extends JTextArea{
 			long startTime=System.currentTimeMillis();   
 			
 //			ConnectImpl connectImpl=new ConnectImpl(3,"https://www.lazada.com.my/products/huawei-nova-2i-59-4gb-ram-64gb-rom-official-huawei-malaysia-set-i183285172-s221192291.html",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
-			ConnectImpl connectImpl=new ConnectImpl(1,"Petpet",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
+			ConnectImpl connectImpl=new ConnectImpl(1,"womens shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
 //			ConnectImpl connectImpl=new ConnectImpl();
 //			connectImpl.setType(1);
 //			connectImpl.setPro("Petpet",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");	
 //			ConnectImpl connectImpl=new ConnectImpl(3,"https://www.aliexpress.com/item/2017-new-fashion-women-shoes/32823588095.html?ws_ab_test=searchweb0_0,searchweb201602_4_10152_10151_10065_10068_10344_10342_10325_10546_10343_10340_10548_10341_10084_10617_10083_10616_10615_10307_10313_10059_10534_100031_10604_10103_10142,searchweb201603_25,ppcSwitch_5&algo_expid=9fe502ce-c27d-4ac6-b4a5-afc709abac99-6&algo_pvid=9fe502ce-c27d-4ac6-b4a5-afc709abac99&priceBeautifyAB=3",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
-			connectImpl.setPlatform(Constant.LAZADA);
+			connectImpl.setPlatform(Constant.SHOPEE);
 			WritableWorkbook workbook=null;
 			connectImpl.startCatching(workbook);
 			long endTime=System.currentTimeMillis();
@@ -181,13 +181,65 @@ public class ConnectImpl extends JTextArea{
 		// WritableWorkbook workbook = null;
 
 		try {
+			
 			if (workbook == null)
-				workbook = BasicUtil.initWorkbook(savepath);
+			{
+				
+//				workbook  = BasicUtil.initWorkbook(savepath);
+				 workbook =Workbook.createWorkbook(new File(savepath));
+		    	 int exlRow = 0;
+		    	 int index=0;
+			     WritableSheet sheet = workbook.createSheet("web_data", 0);
+			     sheet.addCell(new Label(index++, exlRow, "标题"));
+			     sheet.addCell(new Label(index++, exlRow, "类目"));
+			     sheet.addCell(new Label(index++, exlRow, "详情描述"));
+			     sheet.addCell(new Label(index++, exlRow, "描述代码"));
+			     sheet.addCell(new Label(index++, exlRow, "卖点"));
+			     sheet.addCell(new Label(index++, exlRow, "卖点代码"));
+			     sheet.addCell(new Label(index++, exlRow, "视频链接"));
+			     sheet.addCell(new Label(index++, exlRow, "卖价"));
+			     sheet.addCell(new Label(index++, exlRow, "特价"));
+			     sheet.addCell(new Label(index++, exlRow, "SKU(Lazada)"));
+			     sheet.addCell(new Label(index++, exlRow, "包装包括"));
+			     sheet.addCell(new Label(index++, exlRow, "产品本身链接"));
+			     sheet.addCell(new Label(index++, exlRow, "好评"));
+			     sheet.addCell(new Label(index++, exlRow, "评论"));
+			     sheet.addCell(new Label(index++, exlRow, "销量"));
+			     sheet.addCell(new Label(index++, exlRow, "图片1"));
+			     sheet.addCell(new Label(index++, exlRow, "图片2"));
+			     sheet.addCell(new Label(index++, exlRow, "图片3"));
+			     sheet.addCell(new Label(index++, exlRow, "图片4"));
+			     sheet.addCell(new Label(index++, exlRow, "图片5"));
+			     sheet.addCell(new Label(index++, exlRow, "图片6"));
+			     sheet.addCell(new Label(index++, exlRow, "图片7"));
+			     sheet.addCell(new Label(index++, exlRow, "图片8"));
+			     sheet.addCell(new Label(index++, exlRow, "尺寸"));
+			     sheet.addCell(new Label(index++, exlRow, "店铺"));
+			     sheet.addCell(new Label(index++, exlRow, "品牌"));
+			     sheet.addCell(new Label(index++, exlRow, "地区"));
+			     sheet.addCell(new Label(index++, exlRow, "Compatibility by Model(Lazada)"));
+			     sheet.addCell(new Label(index++, exlRow, "小图1"));
+			     sheet.addCell(new Label(index++, exlRow, "小图2"));
+			     sheet.addCell(new Label(index++, exlRow, "小图3"));
+			     sheet.addCell(new Label(index++, exlRow, "小图4"));
+			     sheet.addCell(new Label(index++, exlRow, "小图5"));
+			     sheet.addCell(new Label(index++, exlRow, "小图6"));
+			     sheet.addCell(new Label(index++, exlRow, "小图7"));
+			     sheet.addCell(new Label(index++, exlRow, "小图8"));
+			     sheet.addCell(new Label(index++, exlRow, "小图9"));
+			     sheet.addCell(new Label(index++, exlRow, "小图10"));
+			     sheet.addCell(new Label(index++, exlRow, "小图11"));
+			     sheet.addCell(new Label(index++, exlRow, "小图12"));
+			     sheet.addCell(new Label(index++, exlRow, "小图13"));
+			     sheet.addCell(new Label(index++, exlRow, "小图14"));
+			     sheet.addCell(new Label(index, exlRow++, "小图15"));
+			    
+			}				
 			exlRow++;
 			PlatformService platformService = getPlatFormInstance();
-
+			
 			platformService.startCatching(this, exlRow, workbook);
-		} catch (IOException | WriteException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			this.append(e.getMessage());
 		} finally {
@@ -211,7 +263,7 @@ public class ConnectImpl extends JTextArea{
         	return new AliexpressImpl(type,typetext,startpage,endpage);
 			
         case Constant.SHOPEE:
-        	return new ShopeeImpl(type,typetext);
+        	return new ShopeeImpl(type,typetext,startpage,endpage);
 			
         case Constant.AMAZON:
 //        	return new AmazonImpl(type,typetext);

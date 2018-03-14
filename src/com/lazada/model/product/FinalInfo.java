@@ -7,7 +7,9 @@ public class FinalInfo extends BaseInfo{
 		this.oneItemStart = false;
 		this.getName = false;
 		this.getDescription = false;
+		this.getDescriptionCode=false;
 		this.getShort_description= false;
+		this.getShort_descriptioncode= false;
 		this.getPrice = false;
 		this.getSpecial_price = false;
 		this.getSellerSku = false;
@@ -48,7 +50,9 @@ public class FinalInfo extends BaseInfo{
 		
 		this.name = "";
 		this.description= "";
+		this.descriptioncode="";
 		this.short_description = "";
+		this.short_descriptioncode="";
 		this.price = "";
 		this.special_price = "";
 		this.sellersku = "";

@@ -21,7 +21,7 @@ public class Constant {
 	public  static final  String HTTPADDR="http://ylfcoding.cn";//http://localhost:8080
 	public  static final  String ADVERTISEMENT="http://ylfcoding.cn";
 	public final static String VERSION="V2.0";
-	public final static String SOFTWARENAME="LAZADA数据收集器";
+	public final static String SOFTWARENAME="袋鼠LAZADA采集软件";
 	
 	//http请求
 	public final static String GETUSER = HTTPADDR+"/user";
@@ -45,9 +45,14 @@ public class Constant {
 	
 	public final static String SHOPEEITEMSSITE="https://shopee.com.my/api/v1/search_items/?by=pop&order=desc&limit=50&keyword="; 
 	public final static String SHOPEEKEYWORDSITE="https://shopee.com.my/search/?subcategory&keyword=";
+	public final static String SHOPEEPOSTSITE="https://shopee.com.my/api/v1/items/";
+	public final static String SHOPEEITEMSITE="https://shopee.com.my/api/v1/item_detail/?";
+	public final static String SHOPEEPICSITE="https://cfshopeecommy-a.akamaihd.net/file/";
+	public final static String SHOPEECATEGORYSITE="https://shopee.com.my/api/v1/category_list/";
+	
 	
 	public final static String LAZADASIDE="www.lazada.com.my";
-	public final static String SHOPEESIDE="shopee.com.my";
+	public final static String SHOPEESIDE="shopee.com.my/";
 	public final static String ALIEXPRESSSIDE="www.aliexpress.com";
 	
 	public static final String TESTUSER="user";

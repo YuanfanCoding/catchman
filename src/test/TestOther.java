@@ -36,24 +36,26 @@ public class TestOther extends JFrame {
 //	}
 
 	public static void main(String[] args) {
-		 try {
-	            String testPathString = "C:\\Users\\Administrator\\Desktop\\";
-	            WritableWorkbook workbook = Workbook.createWorkbook(new File(testPathString + "output.xls"));
-	            WritableSheet sheet = workbook.createSheet("First Sheet", 0);
-	            Label label = new Label(0, 2, "A label record kkkkkkkkkkkkkkkkk");
-	            WritableCellFormat wcf = new WritableCellFormat();
-	            wcf.setWrap(true);
-//	            wcf.setShrinkToFit(true);
-	            label.setCellFormat(wcf);
-	            sheet.addCell(label); 
-	            workbook.write(); 
-	            workbook.close();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        } catch (RowsExceededException e) {
-	            e.printStackTrace();
-	        } catch (WriteException e) {
-	            e.printStackTrace();
-	        }
+//		 try {
+//	            String testPathString = "C:\\Users\\Administrator\\Desktop\\";
+//	            WritableWorkbook workbook = Workbook.createWorkbook(new File(testPathString + "output.xls"));
+//	            WritableSheet sheet = workbook.createSheet("First Sheet", 0);
+//	            Label label = new Label(0, 2, "A label record kkkkkkkkkkkkkkkkk");
+//	            WritableCellFormat wcf = new WritableCellFormat();
+//	            wcf.setWrap(true);
+////	            wcf.setShrinkToFit(true);
+//	            label.setCellFormat(wcf);
+//	            sheet.addCell(label); 
+//	            workbook.write(); 
+//	            workbook.close();
+//	        } catch (IOException e) {
+//	            e.printStackTrace();
+//	        } catch (RowsExceededException e) {
+//	            e.printStackTrace();
+//	        } catch (WriteException e) {
+//	            e.printStackTrace();
+//	        }
+		long l=8600000;
+		System.out.println(String.format("%.2f", (Double.valueOf(l)/100000)));
 	}
 }
