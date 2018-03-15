@@ -114,21 +114,30 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService{
 	@Override
 	public int getFirstLevel(ConnectImpl ci, String website, String pagenum, String keyword, WritableSheet sheet,
 			int exlRow) throws IOException {
-		String urlFirst=Constant.SHOPEEKEYWORDSITE+ URLEncoder.encode(keyword, "utf-8")+ "&page="+(Integer.parseInt(pagenum)-1);
-		if(Constant.shopeecookies.equals("")&&Constant.shopeecsrftoken.equals("")) {
-			ci.append("正在初始化工作:--------------  \n");
-		//获得cookies
-		   getCookies(urlFirst);
-		   getCategoryList();
-		}
 		
+		if(Constant.calMap==null ||Constant.calMap.size()==0)
+			 getCategoryList();
 		String urlstring = "";
-		if(!keyword.equals("")) //关键词
+		String cookiesurl="";
+		if(!keyword.equals("")) {//关键词
+			cookiesurl=Constant.SHOPEEKEYWORDSITE+ URLEncoder.encode(keyword, "utf-8")+ "&page="+(Integer.parseInt(pagenum)-1);
 			urlstring = website + URLEncoder.encode(keyword, "utf-8") + "&newest=" + (Integer.parseInt(pagenum)-1)*50;
+		}
+			
 
 		else  //keyword为空表示不是关键词搜索，有可能是店铺或者其他
+		{
+		cookiesurl= website+ "&page=" + (Integer.parseInt(pagenum)-1);
 		
-		urlstring = website+ "&page=" + pagenum;
+		urlstring = website+ "&page=" + (Integer.parseInt(pagenum)-1);
+		}
+		
+		if(Constant.shopeecookies.equals("")&&Constant.shopeecsrftoken.equals("")) {
+			
+			ci.append("正在初始化工作:--------------  \n");
+			//获得cookies
+			   getCookies(cookiesurl);
+		}
 		System.out.println(urlstring);	
 		ci.append("正在获取第" + pagenum + "页的数据：  "  + urlstring+ "\n");
 		String respString = null;
@@ -139,7 +148,7 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService{
 		      StringEntity stringEntity = new StringEntity("{"+respString.substring(respString.indexOf("items")-1).replace("items", "item_shop_ids"),"utf-8");//解决中文乱码问题    
 		      stringEntity.setContentEncoding("UTF-8");   
 		      
-		      String finaljson=BasicUtils.postData(Constant.SHOPEEPOSTSITE, Constant.shopeecookies, stringEntity, urlFirst, Constant.shopeecsrftoken);
+		      String finaljson=BasicUtils.postData(Constant.SHOPEEPOSTSITE, Constant.shopeecookies, stringEntity, cookiesurl, Constant.shopeecsrftoken);
 			  
 		      exlRow=getFisrtLevelLink (finaljson,ci, sheet, pagenum, exlRow);
 			  
