@@ -44,15 +44,18 @@ public class Constant {
 	public final static String ALIEXPRESSKEYWORDSIDE="https://www.aliexpress.com/wholesale?g=y&SearchText=";
 	
 	public final static String SHOPEEITEMSSITE="https://shopee.com.my/api/v1/search_items/?by=pop&order=desc&limit=50&keyword="; 
+	public final static String SHOPEEITEMSSITEBYSHOPID="https://shopee.com.my/api/v1/search_items/?by=pop&order=desc&limit=30&page_type=shop"; 
 	public final static String SHOPEEKEYWORDSITE="https://shopee.com.my/search/?subcategory&keyword=";
 	public final static String SHOPEEPOSTSITE="https://shopee.com.my/api/v1/items/";
 	public final static String SHOPEEITEMSITE="https://shopee.com.my/api/v1/item_detail/?";
 	public final static String SHOPEEPICSITE="https://cfshopeecommy-a.akamaihd.net/file/";
 	public final static String SHOPEECATEGORYSITE="https://shopee.com.my/api/v1/category_list/";
+	public final static String SHOPEESHIDBYNAMESITE="https://shopee.com.my/api/v1/shop_ids_by_username/";
+	
 	
 	
 	public final static String LAZADASIDE="www.lazada.com.my";
-	public final static String SHOPEESIDE="shopee.com.my/";
+	public final static String SHOPEESIDE="https://shopee.com.my/";
 	public final static String ALIEXPRESSSIDE="www.aliexpress.com";
 	
 	public static final String TESTUSER="user";
@@ -65,6 +68,7 @@ public class Constant {
 	
 	public static String shopeecsrftoken="";
 	
+	public static String WORKPATH="";
 	
 	
 }

@@ -323,6 +323,7 @@ public class BasicUtils {
 		try {
 			HttpGet httpget = new HttpGet(url);
 			httpget.setConfig(defaultRequestConfig);
+			httpget.addHeader("if-none-match-", "123456abcde");
 			httpget.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0");
 			CloseableHttpResponse response = httpclient.execute(httpget);
 

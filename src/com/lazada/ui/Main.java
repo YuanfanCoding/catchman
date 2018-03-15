@@ -273,7 +273,6 @@ public class Main implements MouseListener {
 		panel.add(chckbxAliexpress);
 
 		JCheckBox chckbxShopee = new JCheckBox("shopee");
-		chckbxShopee.setEnabled(false);
 		chckbxShopee.setBackground(new Color(240, 248, 255));
 		chckbxShopee.setBounds(183, 133, 67, 23);
 		chckbxShopee.setName(Constant.SHOPEE);

@@ -8,6 +8,8 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableCellFormat;
@@ -55,7 +57,7 @@ public class TestOther extends JFrame {
 //	        } catch (WriteException e) {
 //	            e.printStackTrace();
 //	        }
-		long l=8600000;
-		System.out.println(String.format("%.2f", (Double.valueOf(l)/100000)));
+		String aa="https://shopee.com.my/healthystyle.my";
+		System.out.println(aa.substring(aa.indexOf(".my/")+4));
 	}
 }

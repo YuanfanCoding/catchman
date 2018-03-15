@@ -66,7 +66,7 @@ public class ShopeeItem {
     private String name;
     private String is_installment_payment_eligible;
     private String currency;
-    private String third_catid;
+    private int third_catid;
     private String is_pre_order;
     private String coin_spend_cash_unit;
     private List<Attributes> attributes;
@@ -449,10 +449,10 @@ public class ShopeeItem {
          return currency;
      }
 
-    public void setThird_catid(String third_catid) {
+    public void setThird_catid(int third_catid) {
          this.third_catid = third_catid;
      }
-     public String getThird_catid() {
+     public int getThird_catid() {
          return third_catid;
      }
 

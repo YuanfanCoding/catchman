@@ -49,6 +49,7 @@ public class TestSelenium {
 //		        WebElement webElement = driver.findElement(By.id("video-player"));
 //		        System.out.println(driver.getPageSource());
 		        
+		        
 		        Set<Cookie> cookies = driver.manage().getCookies(); 
 		        Iterator iterator=cookies.iterator();
 		        while(iterator.hasNext()) {

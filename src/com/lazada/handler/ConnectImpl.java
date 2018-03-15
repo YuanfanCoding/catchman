@@ -64,8 +64,9 @@ public class ConnectImpl extends JTextArea{
 		try {
 			long startTime=System.currentTimeMillis();   
 			
-//			ConnectImpl connectImpl=new ConnectImpl(3,"https://www.lazada.com.my/products/huawei-nova-2i-59-4gb-ram-64gb-rom-official-huawei-malaysia-set-i183285172-s221192291.html",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
-			ConnectImpl connectImpl=new ConnectImpl(1,"womens shoes",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
+//			ConnectImpl connectImpl=new ConnectImpl(3,"https://shopee.com.my/Nike-Flyknit-Racer-Sport-Shoes-i.41002014.640724773 https://shopee.com.my/Women's-Breathable-Walking-Sport-Shoes-SFGHOUSE-i.15271343.196224500",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
+			ConnectImpl connectImpl=new ConnectImpl(1,"womens shoes",1,2,"C:\\Users\\Administrator\\Desktop\\123.xls");
+//			ConnectImpl connectImpl=new ConnectImpl(2,"https://shopee.com.my/tristaying",1,3,"C:\\Users\\Administrator\\Desktop\\123.xls");
 //			ConnectImpl connectImpl=new ConnectImpl();
 //			connectImpl.setType(1);
 //			connectImpl.setPro("Petpet",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");	
