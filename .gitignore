@@ -1,1 +1,5 @@
 /.xls
+/bin
+*.project
+*.class
+.classpath
