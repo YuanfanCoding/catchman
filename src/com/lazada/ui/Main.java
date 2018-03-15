@@ -412,7 +412,10 @@ public class Main implements MouseListener {
 			}
 
 			public void windowClosed(WindowEvent e) {
-				if (HttpHandler.updateUser(0))
+				boolean exit=false;
+				while(!exit) {
+					exit=HttpHandler.updateUser(0);
+				}
 					System.exit(0);
 			}
 
