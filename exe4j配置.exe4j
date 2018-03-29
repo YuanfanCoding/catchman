@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <exe4j version="5.1" transformSequenceNumber="2">
-  <directoryPresets config="C:/Users/Administrator/Desktop/lazada项目/64位安装包" />
+  <directoryPresets config="F:/eclipse_workspace/catchman/lib" />
   <application name="袋鼠LAZADA采集软件" distributionSourceDir="C:/Users/Administrator/Desktop/lazada项目/64位安装包">
     <languages>
       <principalLanguage id="en" customLocalizationFile="" />
@@ -18,11 +18,11 @@
   </splashScreen>
   <java mainClass="com.lazada.ui.Login" vmParameters="" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true" minVersion="1.7" maxVersion="" allowBetaVM="false" jdkOnly="false">
     <searchSequence>
-      <directory location="./jre7" />
+      <directory location="./jre8" />
       <registry />
     </searchSequence>
     <classPath>
-      <archive location="C:/Users/Administrator/Desktop/lazada项目/64位安装包/catchV2.0.jar" failOnError="false" />
+      <archive location="C:/Users/Administrator/Desktop/lazada项目/64位安装包/catchV3.0.jar" failOnError="false" />
       <archive location="F:/eclipse_workspace/catchman/lib/commons-codec-1.9.jar" failOnError="false" />
       <archive location="F:/eclipse_workspace/catchman/lib/commons-logging-1.2.jar" failOnError="false" />
       <archive location="F:/eclipse_workspace/catchman/lib/gson-2.7.jar" failOnError="false" />
@@ -30,6 +30,7 @@
       <archive location="F:/eclipse_workspace/catchman/lib/httpcore-4.4.6.jar" failOnError="false" />
       <archive location="F:/eclipse_workspace/catchman/lib/jsoup-1.10.2.jar" failOnError="false" />
       <archive location="F:/eclipse_workspace/catchman/lib/jxl.jar" failOnError="false" />
+      <archive location="F:/eclipse_workspace/catchman/lib/selenium-server-standalone-3.4.0.jar" failOnError="false" />
     </classPath>
     <nativeLibraryDirectories />
     <vmOptions />

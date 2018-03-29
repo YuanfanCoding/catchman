@@ -181,6 +181,7 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 //	        cookie.setDomain("/pms/");   //设置范围  
 //	        cookie.setPath("/");   
 //	        cookieStore.addCookie(cookie); 
+			httpget.setHeader("cookie", "t_uid=b151b4230f6f332f3075c40cdbe2d8b1");
 			CloseableHttpResponse response = httpclient.execute(httpget);
 			
 			long endTime=System.currentTimeMillis(); 
@@ -278,7 +279,7 @@ public class LazadaImpl extends CheckboxModel implements PlatformService{
 						size += sizelist.get(i).text().toString() + " \n";
 				}
 				info.setSize(size);// 尺寸
-				info.setSpecial_price(doc.select("span.pdp-price_color_orange").text().toString().replace("RM", ""));// 特价
+				info.setSpecial_price(doc.select("span.pdp-price_color_orange").get(0).text().toString().replace("RM", ""));// 特价
 				info.setPrice(
 						doc.select("span.pdp-price_color_lightgray").text().toString().replace(",", "").replace("RM", "").trim());// 实价
 				info.setDescription(doc.select("div.detail-content").get(0).text().toString());// 描述

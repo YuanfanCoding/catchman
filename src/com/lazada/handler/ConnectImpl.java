@@ -65,13 +65,14 @@ public class ConnectImpl extends JTextArea{
 			long startTime=System.currentTimeMillis();   
 			
 //			ConnectImpl connectImpl=new ConnectImpl(3,"https://shopee.com.my/Nike-Flyknit-Racer-Sport-Shoes-i.41002014.640724773 https://shopee.com.my/Women's-Breathable-Walking-Sport-Shoes-SFGHOUSE-i.15271343.196224500",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
-			ConnectImpl connectImpl=new ConnectImpl(1,"womens shoes",1,2,"C:\\Users\\Administrator\\Desktop\\123.xls");
-//			ConnectImpl connectImpl=new ConnectImpl(2,"https://shopee.com.my/tristaying",1,3,"C:\\Users\\Administrator\\Desktop\\123.xls");
+			ConnectImpl connectImpl=new ConnectImpl(2,"https://www.lazada.com.my/hequ-trading/?langFlag=en&q=All-Products&from=wangpu&pageTypeId=2",1,2,"C:\\Users\\Administrator\\Desktop\\123.xls");
+//			ConnectImpl connectImpl=new ConnectImpl(2,"https://autocare.aliexpress.com/store/all-wholesale-products/1489256.html?spm=2114.12010606.0.0.5bb911aap9Ed9",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
+//			ConnectImpl connectImpl=new ConnectImpl(1,"women bag",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
 //			ConnectImpl connectImpl=new ConnectImpl();
 //			connectImpl.setType(1);
 //			connectImpl.setPro("Petpet",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");	
 //			ConnectImpl connectImpl=new ConnectImpl(3,"https://www.aliexpress.com/item/2017-new-fashion-women-shoes/32823588095.html?ws_ab_test=searchweb0_0,searchweb201602_4_10152_10151_10065_10068_10344_10342_10325_10546_10343_10340_10548_10341_10084_10617_10083_10616_10615_10307_10313_10059_10534_100031_10604_10103_10142,searchweb201603_25,ppcSwitch_5&algo_expid=9fe502ce-c27d-4ac6-b4a5-afc709abac99-6&algo_pvid=9fe502ce-c27d-4ac6-b4a5-afc709abac99&priceBeautifyAB=3",1,1,"C:\\Users\\Administrator\\Desktop\\123.xls");
-			connectImpl.setPlatform(Constant.SHOPEE);
+			connectImpl.setPlatform(Constant.LAZADA);
 			WritableWorkbook workbook=null;
 			connectImpl.startCatching(workbook);
 			long endTime=System.currentTimeMillis();
@@ -244,7 +245,6 @@ public class ConnectImpl extends JTextArea{
 			e.printStackTrace();
 			this.append(e.getMessage());
 		} finally {
-//			System.out.println(44444);
 			workbook.write();
 			workbook.close();
 			workbook=null;
@@ -265,7 +265,7 @@ public class ConnectImpl extends JTextArea{
 			
         case Constant.SHOPEE:
         	return new ShopeeImpl(type,typetext,startpage,endpage);
-			
+        	
         case Constant.AMAZON:
 //        	return new AmazonImpl(type,typetext);
 			break;

@@ -18,6 +18,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.w3c.dom.css.ElementCSSInlineStyle;
 
 import com.google.gson.Gson;
 import com.lazada.model.Constant;
@@ -135,7 +136,10 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 				info.setDiscuss(doc.select("span.rantings-num").text().toString().replace("votes", "").replaceAll("[( )]", ""));//评论量
 				info.setSalenum(doc.select("span.order-num").text().toString().replace("orders",""));//销量
 				info.setStore(doc.select("a.store-lnk").text().toString());// 店铺名
-				info.setCategory(doc.select("div.ui-breadcrumb").text().toString());// 分类
+				if(doc.select("div.ui-breadcrumb").text().toString()!=null && !doc.select("div.ui-breadcrumb").text().toString().equals(""))
+					info.setCategory(doc.select("div.ui-breadcrumb").text().toString());// 分类
+				else 
+				info.setCategory(doc.select("div.m-sop-crumb").text().toString());// 分类
 				Elements elimage =doc.select("span.img-thumb-item");
 				info.setMainimage(elimage.get(0).children().attr("src").toString().replaceFirst(".jpg_50x50", ""));// 图片
 				
@@ -177,7 +181,11 @@ public class AliexpressImpl extends CheckboxModel implements PlatformService{
 
 		        Document tempdoc = null;
 		 		while (tempdoc == null) {
-		 			 String line1=doc.select("script[type=text/javascript]").get(3).data().toString();
+		 			 String line1="";
+		 			 if(doc.select("script[type=text/javascript]").get(4).data().toString().contains("window.runParams.detailDesc="))
+		 			 line1=doc.select("script[type=text/javascript]").get(4).data().toString();
+		 			 else
+		 			 line1=doc.select("script[type=text/javascript]").get(6).data().toString();
 		 	         String line2=line1.substring(line1.indexOf("window.runParams.detailDesc="), line1.indexOf("window.runParams.transAbTest=")).trim();
 		 	        
 		 			tempdoc = getDoc(line2.substring(line2.indexOf("https://"),line2.length()-2));

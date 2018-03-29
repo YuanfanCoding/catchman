@@ -42,6 +42,7 @@ import com.lazada.model.json.shopee.category.Sub_sub;
 import com.lazada.model.json.shopee.first.FirstShopeeList;
 import com.lazada.model.json.shopee.first.Items;
 import com.lazada.model.json.shopee.item.ShopeeItem;
+import com.lazada.model.json.shopee.items.Models;
 import com.lazada.model.json.shopee.items.ShopeeModel;
 import com.lazada.model.product.BaseInfo;
 import com.lazada.model.product.FinalInfo;
@@ -53,6 +54,7 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 import net.sourceforge.htmlunit.corejs.javascript.ConsString;
+import net.sourceforge.htmlunit.corejs.javascript.ast.InfixExpression;
 
 public class ShopeeImpl extends CheckboxModel implements PlatformService {
 
@@ -68,14 +70,21 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService {
 	public void startCatching(ConnectImpl connectImpl, int exlRow, WritableWorkbook workbook)
 			throws RowsExceededException, WriteException, IOException {
 		// 获取分类列表
-		if (Constant.calMap == null || Constant.calMap.size() == 0) {
+		int failscount=0;
+		connectImpl.append("开始尝试连接虾皮shopee！\n");
+		while((Constant.calMap == null || Constant.calMap.size() == 0) && failscount<3) {
 			getCategoryList();
+			failscount++;
 //			connectImpl.append("成功获取虾皮产品分类！\n");
 		}
-
+        if(failscount>=3) {
+        	connectImpl.append("暂时链接不上shopee网站，请稍后再试！");
+        	System.out.println("暂时链接不上shopee网站，请稍后再试！");
+        	return;
+        }
 		if (Constant.WORKPATH.equals("")) {// 得到当前路径，为了后面加载phantom.exe
 			Constant.WORKPATH = System.getProperty("user.dir");
-			System.out.println(System.getProperty("user.dir"));
+//			connectImpl.append(System.getProperty("user.dir"));
 		}
 
 		switch (type) {
@@ -168,9 +177,10 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService {
 		ci.append("正在获取第" + pagenum + "页的数据：  " + urlstring + "\n");
 
 		String respString = null;
+		int failcount=0;//失败两次就跳过不收集
 		while (respString == null) {
 			respString = getDoc(urlstring);
-			if (respString != null) {
+			if (respString != null && respString.contains("items")) {
 				try {
 					// Gson gson=new Gson();
 
@@ -179,7 +189,7 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService {
 							+ respString.substring(respString.indexOf("items") - 1).replace("items", "item_shop_ids"),
 							"utf-8");// 解决中文乱码问题
 					stringEntity.setContentEncoding("UTF-8");
-
+                    System.out.println(respString);
 					String finaljson = postData(Constant.SHOPEEPOSTSITE, Constant.shopeecookies, stringEntity,
 							cookiesurl, Constant.shopeecsrftoken);
 					System.out.println("finaljson串："+finaljson);
@@ -210,8 +220,14 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService {
 					ci.paintImmediately(ci.getBounds());
 				}
 			} else {
-				ci.append("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  \n");
-				// this.paintImmediately(this.getBounds());
+				failcount++;
+				if(failcount<3)
+				ci.append("链接：" + urlstring + "第"+failcount+"次获取失败，开始重新获取:--------------  \n");
+				else {
+					ci.append("第" + pagenum + "页数据  " + "获取失败，开始重新获取:--------------  \n");
+					break;
+				}
+				
 			}
 		}
 		return exlRow;
@@ -311,26 +327,53 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService {
 				}
 
 			}
+			if(shopeeModel.getShow_free_shipping()) info.setLocation("local");
+			else info.setLocation("overseas");//地区
+			List<Models> models=shopeeModel.getModels();
+			for(int i=0;i<(models.size()>15?15:models.size());i++) {
+				Class clazz = info.getClass();
+				Method m;
+				try {
+					m = clazz.getMethod("setSmallimage" + (i + 1), String.class);
+					m.invoke(info, models.get(i).getName());
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException e) {
+
+					e.printStackTrace();
+				}
+			}
 			info.setSpecial_price(String.format("%.2f", (shopeeModel.getPrice() / 100000)));// 特价
 			info.setPrice(String.format("%.2f", (shopeeModel.getPrice_before_discount() / 100000)));// 实价
 			String itemString = "";
 			itemString = getItemJsonForShopee(Constant.SHOPEEITEMSITE + "item_id=" + shopeeModel.getItemid()
 					+ "&shop_id=" + shopeeModel.getShopid()).toString();
-			while (itemString == null || itemString.equals("")) {
+			int failcount=0;
+			while ((itemString == null || itemString.equals(""))&& failcount<3) {
 				ci.append("产品：" + info.getLink() + "获取失败，开始重新获取:--------------  \n");
 				itemString = getItemJsonForShopee(Constant.SHOPEEITEMSITE + "item_id=" + shopeeModel.getItemid()
 						+ "&shop_id=" + shopeeModel.getShopid()).toString();
+				failcount++;
 			}
+			if((itemString != null && !itemString.equals(""))) {
 			ShopeeItem shopeeItem = gson.fromJson(itemString, ShopeeItem.class);
 
 			String descAll = shopeeItem.getDescription();
 			if (descAll.contains("#")) {
 				String maidian = descAll.substring(descAll.indexOf("#"));
 				info.setShort_description(maidian);// 买点
-				info.setShort_descriptioncode(maidian.replace("#", "li class="));// 买点代码
+				String[] soldpoints=maidian.substring(1).split("#");
+				String short_code="<ul>"+"\n";
+				if(soldpoints.length>0) {
+					for(int i=0;i<soldpoints.length;i++)
+					short_code+="<li>"+soldpoints[i]+"</li>"+"\n";
+				}
+				short_code+="</ul>"+"\n";
+				info.setShort_descriptioncode(short_code);// 买点代码
 				descAll = descAll.substring(0, descAll.indexOf("#"));
 			}
+			
 			info.setDescription(descAll);// 描述
+			}
 			info.setCategory(Constant.calMap.get(shopeeModel.getThird_catid()));// 分类
 			info.setOneItemStart(true);
 			if (info.isOneItemStart()) {
@@ -370,9 +413,15 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService {
 				+ urlstring.substring(urlstring.lastIndexOf(".") + 1).trim() + "&shop_id="
 				+ urlstring.substring(urlstring.indexOf("i.") + 2, urlstring.lastIndexOf(".")).trim();
 		itemString = getItemJsonForShopee(itemurel);
-		while (itemString == null || itemString.equals("")) {
+		int failcount=0;
+		while ((itemString == null || itemString.equals(""))&&failcount<3) {
 			ci.append("产品：" + urlstring + "获取失败，开始重新获取:--------------  \n");
 			itemString = getItemJsonForShopee(itemurel);
+			failcount++;
+		}
+		if((itemString == null || itemString.equals(""))) {
+			ci.append("链接：  "+urlstring+"采集失败 正在跳过\n");
+			return exlRow;
 		}
 		System.out.println(itemString);
 		ShopeeItem shopeeItem = gson.fromJson(itemString, ShopeeItem.class);
@@ -443,16 +492,16 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService {
 	public static void getCookies(String url) {
 
 		long starttime = System.currentTimeMillis();
+//		System.setProperty("phantomjs.binary.path",
+//				"C:\\Users\\Administrator\\Desktop\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe");
 		System.setProperty("phantomjs.binary.path",
-				"C:\\Users\\Administrator\\Desktop\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe");
+				Constant.WORKPATH+"\\phantomjs.exe");
 		WebDriver driver = new PhantomJSDriver();
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		driver.get(url);
 
 		long endtime = System.currentTimeMillis();
 		System.out.println("初始化时间：" + (endtime - starttime));
-		// WebElement webElement = driver.findElement(By.id("video-player"));
-		// System.out.println(driver.getPageSource());
 		Set<Cookie> cookies = driver.manage().getCookies();
 		Iterator iterator = cookies.iterator();
 		while (iterator.hasNext()) {
@@ -460,8 +509,6 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService {
 			if (cookie.getName().equals("csrftoken"))
 				Constant.shopeecsrftoken = cookie.getValue();
 			Constant.shopeecookies += cookie.getName() + "=" + cookie.getValue() + ";";
-//			System.out.println(cookie.getName());
-//			System.out.println(cookie.getValue());
 		}
 
 		driver.close();
@@ -486,26 +533,9 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService {
 		String web = "";
 		try {
 			HttpGet httpget = new HttpGet(url);
-			// RequestConfig requestConfig =
-			// RequestConfig.custom().setSocketTimeout(6*1000).build();
 			httpget.setConfig(defaultRequestConfig);
-//			httpget.setHeader("x-api-source","pc");
-//			httpget.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36");
-			// if(url.contains("page=1")) {
-			// Header[] header=httpget.getAllHeaders();
-			// for(int i=0;i<header.length;i++) {
-			// System.out.println(header[i].toString());
-			// }
-			// }
-			// BasicClientCookie cookie = new BasicClientCookie("JSESSIONID",
-			// "B960BA73258DB81B7204FEE3A5A78CA3");
-			// cookie.setVersion(0);
-			// cookie.setDomain("/pms/"); //设置范围
-			// cookie.setPath("/");
-			// cookieStore.addCookie(cookie);
 			CloseableHttpResponse response = httpclient.execute(httpget);
 			long endTime = System.currentTimeMillis();
-//			System.out.println("此次请求总耗时： " + (endTime - startTime));
 			try {
 				// 获取响应实体
 				HttpEntity entity = response.getEntity();
@@ -586,10 +616,6 @@ public class ShopeeImpl extends CheckboxModel implements PlatformService {
 		httppost.addHeader("referer", refer);
 		httppost.addHeader("x-csrftoken", xcsrftoken);
 		httppost.setHeader("cookie", cookieString);
-//		System.out.println(url);
-//		System.out.println(xcsrftoken);
-//		System.out.println(cookieString);
-		// entity.setContentType("text");
 		httppost.setEntity(json);
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();

@@ -16,7 +16,7 @@ public class ShopeeModel {
     private boolean liked;
     private String bundle_deal_info;
     private int offer_count;
-    private List<String> videos;
+    private List<Object> videos;
     private String image;
     private List<String> image_list;
     private long shopid;
@@ -98,10 +98,10 @@ public class ShopeeModel {
          return offer_count;
      }
 
-    public void setVideos(List<String> videos) {
+    public void setVideos(List<Object> videos) {
          this.videos = videos;
      }
-     public List<String> getVideos() {
+     public List<Object> getVideos() {
          return videos;
      }
 

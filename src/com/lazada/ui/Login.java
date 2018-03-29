@@ -48,7 +48,7 @@ public class Login extends JFrame implements ActionListener {
     
 	public static void main(String args[]) {
 		try {
-			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+//			 UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -255,14 +255,14 @@ public class Login extends JFrame implements ActionListener {
 			System.exit(0);
 		
 		if (cmd.equals("没有账号？")){
-			JOptionPane.showMessageDialog(d, "请添加QQ:318074670 或者 微信:ds318074670免费获取账号！", "账号获取",
+			JOptionPane.showMessageDialog(d, "请添加QQ群:609970186 或者 微信:ds318074670免费获取账号！", "账号获取",
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
 	private String doCheckUser(Userinfo ui) {
 		try {	
-		if(ui.getPcnum().equals("0")) return "您的使用电脑台数超过了！请退出其他已经登陆的电脑！";
+		if(ui.getPcnum().equals("0")) return "登录数量异常！请联系客服，QQ：318074670 ";
 		if(!ui.getCatchnum().equals("无限制") && Integer.parseInt(ui.getCatchnum())<=Integer.parseInt(ui.getAreadynum())) return "抓取数量已超出之前购买的额度！请联系客服续费！";
 		if(new SimpleDateFormat("yyyy/MM/dd").parse(ui.getLimittime()).before(new Date())) return "你的使用期限已到，请联系客服续费！谢谢！";		
 		}catch (Exception e) {

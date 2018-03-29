@@ -216,7 +216,7 @@ public class Main implements MouseListener {
 		panel.add(keywordcheckBox);
 
 		keyword_text = new JTextField();
-		keyword_text.setText("womes shoes");
+		keyword_text.setText("Woman bag");
 		keyword_text.setBounds(150, 28, 116, 19);
 		panel.add(keyword_text);
 		keyword_text.setColumns(10);
@@ -388,24 +388,6 @@ public class Main implements MouseListener {
 		frmLazada.setVisible(true);
 		frmLazada.addWindowListener(new WindowAdapter() { // 关闭之前要提交已经收集的数量以及mac-1
 			public void windowClosing(WindowEvent e) {
-				// if(JOptionPane.showConfirmDialog(d,"确定关闭软件？","退出",JOptionPane.YES_NO_OPTION)==0)
-				// {
-				// try {
-				// System.out.println(111111);
-				// System.out.println(startCatchThread.isAlive());
-				// if(startCatchThread!=null && startCatchThread.isAlive()) {
-				// synchronized (startCatchThread) {
-				// startCatchThread.interrupt();
-				// System.out.println(333333);
-				// workbook.write();
-				// workbook.close();
-				// }
-				// JOptionPane.showMessageDialog(d,"文件保存成功！","nice！",JOptionPane.DEFAULT_OPTION);
-				// }
-				// } catch (IOException | WriteException e1) {
-				//
-				// e1.printStackTrace();
-				// }
 				frmLazada.dispose();
 
 			}
@@ -551,14 +533,14 @@ public class Main implements MouseListener {
 			switch (paltform) {
 
 			case Constant.LAZADA:
-				if (!waytext.contains(Constant.LAZADASIDE)) {
+				if (!waytext.contains("lazada.com")) {
 					islegal = false;
 					JOptionPane.showMessageDialog(d, "请检查文本框输入的是Lazada的相关连接！", "请重新输入", JOptionPane.WARNING_MESSAGE);
 				}
 				break;
 
 			case Constant.ALIEXPRESS:
-				if (!waytext.contains(Constant.ALIEXPRESSSIDE)) {
+				if (!waytext.contains("aliexpress.com")) {
 					islegal = false;
 					JOptionPane.showMessageDialog(d, "请检查文本框输入的是aliexpress的相关连接！", "请重新输入",
 							JOptionPane.WARNING_MESSAGE);
@@ -566,7 +548,7 @@ public class Main implements MouseListener {
 				break;
 
 			case Constant.SHOPEE:
-				if (!waytext.contains(Constant.SHOPEESIDE)) {
+				if (!waytext.contains("shopee.com")) {
 					islegal = false;
 					JOptionPane.showMessageDialog(d, "请检查文本框输入的是shopee的相关连接！", "请重新输入", JOptionPane.WARNING_MESSAGE);
 				}
@@ -664,8 +646,7 @@ public class Main implements MouseListener {
 
 		@Override
 		public void run() {
-
-			
+			JOptionPane.showMessageDialog(d, "根据您的网络，建议最多采集20页，否则，采集出现不稳定。", "nice!", JOptionPane.WARNING_MESSAGE);
 			try {
 				HashMap hm = getActiveJcb(1);
 				String way = (String) (hm.keySet().iterator().next());
@@ -673,28 +654,31 @@ public class Main implements MouseListener {
 
 				HashMap hm2 = getActiveJcb(2);
 				String platform = (String) (hm2.keySet().iterator().next());
-				if (istest)
-					catchInfoArea.setPro(waytext, 1, 1, store_text.getText());
-				else
-					catchInfoArea.setPro(waytext, Integer.parseInt(startpage_text.getText()),
-							Integer.parseInt(endpage_text.getText()), store_text.getText());
-				catchInfoArea.setPlatform(platform);
+				int startpage=1,endpage=1;
+				if (!istest) {
+					startpage=Integer.parseInt(startpage_text.getText());
+					endpage=Integer.parseInt(endpage_text.getText());
+				}
+				System.out.println(waytext);
+//				waytext="Woman bag";
+//				System.out.println(waytext);
 				switch (way) {
 				case Constant.KEYWORDCATCH:
-					catchInfoArea.setType(1);
+					catchInfoArea.setPro(1,waytext,startpage,endpage,store_text.getText());
 					break;
 				case Constant.STORECATCH:
-					catchInfoArea.setType(2);
+					catchInfoArea.setPro(2,waytext,startpage,endpage,store_text.getText());
 					break;
 				case Constant.PRODUCTCATCH:
-					catchInfoArea.setType(3);
+					catchInfoArea.setPro(3,waytext,startpage,endpage,store_text.getText());
 					break;
 				default:
 					break;
-				}
+				}			
+				catchInfoArea.setPlatform(platform);
 				
 				catchInfoArea.startCatching(workbook);
-				
+				if(!platform.equals(Constant.SHOPEE))
 				JOptionPane.showMessageDialog(d, "您的数据收集完成！", "nice!", JOptionPane.WARNING_MESSAGE);
 				if (istest) {
 
@@ -705,7 +689,6 @@ public class Main implements MouseListener {
 							Desktop.getDesktop().browse(uri);
 						}
 					} catch (IOException | URISyntaxException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					HttpHandler.handleRecord(Constant.SAVERECORD);
@@ -716,15 +699,18 @@ public class Main implements MouseListener {
 					if (!Constant.totalnum.equals("无限制")
 							&& Constant.areadycatchnum >= Integer.parseInt(Constant.totalnum)) {
 						JOptionPane.showMessageDialog(d, "您的收集数量已经达到上限，请联系客服续费！", "即将关闭", JOptionPane.WARNING_MESSAGE);
-						HttpHandler.updateUser(0);
+						while(!HttpHandler.updateUser(0)) {
+							
+						}
 						System.exit(0);
 					}
 				}
-
-			} catch (WriteException | IOException e) {
-
+	        } catch (WriteException | IOException e ) {
+				
+				System.out.println("出现IO异常");
 				e.printStackTrace();
 			}
+
 
 		}
 	}

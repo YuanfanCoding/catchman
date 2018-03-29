@@ -2,7 +2,7 @@
 ; 有关创建 Inno Setup 脚本文件的详细资料请查阅帮助文档！
 
 #define MyAppName "袋鼠LAZADA采集软件"
-#define MyAppVersion "2.0"
+#define MyAppVersion "3.0"
 #define MyAppPublisher "yuanfan"
 #define MyAppURL "http://ylfcoding.cn"
 #define MyAppExeName "袋鼠LAZADA采集软件.exe"
@@ -22,7 +22,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=C:\Users\Administrator\Desktop\lazada项目\64位安装包
-OutputBaseFilename=袋鼠LAZADA采集软件V2.0
+OutputBaseFilename=袋鼠LAZADA采集软件V3.0
 SetupIconFile=C:\Users\Administrator\Desktop\lazada项目\lazada.ico
 Compression=lzma
 SolidCompression=yes
@@ -35,6 +35,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "C:\Users\Administrator\Desktop\lazada项目\64位安装包\袋鼠LAZADA采集软件.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Administrator\Desktop\lazada项目\64位安装包\phantomjs.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Administrator\Desktop\lazada项目\64位安装包\jre\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Users\Administrator\Desktop\lazada项目\lazada.ico"; DestDir: "{app}"; Flags: ignoreversion
 ; 注意: 不要在任何共享系统文件上使用“Flags: ignoreversion”
