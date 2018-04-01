@@ -137,7 +137,7 @@ public class Main implements MouseListener {
 		frmLazada = new JFrame(Constant.SOFTWARENAME);
 		// frmLazada.setIconImage(Toolkit.getDefaultToolkit().createImage(getClass().getResource("\\image\\lazada.jpg")));
 		frmLazada.setIconImage(new ImageIcon(Main.class.getResource("/image/lazada.jpg")).getImage());
-		frmLazada.setBounds(100, 100, 643, 437);
+		frmLazada.setBounds(100, 100, 631, 437);
 		frmLazada.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frmLazada.getContentPane().setLayout(null);
 		frmLazada.setLocation(Login.centreContainer(frmLazada.getSize()));
@@ -533,14 +533,14 @@ public class Main implements MouseListener {
 			switch (paltform) {
 
 			case Constant.LAZADA:
-				if (!waytext.contains("lazada.com")) {
+				if (!waytext.contains("lazada")) {
 					islegal = false;
 					JOptionPane.showMessageDialog(d, "请检查文本框输入的是Lazada的相关连接！", "请重新输入", JOptionPane.WARNING_MESSAGE);
 				}
 				break;
 
 			case Constant.ALIEXPRESS:
-				if (!waytext.contains("aliexpress.com")) {
+				if (!waytext.contains("aliexpress")) {
 					islegal = false;
 					JOptionPane.showMessageDialog(d, "请检查文本框输入的是aliexpress的相关连接！", "请重新输入",
 							JOptionPane.WARNING_MESSAGE);
@@ -548,7 +548,7 @@ public class Main implements MouseListener {
 				break;
 
 			case Constant.SHOPEE:
-				if (!waytext.contains("shopee.com")) {
+				if (!waytext.contains("shopee")) {
 					islegal = false;
 					JOptionPane.showMessageDialog(d, "请检查文本框输入的是shopee的相关连接！", "请重新输入", JOptionPane.WARNING_MESSAGE);
 				}

@@ -33,7 +33,7 @@ public class TestHttpCilent {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		
 		try {
-            HttpGet httpget = new HttpGet("http://www.lazada.com.my/catalog/?_keyori=ss&from=input&q=womens+shoes&page=2&spm=a2o4k.searchlist.search.go.5ee640ccDBwI9W");
+            HttpGet httpget = new HttpGet("https://www.lazada.com.my/shop-samsonite/?from=wangpu&langFlag=en&page=2&pageTypeId=2&q=All-Products");
           //  HttpGet httpget = new HttpGet("https://www.lazada.com.my/petpet/?spm=a2o4k.prod.0.0.27c36a81A1xgwt&ref=popular-search3=petpet");
             
 //           …Ë÷√≥¨ ± 
@@ -71,6 +71,7 @@ public class TestHttpCilent {
             httpget.setHeader("User-Agent",
             		"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");  
 //            "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36");
+            httpget.setHeader("cookie", "t_uid=b151b4230f6f332f3075c40cdbe2d8b1");
             CloseableHttpResponse response = httpclient.execute(httpget);
             
             String web="";
